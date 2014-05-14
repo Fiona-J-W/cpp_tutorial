@@ -24,11 +24,8 @@ int main() {
 	std::cout << "smallest element is " << smallest_element << '\n';
 }
 ```
-
-----
-
 ```
-smallest element of vec is -3
+>> smallest element of vec is -3
 ```
 
 This solution works, but the problem is, that every time we want to do this again, we have to write
@@ -59,12 +56,9 @@ int main() {
 	          << smallest_element(vec2) << '\n';
 }
 ```
-
-----
-
 ```
-smallest element of vec1 is -3
-smallest element of vec2 is 0
+>> smallest element of vec1 is -3
+>> smallest element of vec2 is 0
 ```
 
 The amount of saved typing is obvious. We also have the advantage that we are now able to improve the
@@ -195,13 +189,10 @@ int main() {
 
 
 ```
-
-----
-
 ```
-some string
-1, 3
-Hello World!
+>> some string
+>> 1, 3
+>> Hello World!
 ```
 
 If we are interested in the returnvalue, we can just use the call as if it would be a value:
@@ -226,12 +217,9 @@ int main() {
 	          << get_random_number() << '\n';
 }
 ```
-
-----
-
 ```
-The value of a is 3.
-A truly random number is: 4.
+>> The value of a is 3.
+>> A truly random number is: 4.
 ```
 
 Some examples

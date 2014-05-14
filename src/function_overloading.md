@@ -29,12 +29,9 @@ int main() {
 	function(2.718);
 }
 ```
-
-----
-
 ```
-function(int 3);
-function(double 2.718);
+>> function(int 3);
+>> function(double 2.718);
 ```
 
 Revisiting `smallest_element()`
@@ -99,12 +96,9 @@ int main() {
 	          << '\n';
 }
 ```
-
-----
-
 ```
-the smallest character of 'Foobar' is 'a'
-the smallest number of 1, 3, 6, -3, 4 and 2 is: -3
+>> the smallest character of 'Foobar' is 'a'
+>> the smallest number of 1, 3, 6, -3, 4 and 2 is: -3
 ```
 
 While the new code may not be very beautiful, it shows that there is no problem with creating two

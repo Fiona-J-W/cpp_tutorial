@@ -39,13 +39,10 @@ int main()
 	//one += 1;
 }
 ```
-
-----
-
 ```
-zero=0, one=1, str='some const string'
-the third letter in str is 'm'
-one + one + zero = 2
+>> zero=0, one=1, str='some const string'
+>> the third letter in str is 'm'
+>> one + one + zero = 2
 ```
 
 Aside from the possibility that the purpose of restricting what can be done with variables may be
@@ -73,15 +70,12 @@ int main()
 	}
 }
 ```
-
-----
-
 ```
-0kg create 0 newton of force.
-0.5kg create 4.905 newton of force.
-1kg create 9.81 newton of force.
-1.5kg create 14.715 newton of force.
-2kg create 19.62 newton of force.
+>> 0kg create 0 newton of force.
+>> 0.5kg create 4.905 newton of force.
+>> 1kg create 9.81 newton of force.
+>> 1.5kg create 14.715 newton of force.
+>> 2kg create 19.62 newton of force.
 ```
 
 ```cpp
@@ -98,15 +92,12 @@ int main()
 	}
 }
 ```
-
-----
-
 ```
-0kg create 0 newton of force.
-0.5kg create 4.905 newton of force.
-1kg create 9.81 newton of force.
-1.5kg create 14.715 newton of force.
-2kg create 19.62 newton of force.
+>> 0kg create 0 newton of force.
+>> 0.5kg create 4.905 newton of force.
+>> 1kg create 9.81 newton of force.
+>> 1.5kg create 14.715 newton of force.
+>> 2kg create 19.62 newton of force.
 ```
 
 Even this pretty small example gets easier to understand, once we give names to constant values. It
@@ -153,12 +144,9 @@ int main()
 	// ++ref2 // error
 }
 ```
-
-----
-
 ```
-x=0, y=1, z=0, cref1=0, cref2=1, cref3=0
-x=10, y=1, z=10, cref1=10, cref2=1, cref3=10
+>> x=0, y=1, z=0, cref1=0, cref2=1, cref3=0
+>> x=10, y=1, z=10, cref1=10, cref2=1, cref3=10
 ```
 
 We note several things: 
@@ -201,11 +189,8 @@ int main()
 	std::cout << "smallest element of vec is " << smallest_element(vec) << std::endl;
 }
 ```
-
-----
-
 ```
-smallest element of vec is 0
+>> smallest element of vec is 0
 ```
 
 
@@ -243,8 +228,9 @@ int main()
 {
 	std::cout << make_loud(get_some_string()) << std::endl;
 }
-|output =
-SOME VERY LONG STRING
+```
+```
+>> SOME VERY LONG STRING
 ```
 
 Let's ignore the details of the function `toupper()` for a moment and look at the other parts of

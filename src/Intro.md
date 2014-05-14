@@ -1,2 +1,2 @@
-% Introduction to C++ for Beginners
+% Learning C++
 % Florian Weber

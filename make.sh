@@ -1,5 +1,9 @@
 #!/bin/sh
-pandoc  -fmarkdown -t latex -o cpp.pdf  -V documentclass:book --toc --number-sections \
+pandoc  -fmarkdown -t latex -o cpp.pdf  \
+		--toc \
+		--number-sections \
+		-V documentclass:book\
+		-V papersize:"a4paper" \
 	src/Intro.md \
 	src/functions.md \
 	src/reference.md \
@@ -7,4 +11,5 @@ pandoc  -fmarkdown -t latex -o cpp.pdf  -V documentclass:book --toc --number-sec
 	src/function_overloading.md \
 	src/function_templates.md \
 	src/classes.md \
-	src/class_templates.md
+	src/class_templates.md \
+	src/inheritance.md

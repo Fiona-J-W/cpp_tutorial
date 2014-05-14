@@ -20,11 +20,8 @@ int main() {
 	std::cout << "p: " << p.x << '/' << p.y << '/' << p.z << '\n';
 }
 ```
-
-----
-
 ```
-p: 1/2/3
+>> p: 1/2/3
 ```
 
 This still works great, but their is one problem: What should we do, if we want a point that only
@@ -59,12 +56,9 @@ int main()
 	std::cout << "p_float: " << p_float.x << '/' << p_float.y << '/' << p_float.z << '\n';
 }
 ```
-
-----
-
 ```
-p_int: 1/2/3
-p_float: 1.5/2.3/3.2
+>> p_int: 1/2/3
+>> p_float: 1.5/2.3/3.2
 ```
 
 This is not really different from writing normal functions so far, so let's see how we can create
@@ -115,12 +109,9 @@ int main() {
 	p.print();
 }
 ```
-
-----
-
 ```
-1/2/3
-0/0/0
+>> 1/2/3
+>> 0/0/0
 ```
 
 

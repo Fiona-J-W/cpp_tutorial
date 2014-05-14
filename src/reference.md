@@ -29,11 +29,8 @@ int main()
 	std::cout << "smallest element of vec is " << smallest_element(vec) << std::endl;
 }
 ```
-
-----
-
 ```
-smallest element of vec is 0
+>> smallest element of vec is 0
 ```
 
 The problem that we face here is somewhat non-obvious: Remember that the arguments to a function are
@@ -81,17 +78,14 @@ int main()
 	
 }
 ```
-
-----
-
 ```
-x=0, ref=0
-x=3, ref=3
-x=4, ref=4
-x=4, y=4, ref=4
-x=4, y=1, ref=4
-x=1, y=1, ref=1
-x=1, y=0, ref=1
+>> x=0, ref=0
+>> x=3, ref=3
+>> x=4, ref=4
+>> x=4, y=4, ref=4
+>> x=4, y=1, ref=4
+>> x=1, y=1, ref=1
+>> x=1, y=0, ref=1
 ```
 
 A reference to a certain type is itself a type. If the referenced type is `T`, then a reference to
@@ -129,11 +123,8 @@ int main()
 	std::cout << "smallest element of vec is " << smallest_element(vec) << std::endl;
 }
 ```
-
-----
-
 ```
-smallest element of vec is 0
+>> smallest element of vec is 0
 ```
 
 We see that it doesn't make any difference from the callside, whether a function copies it's arguments
@@ -158,12 +149,9 @@ int main()
 	std::cout << "the value of x is " << x << '\n';
 }
 ```
-
-----
-
 ```
-the value of x is 0
-the value of x is 10
+>> the value of x is 0
+>> the value of x is 10
 ```
 
 Note however, that while this is possible, it is often a bad idea, since it makes reasoning about where

@@ -49,13 +49,10 @@ int main()
     foo<char>(67);   // print 67 as a character
 }
 ```
-
-----
-
 ```
-67
-67.000
-C
+>> 67
+>> 67.000
+>> C
 ```
 
 Deduction
@@ -89,16 +86,13 @@ int main()
     print("bar");      // prints "bar" as const char*
 }
 ```
-
-----
-
 ```
-64
-64.200
-64.000
-D
-c
-bar
+>> 64
+>> 64.200
+>> 64.000
+>> D
+>> c
+>> bar
 ```
 
 In general one should never pass template-arguments that can be inferred, since the compiler knows

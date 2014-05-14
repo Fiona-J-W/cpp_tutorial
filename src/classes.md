@@ -34,11 +34,8 @@ int main() {
 	          << distance(0,1,2,4,1,0) << '\n';
 }
 ```
-
-----
-
 ```
-The points (0,1,2) and (4,1,0) have the distance 4.47214
+>> The points (0,1,2) and (4,1,0) have the distance 4.47214
 ```
 
 The solution is working, but if we are honest, it isn't really nice: Passing the points into the
@@ -77,11 +74,8 @@ int main() {
 		<< distance(point{0,1,2}, point{4,1,0}) << '\n';
 }
 ```
-
-----
-
 ```
-The points (0,1,2) and (4,1,0) have the distance 4.47214
+>> The points (0,1,2) and (4,1,0) have the distance 4.47214
 ```
 
 Reducing six arguments to two, which in addition share semantics is clearly an improvement. It is
@@ -124,13 +118,11 @@ int main() {
 	std::cout << "p2: " << p2.x << '/' << p2.y << '/' << p2.z << '\n';
 }
 ```
-
-----
-
 ```
-p1: 0/0/0
-p2: 0/0/0
+>> p1: 0/0/0
+>> p2: 0/0/0
 ```
+
 This works but we lose the great advantage of initializing a point with the values we want in a
 comfortable way. The solution to this is called a constructor. It is a special function that is
 part of a struct and is called when the object is created.
@@ -166,12 +158,9 @@ int main() {
 	std::cout << "p2: " << p2.x << '/' << p2.y << '/' << p2.z << '\n';
 }
 ```
-
-----
-
 ```
-p1: 1/2/3
-p2: 4/5/6
+>> p1: 1/2/3
+>> p2: 4/5/6
 ```
 
 If we look at the code, we see a very common situation: We have several data-members in our struct,
@@ -199,11 +188,8 @@ int main() {
 	std::cout << "p: " << p.x << '/' << p.y << '/' << p.z << '\n';
 }
 ```
-
-----
-
 ```
-p: 1/2/3
+>> p: 1/2/3
 ```
 
 This way of initializing members is almost always preferable if it is reasonably possible.
@@ -266,11 +252,8 @@ int main() {
 	std::cout << "p: " << p.to_string() << '\n';
 }
 ```
-
-----
-
 ```
-p: (1.000000, 2.000000, 3.000000)
+>> p: (1.000000, 2.000000, 3.000000)
 ```
 
 So we just write a function inside the class and call it by picking an instance of the class and
@@ -329,11 +312,8 @@ int main()
 	std::cout << "distance to origin: " << p.distance << '\n';
 }
 ```
-
-----
-
 ```
-distance to origin: 123
+>> distance to origin: 123
 ```
 
 Let's assume that the angles are represented as radians. Also we want the distance to never be
@@ -403,11 +383,8 @@ int main()
 	//p.set_h_angle(42);
 }
 ```
-
-----
-
 ```
-distance to origin: 123, angles: 3.5, 2.7
+>> distance to origin: 123, angles: 3.5, 2.7
 ```
 
 While terminate is still a harsh way of handling errors (later on exceptions will make this cleaner),
@@ -445,11 +422,8 @@ int main() {
 	std::cout << foo.get_mem() << '\n';
 }
 ```
-
-----
-
 ```
-4
+>> 4
 ```
 
 We see that there really isn't much special about it. Nevertheless we'll use `class` instead of
@@ -502,14 +476,11 @@ int main() {
 	myclass object2{2};
 }
 ```
-
-----
-
 ```
-Hello from #1
-Hello from #2
-Goodbye from #2
-Goodbye from #1
+>> Hello from #1
+>> Hello from #2
+>> Goodbye from #2
+>> Goodbye from #1
 ```
 
 As we see the objects that are constructed first get destructed last. This is guaranteed by the
