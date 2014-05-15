@@ -12,21 +12,18 @@ Since this is somewhat heavy to write every time, we'll use a function for that:
 
 ```cpp
 #include <iostream>
-#include <cmath> // needed for sqrt() and abs()
+#include <cmath> // needed for sqrt(), abs() and pow()
 
-double square(double number) {
-	return number * number;
+double squared_distance(double p1, double p2) {
+	return std::pow(std::abs(p1 - p2), 2);
 }
-
 
 double distance(double x1, double y1, double z1, double x2,
                 double y2, double z2) {
-	auto squared_x_distance = square(std::abs(x1-x2));
-	auto squared_y_distance = square(std::abs(y1-y2));
-	auto squared_z_distance = square(std::abs(z1-z2));
-	auto sum = squared_x_distance + squared_y_distance
-	           + squared_z_distance;
-	return std::sqrt(sum);
+	auto x = squared_distance(x1, x2);
+	auto y = squared_distance(y1, y2);
+	auto z = squared_distance(z1, z2);
+	return std::sqrt(x + y + z);
 }
 
 int main() {
@@ -48,7 +45,7 @@ which even got implicit names: `x`, `y`, and `z`. So let's create a new type tha
 
 ```cpp
 #include <iostream>
-#include <cmath> // needed for sqrt() and abs()
+#include <cmath>
 
 struct point {
 	double x;
@@ -56,17 +53,15 @@ struct point {
 	double z;
 };
 
-double square(double number) {
-	return number * number;
+double squared_distance(double p1, double p2) {
+	return std::pow(std::abs(p1 - p2), 2);
 }
 
 double distance(const point& p1, const point& p2) {
-	auto squared_x_distance = square(std::abs(p1.x-p2.x));
-	auto squared_y_distance = square(std::abs(p1.y-p2.y));
-	auto squared_z_distance = square(std::abs(p1.z-p2.z));
-	auto sum = squared_x_distance + squared_y_distance
-	           + squared_z_distance;
-	return std::sqrt(sum);
+	auto x = squared_distance(p1.x, p2.x);
+	auto y = squared_distance(p1.y, p2.y);
+	auto z = squared_distance(p1.z, p2.z);
+	return std::sqrt(x + y + z);
 }
 
 int main() {
