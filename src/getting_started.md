@@ -2,9 +2,11 @@ Getting Started
 ===============
 
 At this point you should have a working compiler and text-editor, so that we can start out with looking
-into the fundamental building-blocks of the language. This chapter may not appear to be very
-entertaining or of much direct use, but it is very important as everything we will encounter here
-is needed to procede to the more interessting topics that will build on top of it.
+into the fundamental building-blocks of the language.
+
+This chapter may not appear to be very entertaining or of much direct use, but it is very important as
+everything we will encounter here is needed to procede to the more interessting topics that will build
+on top of it.
 
 Hello World
 -----------
@@ -62,7 +64,7 @@ Now for the last line:
 ```
 This is just the closing brace of the main-function an the point where the program ends.
 
-Variables and basic Arithmetic
+Basic Arithmetic and Variables
 ------------------------------
 
 Since we now know how to print stuff, we can go on to do some very basic calculations and safe their
@@ -82,9 +84,37 @@ int main() {
 >> 64
 ```
 
-This works but it isn't very flexible and changing one value requires changes in two different places
-which is always a bad thing, since it can easily create errors. Also: There is no need to calculate 
-the sum a second time after we have already done this. Variables solve this problem:
+What we can see here is that numbers are directly supported by the language and that we can use the
+usual notation to do calculations with them. The most basic operations on numbers supported by C++
+directly (without help from libraries) are:
+
+-------- -------
+`+`      Addition
+`-`      Subraction
+`*`      Multiplication
+`/`      Division
+`%`      Modulo
+-------- -------
+
+Most of these work just as one would think that they do, the later two will however require some
+further notes:
+
+* Dividing two integers will result in an integer; this is done via truncation: `3 / 4` will have
+  the result 0, since 0.75 will get rounded down. This is however not the case when calculating
+  with real numbers (called `double`s in C++): `3.0 / 4` will have 0.75 as result.
+* Modulo is only supported by integers, so `7.0 % 4` will *not* work.
+* Since division by 0 doesn't make much sense, C++ strictly forbids to do this (same rule applies for
+  modulo). Trying to do this will likely result in a crashing-program and is in fact undefined
+  behavior (more about this and why you should really avoid it, will be explained soon).
+
+Aside from these restrictions the usual rules known from school apply here: Multiplication and division
+have higher precedence than addition and subtraction and if you want to change this, you have to use
+parenthesis.
+
+Back to our example: It surely works but it isn't very flexible and changing one value requires changes
+in two different places which is always a bad thing, since it can easily create errors. Also: There is
+no need to calculate the sum a second time after we have already done this. Variables solve this
+problem:
 
 ```cpp
 #include <iostream>
