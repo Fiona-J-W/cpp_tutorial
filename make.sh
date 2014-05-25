@@ -12,4 +12,5 @@ pandoc  -fmarkdown -t latex -o cpp.pdf  \
 	src/function_templates.md \
 	src/classes.md \
 	src/class_templates.md \
-	src/inheritance.md
+	src/inheritance.md \
+	src/stdlib.md
