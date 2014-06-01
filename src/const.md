@@ -26,13 +26,16 @@ int main()
 	const std::string str = "some const string";
 	
 	// reading and printing constants is perfectly fine:
-	std::cout << "zero=" << zero << ", one=" << one << ", str='" << str << "'\n";
+	std::cout << "zero=" << zero << ", one=" << one
+	          << ", str='" << str << '\n';
 	
 	// even operations that do not change the values are ok:
-	std::cout << "the third letter in str is '" << str[2] << "'\n";
+	std::cout << "the third letter in str is '"
+	          << str[2] << '\n';
 	
 	// doing calculations is no problem:
-	std::cout << "one + one + zero = " << one + one + zero << "\n";
+	std::cout << "one + one + zero = " << one + one + zero
+	          << '\n';
 	
 	// trying to change the value results in a compiler-error:
 	//zero = 2;
@@ -66,7 +69,8 @@ examples:
 int main()
 {
 	for(double m = 0.0; m <= 2.0; m+=0.5) {
-		std::cout << m << "kg create " << m * 9.81 << " newton of force.\n";
+		std::cout << m << "kg create " << m * 9.81
+		          << " newton of force.\n";
 	}
 }
 ```
@@ -87,8 +91,9 @@ const double GRAVITATIONAL_ACCELERATION = 9.81;
 int main()
 {
 	for(double m = 0.0; m <= 2.0; m+=0.5) {
-		std::cout << m << "kg create " << m * GRAVITATIONAL_ACCELERATION 
-			<< " newton of force.\n";
+		std::cout << m << "kg create "
+		          << m * GRAVITATIONAL_ACCELERATION 
+		          << " newton of force.\n";
 	}
 }
 ```
@@ -149,7 +154,8 @@ int main()
 >> x=10, y=1, z=10, cref1=10, cref2=1, cref3=10
 ```
 
-We note several things: 
+We note several things:
+
 * It is allowed to create const references to non-const values, but we may not change them through this
 reference.
 * References may be constructed from other references.
@@ -184,9 +190,10 @@ int main()
 	for(size_t i=0; i < 10000000; ++i) {
 		vec.push_back(i);
 	}
-	// getting a const reference to any variable is trivial, therefore
-	// it is done implicitly:
-	std::cout << "smallest element of vec is " << smallest_element(vec) << std::endl;
+	// getting a const reference to any variable is trivial,
+	// therefore it is done implicitly:
+	std::cout << "smallest element of vec is "
+	          << smallest_element(vec) << '\n';
 }
 ```
 ```
@@ -226,7 +233,7 @@ std::string make_loud(std::string str)
 
 int main()
 {
-	std::cout << make_loud(get_some_string()) << std::endl;
+	std::cout << make_loud(get_some_string()) << '\n';
 }
 ```
 ```

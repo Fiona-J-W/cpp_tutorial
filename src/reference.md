@@ -25,8 +25,9 @@ int main()
 	for(size_t i=0; i < 10000000; ++i) {
 		vec.push_back(i);
 	}
- 
-	std::cout << "smallest element of vec is " << smallest_element(vec) << std::endl;
+
+	std::cout << "smallest element of vec is "
+	          << smallest_element(vec) << '\n';
 }
 ```
 ```
@@ -65,16 +66,20 @@ int main()
 	std::cout << "x=" << x << ", ref=" << ref << '\n';
 	
 	int y = ref;
-	std::cout << "x=" << x << ", y=" << y << ", ref=" << ref << '\n';
+	std::cout << "x=" << x << ", y=" << y
+	          << ", ref=" << ref << '\n';
 
 	y = 1;
-	std::cout << "x=" << x << ", y=" << y << ", ref=" << ref << '\n';
+	std::cout << "x=" << x << ", y=" << y
+	          << ", ref=" << ref << '\n';
 	
 	ref = y;
-	std::cout << "x=" << x << ", y=" << y << ", ref=" << ref << '\n';
+	std::cout << "x=" << x << ", y=" << y
+	          << ", ref=" << ref << '\n';
 
 	y = 0;
-	std::cout << "x=" << x << ", y=" << y << ", ref=" << ref << '\n';
+	std::cout << "x=" << x << ", y=" << y
+	          << ", ref=" << ref << '\n';
 	
 }
 ```
@@ -120,7 +125,8 @@ int main()
 		vec.push_back(i);
 	}
 	// vec is automatically passed as reference:
-	std::cout << "smallest element of vec is " << smallest_element(vec) << std::endl;
+	std::cout << "smallest element of vec is "
+	          << smallest_element(vec) << '\n';
 }
 ```
 ```
