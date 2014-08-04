@@ -18,7 +18,7 @@ int main() {
 	std::cout << "Hello World!\n";
 }
 ```
-```
+```output
 >> Hello World!
 ```
 
@@ -80,7 +80,7 @@ int main() {
 	std::cout << (3 + 5) * (3 + 5) << "\n";
 }
 ```
-```
+```output
 >> 64
 ```
 
@@ -126,7 +126,7 @@ int main() {
 	std::cout << sum * sum << "\n";
 }
 ```
-```
+```output
 >> 64
 ```
 
@@ -140,8 +140,126 @@ The third statement (`int sum = a + b;`) demonstrates that variables can also ha
 just one letter (which they should have almost always) and that we can initialize them from compund
 expressions like `a + b`.
 
+Reading User-input
+------------------
+
+In order to write programs that are not entirely static, we can read things too:
+
+```cpp
+#include <iostream>
+
+int main() {
+	int num = 0;
+	std::cout << "Please enter a number:\n";
+	std::cin >> num;
+	std::cout << "You entered " << num << "\n";
+}
+```
+```output
+>> Please enter a number:
+<< 42
+>>You entered 42
+```
+
 Conditional Execution
 ---------------------
+
+Let's write a program that prints the modulus of two numbers:
+
+```cpp
+#include <iostream>
+
+int main() {
+	std::cout << "Please enter two numbers seperated by whitespace:\n"
+	int num1 = 0;
+	int num2 = 0;
+	std::cin >> num1 >> num2;
+	std::cout << num1 << " / " << num2
+	          << " = " << num1 / num2 << "\n";
+}
+```
+```output
+>> Please enter two numbers seperated by whitespace:
+<< 8 4
+>> 8 / 4 = 2
+```
+
+At this point we see a great problem: What if the second number that we enter
+is 0? As already noted we are not allowed to do this calculation (aside from the
+fact that it doesn't make any sense). The solution is an `if`-statement:
+
+```cpp
+#include <iostream>
+
+int main() {
+	std::cout << "Please enter two numbers seperated by whitespace:\n"
+	int num1 = 0;
+	int num2 = 0;
+	std::cin >> num1 >> num2;
+	if (num2 != 0) {
+		std::cout << num1 << " / " << num2
+		          << " = " << num1 / num2 << "\n";
+	}
+}
+```
+```output
+>> Please enter two numbers seperated by whitespace:
+<< 8 4
+>> 8 / 4 = 2
+```
+
+The structure of an `if`-statement is very simple: `if`, followed by a boolean expression between
+parenthesis, followed by a list of statements between braces. A boolean expression is a (small) piece
+of code that evaluates to a boolean value (true or false). Often this is achieved with a comparission
+like the above: `num2 != 0` is the C++-way of asking whether `num2` $\ne 0$. The available 
+comparission-operators are these:
+
+C++      Meaning
+-------- -----------------------
+`a == b` $a = b$
+`a != b` $a \ne b$
+`a <  b` $a < b$
+`a <= b` $a \le b$
+`a >  b` $a > b$
+`a >= b` $a \ge b$
+-------- -------
+
+In addition to those an expression can be prefixed with “`!`”, which negates it's value: `!true == false`.
+To negate bigger expressions just enclose them in parenthesis: `!(true == false)` will be evaluated to
+`true`.
+
+Another thing that one should know is that integers (and some other types) can be implicitly converted
+to bool, if they are used as boolean expression; in that case `0` becomes `false` and every other value
+becomes `true`. There is no final consensus whether one should write `if (i != 0)` instead of `if (!i)`,
+but for the beginning it is certainly a good idea to be explicit here.
+
+Back to the `if`-statements: What if we want to do two different things for each case? For this, there
+is the so called `else`-statement that can follow an `if`-statement. it is basically the word `else` followed
+by statements between braces.
+
+
+```cpp
+if (num2 != 0) {
+	std::cout << num1 / num2 << std::endl;
+} else {
+	std::cout << "Error: division by zero!\n";
+}
+```
+
+This leads us to another problem: What if we have more than two cases? Then we can just use an `else if`:
+
+```cpp
+if (num == 0) {
+} else if (num < 0) {
+	std::cout << "num is negative\n";
+} else {
+	std::cout << "num is positive\n";
+}
+```
+
+(Technically the braces around a single conditional statement are not mandatorry; they are however **strongly**
+recommended since ommiting them can very easily lead to bugs (misstakes), especially in the case where you
+nest conditionals.
 
 Undefined Behaviour
 -------------------
@@ -176,7 +294,7 @@ As a result of this compilers deduced that adding a positive number to another n
 in something smaller than the second numbers. Therefore the check whether `sum <= b` would always be
 false and could be removed.
 
-When the first compiler introduced this behavior the postgres-maintainers protest and refused to fix
+When the first compiler introduced this behavior the postgres-maintainers protested and refused to fix
 their code. Instead the used some options that GCC provided to disable this optimisation. When other
 compilers also added this optimisation, they tried to continue doing similar things for them too,
 but in the end they had to surrender and fix their code.
@@ -186,9 +304,59 @@ next version of your compiler will be released.
 
 **tl;dr:** Avoid undefined behavior by any means necessary.
 
-Vectors
+Strings
 -------
 
+We already took a very short look at string-literals and used them when printing stuff:
+
+```cpp
+#include <iostream>
+
+int main() {
+	std::cout << "Hello World!\n";
+}
+```
+
+Of course it is also possible to safe a string in a variable. In order to achieve that we have to include
+the `<string>`-header and create a variable of the type `std::string`:
+
+```cpp
+#include <iostream>
+#include <string>
+
+int main() {
+	std::string str = "some string.\n";
+	std::cout << str;
+}
+```
+
+As with integers there are several operations that `std::string` supports: Copying, assigning and comparing
+all work as one would expect. In addition we can concatenate `std::string`s and string-literals using
+the `+`-operator:
+
+```cpp
+#include <iostream>
+#include <string>
+
+int main() {
+	std::string str1 = "foo";
+	std::string str2 = "bar";
+	if (str1 == str2) {
+		std::cout << "ERROR: this should never happen!\n";
+	}
+	std::string str3;  // str3 = ""
+	str3 = str1 + str2;
+	if (str3 == "foobar") {
+		std::cout << "Everything is fine!\n";
+	}
+}
+```
+```output
+>> Everything is fine!
+```
+
+Vectors
+-------
 
 Loops
 -----
@@ -196,3 +364,5 @@ Loops
 
 Summary
 -------
+
+

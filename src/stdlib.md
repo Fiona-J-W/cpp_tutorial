@@ -11,16 +11,40 @@ to big to learn completeley in one attempt. It is therefore strongly recommended
 some time and go reading references; sometimes one will come across real gems where there were none
 expected.
 
-Containers and Ranges
----------------------
+Containers and Iterators
+------------------------
 
+Whenever we needed an arbitrary amount of elements so far, we resorted to `std::vector` without looking
+to deep into it's concepts and features. We already saw that we can copy them, request an element at
+a certain index, iterate over all elements and insert at the end:
 
-Tuples and Pairs
-----------------
+```cpp
+#include <iostream>
+#include <vector>
+
+int main() {
+	std::vector<int> vec = {1, 2, 3};
+	vec.push_back(4);
+	for (auto&& elem: vec) {
+		std::cout << elem << '\n';
+	}
+	auto vec2 = vec; // copy
+}
+```
+```
+>>> 1
+>>> 2
+>>> 3
+>>> 4
+```
 
 
 Algorithms
 ----------
+
+Tuples and Pairs
+----------------
+
 
 
 Threads and Atomics

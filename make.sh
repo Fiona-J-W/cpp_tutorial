@@ -3,7 +3,6 @@ pandoc  -fmarkdown -t latex -o cpp.pdf  \
 		--toc \
 		--number-sections \
 		-V documentclass:book\
-		-V papersize:"a4paper" \
 	src/Intro.md \
 	src/getting_started.md \
 	src/functions.md \
