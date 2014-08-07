@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <style type="text/css">
+  body {
+  	max-width: 20cm;
+  	margin-left: auto;
+  	margin-right: auto;
+  	text-align: justify;
+  }
+  @media screen {
+  	body {
+  		font-family: sans;
+  	}
+  }
+  @media print {
+  	body {
+  		font-family: serif;
+  	}
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+  	font-family: sans;
+  }
+  
+  h1 {
+  	text-align: center;
+  	border-bottom: 2px solid gray;
+  }
+  
+  h2 {
+  	margin-top: 1cm;
+  	border-bottom: 2px dotted gray;
+  }
+  
+  blockquote {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: blue;
+  	border-style: solid;
+  	border-width: 2px;
+  	margin-left: 0;
+  	margin-right: 0;
+  	font-style: italic;
+  }
+  
+  
+  pre.sourceCode {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: green;
+  	border-style: solid;
+  	border-width: 2px;
+  }
+  
+  a.footnoteRef {
+  	text-decoration: none;
+  	color: blue;
+  }
+  
+  figure > img {
+  	width: 100%;
+  	height: auto;
+  }
+  
+  section.license {
+  	font-size: 60%;
+  	color: gray;
+  }
+  
+  section.license > a {
+  	color: gray;
+  }
+  
+  </style>
+</head>
+<body>
+<h1 id="const">Const</h1>
+<p>As we have seen in the last chapter, there are mainly two reasons to pass an argument to a function by reference: It may be faster and we are able to change the original value.</p>
+<p>We also saw that it is often unnecessary inside the function to be able to change the value of the argument and noted that it is often a bad idea because it makes reasoning about the code harder. The problem boils down to the fact, that we are currently unable to see from the signature of a function whether it will change the value of it's arguments. The solution to this problem is called <code>const</code>.</p>
+<h2 id="immutable-values">Immutable values</h2>
+<p><code>const</code> behaves somewhat similar to references: It is an annotation to an arbitrary type that ensures, that it will not be changed. Let's start by looking at const variables, also called constants:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;string&gt;</span>
+
+<span class="dt">int</span> main()
+{
+	<span class="dt">const</span> <span class="dt">int</span> zero = <span class="dv">0</span>;
+	<span class="dt">const</span> <span class="dt">int</span> one = <span class="dv">1</span>;
+	<span class="dt">const</span> std::string str = <span class="st">&quot;some const string&quot;</span>;
+	
+	<span class="co">// reading and printing constants is perfectly fine:</span>
+	std::cout &lt;&lt; <span class="st">&quot;zero=&quot;</span> &lt;&lt; zero &lt;&lt; <span class="st">&quot;, one=&quot;</span> &lt;&lt; one
+	          &lt;&lt; <span class="st">&quot;, str=&#39;&quot;</span> &lt;&lt; str &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	
+	<span class="co">// even operations that do not change the values are ok:</span>
+	std::cout &lt;&lt; <span class="st">&quot;the third letter in str is &#39;&quot;</span>
+	          &lt;&lt; str[<span class="dv">2</span>] &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	
+	<span class="co">// doing calculations is no problem:</span>
+	std::cout &lt;&lt; <span class="st">&quot;one + one + zero = &quot;</span> &lt;&lt; one + one + zero
+	          &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	
+	<span class="co">// trying to change the value results in a compiler-error:</span>
+	<span class="co">//zero = 2;</span>
+	<span class="co">//one += 1;</span>
+}</code></pre>
+<pre><code>&gt;&gt; zero=0, one=1, str=&#39;some const string&#39;
+&gt;&gt; the third letter in str is &#39;m&#39;
+&gt;&gt; one + one + zero = 2</code></pre>
+<p>Aside from the possibility that the purpose of restricting what can be done with variables may be unclear at this point, it is probably relatively easy to understand what the above code does and how <code>const</code> works so far.</p>
+<p>So, why should we use constants instead of variables and literals? The answer has to be split into two parts, concerning both alternatives:</p>
+<p>A constant may be more suitable than a variable if the value will never change, because it may both enable the compiler to produce better code (knowing that a certain multiplication is always by two instead of an arbitrary value will almost certainly result in faster code) and programmers to understand it faster as they don't have to watch for possible changes.</p>
+<p>On the other hand constants are almost always better then literal constants. Consider the following examples:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main()
+{
+	<span class="kw">for</span>(<span class="dt">double</span> m = <span class="fl">0.</span><span class="dv">0</span>; m &lt;= <span class="fl">2.</span><span class="dv">0</span>; m+=<span class="fl">0.</span><span class="dv">5</span>) {
+		std::cout &lt;&lt; m &lt;&lt; <span class="st">&quot;kg create &quot;</span> &lt;&lt; m * <span class="fl">9.</span><span class="dv">81</span>
+		          &lt;&lt; <span class="st">&quot; newton of force.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	}
+}</code></pre>
+<pre><code>&gt;&gt; 0kg create 0 newton of force.
+&gt;&gt; 0.5kg create 4.905 newton of force.
+&gt;&gt; 1kg create 9.81 newton of force.
+&gt;&gt; 1.5kg create 14.715 newton of force.
+&gt;&gt; 2kg create 19.62 newton of force.</code></pre>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="co">//gravitational_acceleration of earth</span>
+<span class="dt">const</span> <span class="dt">double</span> GRAVITATIONAL_ACCELERATION = <span class="fl">9.</span><span class="dv">81</span>;
+
+<span class="dt">int</span> main()
+{
+	<span class="kw">for</span>(<span class="dt">double</span> m = <span class="fl">0.</span><span class="dv">0</span>; m &lt;= <span class="fl">2.</span><span class="dv">0</span>; m+=<span class="fl">0.</span><span class="dv">5</span>) {
+		std::cout &lt;&lt; m &lt;&lt; <span class="st">&quot;kg create &quot;</span>
+		          &lt;&lt; m * GRAVITATIONAL_ACCELERATION 
+		          &lt;&lt; <span class="st">&quot; newton of force.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	}
+}</code></pre>
+<pre><code>&gt;&gt; 0kg create 0 newton of force.
+&gt;&gt; 0.5kg create 4.905 newton of force.
+&gt;&gt; 1kg create 9.81 newton of force.
+&gt;&gt; 1.5kg create 14.715 newton of force.
+&gt;&gt; 2kg create 19.62 newton of force.</code></pre>
+<p>Even this pretty small example gets easier to understand, once we give names to constant values. It should also be obvious that the advantage in readability increases even further if we need the value multiple times. In this case there is even another advantage: Should we be interested to change the value (for example because we want to be more precise about it), we just have to change one line in the whole program.</p>
+<h2 id="constant-references">Constant References</h2>
+<p>At this point we understand how constant values work. The next step are constant references. We recall that a reference is an alias for a variable. If we add constness to it, we annotate, that the aliased variable may not be changed through this handle:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main()
+{
+	<span class="dt">int</span> x = <span class="dv">0</span>;
+	<span class="dt">const</span> <span class="dt">int</span> y = <span class="dv">1</span>;
+	
+	<span class="dt">int</span>&amp; z = x;
+	
+	<span class="dt">const</span> <span class="dt">int</span>&amp; cref1 = x;
+	<span class="dt">const</span> <span class="dt">int</span>&amp; cref2 = y;
+	<span class="dt">const</span> <span class="dt">int</span>&amp; cref3 = z;
+	
+	<span class="co">// int&amp; illegal_ref1 = y; // error</span>
+	<span class="co">// int&amp; illegal_ref3 = cref1; // error</span>
+	
+	std::cout &lt;&lt; <span class="st">&quot;x=&quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&quot;, y=&quot;</span> &lt;&lt; y &lt;&lt; <span class="st">&quot;, z=&quot;</span> &lt;&lt; z
+		&lt;&lt; <span class="st">&quot;, cref1=&quot;</span> &lt;&lt; cref1 &lt;&lt; <span class="st">&quot;, cref2=&quot;</span> &lt;&lt; cref2 
+		&lt;&lt; <span class="st">&quot;, cref3=&quot;</span> &lt;&lt; cref3 &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	
+	x = <span class="dv">10</span>;
+	
+	std::cout &lt;&lt; <span class="st">&quot;x=&quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&quot;, y=&quot;</span> &lt;&lt; y &lt;&lt; <span class="st">&quot;, z=&quot;</span> &lt;&lt; z
+		&lt;&lt; <span class="st">&quot;, cref1=&quot;</span> &lt;&lt; cref1 &lt;&lt; <span class="st">&quot;, cref2=&quot;</span> &lt;&lt; cref2 
+		&lt;&lt; <span class="st">&quot;, cref3=&quot;</span> &lt;&lt; cref3 &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	
+	<span class="co">// ++ref1 // error</span>
+	<span class="co">// ++ref2 // error</span>
+}</code></pre>
+<pre><code>&gt;&gt; x=0, y=1, z=0, cref1=0, cref2=1, cref3=0
+&gt;&gt; x=10, y=1, z=10, cref1=10, cref2=1, cref3=10</code></pre>
+<p>We note several things:</p>
+<ul>
+<li>It is allowed to create const references to non-const values, but we may not change them through this reference.</li>
+<li>References may be constructed from other references.</li>
+<li>We may add constness when we create a reference, but we may not remove it.</li>
+</ul>
+<h2 id="functions-and-constants">Functions and Constants</h2>
+<p>With this knowledge it is pretty easy to solve our initial problem of passing arguments to functions by reference: We just pass them by <code>const</code> reference which unites the performance-advantage with the ease of reasoning about possible changes to variables.</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;vector&gt;</span>
+ 
+<span class="co">//pass by const-reference</span>
+<span class="dt">int</span> smallest_element(<span class="dt">const</span> std::vector&lt;<span class="dt">int</span>&gt;&amp; vec)
+{
+	<span class="kw">auto</span> smallest_value = vec[<span class="dv">0</span>];
+	<span class="kw">for</span> (<span class="kw">auto</span> x: vec) {
+		<span class="kw">if</span> (x&lt;smallest_value) {
+			smallest_value = x;
+		}
+	}
+	<span class="kw">return</span> smallest_value;
+}
+ 
+<span class="dt">int</span> main()
+{
+	std::vector&lt;<span class="dt">int</span>&gt; vec;
+	<span class="kw">for</span>(size_t i=<span class="dv">0</span>; i &lt; <span class="dv">10000000</span>; ++i) {
+		vec.push_back(i);
+	}
+	<span class="co">// getting a const reference to any variable is trivial,</span>
+	<span class="co">// therefore it is done implicitly:</span>
+	std::cout &lt;&lt; <span class="st">&quot;smallest element of vec is &quot;</span>
+	          &lt;&lt; smallest_element(vec) &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+}</code></pre>
+<pre><code>&gt;&gt; smallest element of vec is 0</code></pre>
+<p>This leaves us with the question of how to pass arguments into a function. While they may not be entirely perfect, the following two rules should apply in most cases:</p>
+<ul>
+<li>If you just need to look at the argument: Pass by const reference.</li>
+<li>If you need to make a copy anyways, pass by value and work on the argument.</li>
+</ul>
+<p>The rationale for this rule is simple: Big copies are very expensive, so you should avoid them. But if you need to make one anyways, passing by value enables the language to create much faster code if the argument is just a temporary value like in the following code:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;locale&gt; </span><span class="co">// for toupper()</span>
+<span class="ot">#include &lt;string&gt;</span>
+
+std::string get_some_string()
+{
+	<span class="kw">return</span> <span class="st">&quot;some very long string&quot;</span>;
+}
+
+std::string make_loud(std::string str)
+{
+	<span class="kw">for</span>(<span class="dt">char</span>&amp; c: str){
+		<span class="co">// toupper converts every character to it&#39;s equivalent</span>
+		<span class="co">// uppercase-character</span>
+		c = std::toupper(c, std::locale{});
+	}
+	<span class="kw">return</span> str;
+}
+
+<span class="dt">int</span> main()
+{
+	std::cout &lt;&lt; make_loud(get_some_string()) &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+}</code></pre>
+<pre><code>&gt;&gt; SOME VERY LONG STRING</code></pre>
+<p>Let's ignore the details of the function <code>toupper()</code> for a moment and look at the other parts of <code>make_loud</code>. It is pretty obvious that we need to create a complete copy of the argument if we don't want to change the original (often the only reasonable thing). On the other hand: In this special instance changing the original would not be a problem, since it is only a temporary value. The great thing at this point is, that our compiler knows this and will in fact not create a copy for this but just “move” the string in and tell the function: “This is as good as a copy; change it as you want.”</p>
+<hr/>
+<section class="license">
+	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+		<img src="CC_BY_SA.png" height="31px" width="88px" alt="CC-BY-SA" align="left" hspace="2px"/>
+	</a>
+	This work from Florian Weber is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.<br/>
+	Dieses Werk von Florian Weber ist lizenziert unter einer <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.de">Creative Commons Namensnennung - Weitergabe unter gleichen Bedingungen 4.0 International Lizenz</a>
+</section>
+</body>
+</html>

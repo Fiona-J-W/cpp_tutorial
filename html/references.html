@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <style type="text/css">
+  body {
+  	max-width: 20cm;
+  	margin-left: auto;
+  	margin-right: auto;
+  	text-align: justify;
+  }
+  @media screen {
+  	body {
+  		font-family: sans;
+  	}
+  }
+  @media print {
+  	body {
+  		font-family: serif;
+  	}
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+  	font-family: sans;
+  }
+  
+  h1 {
+  	text-align: center;
+  	border-bottom: 2px solid gray;
+  }
+  
+  h2 {
+  	margin-top: 1cm;
+  	border-bottom: 2px dotted gray;
+  }
+  
+  blockquote {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: blue;
+  	border-style: solid;
+  	border-width: 2px;
+  	margin-left: 0;
+  	margin-right: 0;
+  	font-style: italic;
+  }
+  
+  
+  pre.sourceCode {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: green;
+  	border-style: solid;
+  	border-width: 2px;
+  }
+  
+  a.footnoteRef {
+  	text-decoration: none;
+  	color: blue;
+  }
+  
+  figure > img {
+  	width: 100%;
+  	height: auto;
+  }
+  
+  section.license {
+  	font-size: 60%;
+  	color: gray;
+  }
+  
+  section.license > a {
+  	color: gray;
+  }
+  
+  </style>
+</head>
+<body>
+<h1 id="references">References</h1>
+<p>Functions are a great thing, but if we look closer there are problems with how the arguments are passed. Let's look at our <code>smallest_element</code>-function again:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;vector&gt;</span>
+<span class="ot">#include &lt;iostream&gt;</span>
+ 
+<span class="dt">int</span> smallest_element(std::vector&lt;<span class="dt">int</span>&gt; vec)
+{
+	<span class="kw">auto</span> smallest_value = vec[<span class="dv">0</span>];
+	<span class="kw">for</span> (<span class="kw">auto</span> x: vec) {
+		<span class="kw">if</span> (x&lt;smallest_value) {
+			smallest_value = x;
+		}
+	}
+	<span class="kw">return</span> smallest_value;
+}
+ 
+<span class="dt">int</span> main()
+{
+	std::vector&lt;<span class="dt">int</span>&gt; vec;
+	<span class="kw">for</span>(size_t i=<span class="dv">0</span>; i &lt; <span class="dv">10000000</span>; ++i) {
+		vec.push_back(i);
+	}
+
+	std::cout &lt;&lt; <span class="st">&quot;smallest element of vec is &quot;</span>
+	          &lt;&lt; smallest_element(vec) &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+}</code></pre>
+<pre><code>&gt;&gt; smallest element of vec is 0</code></pre>
+<p>The problem that we face here is somewhat non-obvious: Remember that the arguments to a function are copied. While this is no problem for a single integer, we do not want to copy a big vector if we can avoid it. If we examine the code we see, that there wouldn't be any problem if <code>smallest_element</code> operated on the original vector instead of a copy.</p>
+<p>This is where references come into play.</p>
+<p>A reference is an alias for another variable. It must therefore be initialized with one the moment it is constructed. It is not possible to make it alias another variable after that. The easiest way to understand them is probably some code:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main()
+{
+	<span class="dt">int</span> x = <span class="dv">0</span>; <span class="co">// a normal integer</span>
+	
+	<span class="dt">int</span>&amp; ref = x;
+	<span class="co">// a reference to x. Note that the type is </span>
+	<span class="co">// written almost identical with the exception</span>
+	<span class="co">// of the &#39;&amp;&#39; that makes ref a reference.</span>
+	
+	std::cout &lt;&lt; <span class="st">&quot;x=&quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&quot;, ref=&quot;</span> &lt;&lt; ref &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	
+	x = <span class="dv">3</span>;
+	std::cout &lt;&lt; <span class="st">&quot;x=&quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&quot;, ref=&quot;</span> &lt;&lt; ref &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	
+	ref = <span class="dv">4</span>;
+	std::cout &lt;&lt; <span class="st">&quot;x=&quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&quot;, ref=&quot;</span> &lt;&lt; ref &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	
+	<span class="dt">int</span> y = ref;
+	std::cout &lt;&lt; <span class="st">&quot;x=&quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&quot;, y=&quot;</span> &lt;&lt; y
+	          &lt;&lt; <span class="st">&quot;, ref=&quot;</span> &lt;&lt; ref &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+
+	y = <span class="dv">1</span>;
+	std::cout &lt;&lt; <span class="st">&quot;x=&quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&quot;, y=&quot;</span> &lt;&lt; y
+	          &lt;&lt; <span class="st">&quot;, ref=&quot;</span> &lt;&lt; ref &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	
+	ref = y;
+	std::cout &lt;&lt; <span class="st">&quot;x=&quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&quot;, y=&quot;</span> &lt;&lt; y
+	          &lt;&lt; <span class="st">&quot;, ref=&quot;</span> &lt;&lt; ref &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+
+	y = <span class="dv">0</span>;
+	std::cout &lt;&lt; <span class="st">&quot;x=&quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&quot;, y=&quot;</span> &lt;&lt; y
+	          &lt;&lt; <span class="st">&quot;, ref=&quot;</span> &lt;&lt; ref &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	
+}</code></pre>
+<pre><code>&gt;&gt; x=0, ref=0
+&gt;&gt; x=3, ref=3
+&gt;&gt; x=4, ref=4
+&gt;&gt; x=4, y=4, ref=4
+&gt;&gt; x=4, y=1, ref=4
+&gt;&gt; x=1, y=1, ref=1
+&gt;&gt; x=1, y=0, ref=1</code></pre>
+<p>A reference to a certain type is itself a type. If the referenced type is <code>T</code>, then a reference to it is written as <code>T&amp;</code>. Note that it is impossible to create a reference to a reference; while the syntax <code>T&amp;&amp;</code> exists and is related to references, it does something completely different and should not be covered at this point.</p>
+<p>Now that we know references we can go back to our initial problem: Passing a big vector into a function. The solution is now very straightforward:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;vector&gt;</span>
+<span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="co">// pass a reference instead of a value:</span>
+<span class="co">//                                   ↓</span>
+<span class="dt">int</span> smallest_element(std::vector&lt;<span class="dt">int</span>&gt;&amp; vec)
+{
+	<span class="kw">auto</span> smallest_value = vec[<span class="dv">0</span>];
+	<span class="kw">for</span> (<span class="kw">auto</span> x: vec) {
+		<span class="kw">if</span> (x&lt;smallest_value) {
+			smallest_value = x;
+		}
+	}
+	<span class="kw">return</span> smallest_value;
+}
+ 
+<span class="dt">int</span> main()
+{
+	std::vector&lt;<span class="dt">int</span>&gt; vec;
+	<span class="kw">for</span>(size_t i=<span class="dv">0</span>; i &lt; <span class="dv">10000000</span>; ++i) {
+		vec.push_back(i);
+	}
+	<span class="co">// vec is automatically passed as reference:</span>
+	std::cout &lt;&lt; <span class="st">&quot;smallest element of vec is &quot;</span>
+	          &lt;&lt; smallest_element(vec) &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+}</code></pre>
+<pre><code>&gt;&gt; smallest element of vec is 0</code></pre>
+<p>We see that it doesn't make any difference from the callside, whether a function copies it's arguments (this is called ‘pass by value’) or just uses the original (‘pass by reference’).</p>
+<p>Aside from the fact that passing by reference is often faster than passing by value, it allows us to change the value of the original too:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">void</span> increase(<span class="dt">int</span>&amp; n)
+{
+	n += <span class="dv">10</span>;
+}
+
+<span class="dt">int</span> main()
+{
+	<span class="dt">int</span> x = <span class="dv">0</span>;
+	std::cout &lt;&lt; <span class="st">&quot;the value of x is &quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	increase(x);
+	std::cout &lt;&lt; <span class="st">&quot;the value of x is &quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+}</code></pre>
+<pre><code>&gt;&gt; the value of x is 0
+&gt;&gt; the value of x is 10</code></pre>
+<p>Note however, that while this is possible, it is often a bad idea, since it makes reasoning about where a variable is changed much harder. On the other hand there are situations where this really is the best alternative. As a general advice: If you are unsure, don't do it.</p>
+<hr/>
+<section class="license">
+	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+		<img src="CC_BY_SA.png" height="31px" width="88px" alt="CC-BY-SA" align="left" hspace="2px"/>
+	</a>
+	This work from Florian Weber is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.<br/>
+	Dieses Werk von Florian Weber ist lizenziert unter einer <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.de">Creative Commons Namensnennung - Weitergabe unter gleichen Bedingungen 4.0 International Lizenz</a>
+</section>
+</body>
+</html>

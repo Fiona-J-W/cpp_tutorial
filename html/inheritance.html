@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <style type="text/css">
+  body {
+  	max-width: 20cm;
+  	margin-left: auto;
+  	margin-right: auto;
+  	text-align: justify;
+  }
+  @media screen {
+  	body {
+  		font-family: sans;
+  	}
+  }
+  @media print {
+  	body {
+  		font-family: serif;
+  	}
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+  	font-family: sans;
+  }
+  
+  h1 {
+  	text-align: center;
+  	border-bottom: 2px solid gray;
+  }
+  
+  h2 {
+  	margin-top: 1cm;
+  	border-bottom: 2px dotted gray;
+  }
+  
+  blockquote {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: blue;
+  	border-style: solid;
+  	border-width: 2px;
+  	margin-left: 0;
+  	margin-right: 0;
+  	font-style: italic;
+  }
+  
+  
+  pre.sourceCode {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: green;
+  	border-style: solid;
+  	border-width: 2px;
+  }
+  
+  a.footnoteRef {
+  	text-decoration: none;
+  	color: blue;
+  }
+  
+  figure > img {
+  	width: 100%;
+  	height: auto;
+  }
+  
+  section.license {
+  	font-size: 60%;
+  	color: gray;
+  }
+  
+  section.license > a {
+  	color: gray;
+  }
+  
+  </style>
+</head>
+<body>
+<h1 id="inheritance">Inheritance</h1>
+<p>Let's say we want to write a simple game: We have different types of fighting units with different strength and abilities. Among them are a knight and a guard, where the knight is an offensive unit while the guard clearly has a focus on defense:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="kw">class</span> knight {
+<span class="kw">public</span>:
+	knight(): health_level{<span class="dv">100</span>}, defense_level{<span class="dv">15</span>}, attack_level{<span class="dv">35</span>} {}
+	
+	<span class="dt">bool</span> alive() <span class="dt">const</span> {<span class="kw">return</span> health_level &gt; <span class="dv">0</span>;}
+	
+	<span class="dt">unsigned</span> defense() <span class="dt">const</span> {<span class="kw">return</span> defense_level;}
+	<span class="dt">unsigned</span> attack() <span class="dt">const</span> {<span class="kw">return</span> attack_level;}
+	<span class="dt">void</span> train() {++attack_level;}
+
+	<span class="kw">template</span>&lt;<span class="kw">typename</span> Defender&gt;
+	<span class="dt">void</span> attack(Defender&amp; defender) <span class="dt">const</span> {
+		defender.defend(attack());
+	}
+	
+	<span class="dt">void</span> defend(<span class="dt">unsigned</span> attack_strength) {
+		<span class="kw">if</span> (attack_strength &lt;= defense_level) {
+			<span class="kw">return</span>; <span class="co">// no damage done</span>
+		}
+		<span class="dt">const</span> <span class="kw">auto</span> actual_attack_strength = attack_level - defense_level;
+		<span class="kw">if</span> (actual_attack_strength &gt;= health_level) {
+			health_level = <span class="dv">0</span>; <span class="co">// warrior is dead</span>
+		} <span class="kw">else</span> {
+			health_level -= actual_attack_strength;
+		}
+	}
+<span class="kw">private</span>:
+	<span class="dt">unsigned</span> health_level;
+	<span class="dt">unsigned</span> defense_level;
+	<span class="dt">unsigned</span> attack_level;
+};
+
+<span class="kw">class</span> guard {
+<span class="kw">public</span>:
+	guard(): health_level{<span class="dv">100</span>}, defense_level{<span class="dv">30</span>}, attack_level{<span class="dv">20</span>} {}
+	
+	<span class="dt">bool</span> alive() <span class="dt">const</span> {<span class="kw">return</span> health_level &gt; <span class="dv">0</span>;}
+	
+	<span class="dt">unsigned</span> defense() <span class="dt">const</span> {<span class="kw">return</span> defense_level;}
+	<span class="dt">unsigned</span> attack() <span class="dt">const</span> {<span class="kw">return</span> attack_level;}
+	<span class="dt">void</span> train() {++defense_level;}
+	
+	<span class="kw">template</span>&lt;<span class="kw">typename</span> Defender&gt;
+	<span class="dt">void</span> attack(Defender&amp; defender) <span class="dt">const</span> {
+		defender.defend(attack());
+	}
+	
+	<span class="dt">void</span> defend(<span class="dt">unsigned</span> attack_strength) {
+		<span class="kw">if</span> (attack_strength &lt;= defense_level) {
+			<span class="kw">return</span>; <span class="co">// no damage done</span>
+		}
+		<span class="dt">const</span> <span class="kw">auto</span> actual_attack_strength = attack_level - defense_level;
+		<span class="kw">if</span> (actual_attack_strength &gt;= health_level) {
+			health_level = <span class="dv">0</span>; <span class="co">// warrior is dead</span>
+		} <span class="kw">else</span> {
+			health_level -= actual_attack_strength;
+		}
+	}
+<span class="kw">private</span>:
+	<span class="dt">unsigned</span> health_level;
+	<span class="dt">unsigned</span> defense_level;
+	<span class="dt">unsigned</span> attack_level;
+};
+
+
+
+<span class="dt">int</span> main() {
+	knight black_knight{};
+	guard castle_guard{};
+	<span class="kw">while</span> (<span class="kw">true</span>) {
+		black_knight.attack(castle_guard);
+		<span class="kw">if</span> (!castle_guard.alive()) {
+			std::cout &lt;&lt; <span class="st">&quot;The castle has fallen!</span><span class="ch">\n</span><span class="st">&quot;</span>;
+			<span class="kw">return</span> <span class="dv">0</span>;
+		}
+		castle_guard.attack(black_knight);
+		<span class="kw">if</span> (!black_knight.alive()) {
+			std::cout &lt;&lt; <span class="st">&quot;The castle has been defended.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+			<span class="kw">return</span> <span class="dv">0</span>;
+		}
+	}
+}</code></pre>
+<pre><code>&gt;&gt; The castle has fallen!</code></pre>
+<p>This is quite a lot of duplicate code to create two warrior-classes that are almost identical; we also require a member-template to implement the attack-method, which isn't actually that bad but we'll see that there is a better solution for this one too.</p>
+<p>If we look into the code we see that most of the properties it has are actually things that are shared among all kinds of warriors. This is where <em>inheritance</em> comes into play.</p>
+<h2 id="the-basics">The Basics</h2>
+<p>Inheritance is a (probably badly named) technique to describe a very general thing that has a certain set of properties and use this to implement more specialized versions. Let's look at a simple first version:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="kw">class</span> warrior {
+<span class="kw">public</span>:
+	warrior(<span class="dt">unsigned</span> health_level, <span class="dt">unsigned</span> defense_level, <span class="dt">unsigned</span> attack_level):
+		health_level{health_level}, defense_level{defense_level}, attack_level{attack_level} {}
+	
+	<span class="dt">bool</span> alive() <span class="dt">const</span> {<span class="kw">return</span> health_level &gt; <span class="dv">0</span>;}
+	
+	<span class="dt">unsigned</span> defense() <span class="dt">const</span> {<span class="kw">return</span> defense_level;}
+	<span class="dt">unsigned</span> attack() <span class="dt">const</span> {<span class="kw">return</span> attack_level;}
+
+	<span class="kw">template</span>&lt;<span class="kw">typename</span> Defender&gt;
+	<span class="dt">void</span> attack(Defender&amp; defender) <span class="dt">const</span> {
+		defender.defend(attack());
+	}
+	
+	<span class="dt">void</span> defend(<span class="dt">unsigned</span> attack_strength) {
+		<span class="kw">if</span> (attack_strength &lt;= defense_level) {
+			<span class="kw">return</span>; <span class="co">// no damage done</span>
+		}
+		<span class="dt">const</span> <span class="kw">auto</span> actual_attack_strength = attack_level - defense_level;
+		<span class="kw">if</span> (actual_attack_strength &gt;= health_level) {
+			health_level = <span class="dv">0</span>; <span class="co">// warrior is dead</span>
+		} <span class="kw">else</span> {
+			health_level -= actual_attack_strength;
+		}
+	}
+	
+<span class="kw">protected</span>:
+	<span class="dt">unsigned</span> health_level;
+	<span class="dt">unsigned</span> defense_level;
+	<span class="dt">unsigned</span> attack_level;
+};
+
+<span class="kw">class</span> knight: <span class="kw">public</span> warrior {
+<span class="kw">public</span>:
+	knight(): warrior{<span class="dv">100</span>, <span class="dv">15</span>, <span class="dv">35</span>} {}
+	<span class="dt">void</span> train() {++attack_level;}
+};
+
+<span class="kw">class</span> guard: <span class="kw">public</span> warrior {
+<span class="kw">public</span>:
+	guard(): warrior{<span class="dv">100</span>, <span class="dv">30</span>, <span class="dv">20</span>} {}
+	<span class="dt">void</span> train() {++defense_level;}
+};
+
+<span class="dt">int</span> main() {
+	knight black_knight{};
+	guard castle_guard{};
+	<span class="kw">while</span> (<span class="kw">true</span>) {
+		black_knight.attack(castle_guard);
+		<span class="kw">if</span> (!castle_guard.alive()) {
+			std::cout &lt;&lt; <span class="st">&quot;The castle has fallen!</span><span class="ch">\n</span><span class="st">&quot;</span>;
+			<span class="kw">return</span> <span class="dv">0</span>;
+		}
+		castle_guard.attack(black_knight);
+		<span class="kw">if</span> (!black_knight.alive()) {
+			std::cout &lt;&lt; <span class="st">&quot;The castle has been defended.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+			<span class="kw">return</span> <span class="dv">0</span>;
+		}
+	}
+}</code></pre>
+<pre><code>&gt;&gt; The castle has fallen!</code></pre>
+<p>No matter how we look at it, this is definitely an improvement.</p>
+<p>Some things to note at this point:</p>
+<ul>
+<li>Instead of private, the attributes of our warrior-class are <code>protected</code>; this is a mixture of <code>public</code> and <code>private</code> that allows inheriting classes to access these members as if they were public but seals the access to everyone else (private members cannot be accessed in inheriting classes).</li>
+<li>To create a class knight that is a special form of a warrior we write <code>class knight: public warrior{};</code>. This will copy all the properties of a warrior into our knight. The <code>public</code> is very important here, since there is also a thing called private-inheritance (which is the default here), that has only a very limited number of applications and protected-inheritance that only exists for completeness (it is completely unheard of any situation in which it would solve a problem). Don't worry about these two here, they really should be considered experts-only features.</li>
+<li>In the constructor of knight we call the constructor of the base-class before everything else; if we don't do this, the default constructor will be called.</li>
+</ul>
+<hr/>
+<section class="license">
+	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+		<img src="CC_BY_SA.png" height="31px" width="88px" alt="CC-BY-SA" align="left" hspace="2px"/>
+	</a>
+	This work from Florian Weber is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.<br/>
+	Dieses Werk von Florian Weber ist lizenziert unter einer <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.de">Creative Commons Namensnennung - Weitergabe unter gleichen Bedingungen 4.0 International Lizenz</a>
+</section>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <style type="text/css">
+  body {
+  	max-width: 20cm;
+  	margin-left: auto;
+  	margin-right: auto;
+  	text-align: justify;
+  }
+  @media screen {
+  	body {
+  		font-family: sans;
+  	}
+  }
+  @media print {
+  	body {
+  		font-family: serif;
+  	}
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+  	font-family: sans;
+  }
+  
+  h1 {
+  	text-align: center;
+  	border-bottom: 2px solid gray;
+  }
+  
+  h2 {
+  	margin-top: 1cm;
+  	border-bottom: 2px dotted gray;
+  }
+  
+  blockquote {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: blue;
+  	border-style: solid;
+  	border-width: 2px;
+  	margin-left: 0;
+  	margin-right: 0;
+  	font-style: italic;
+  }
+  
+  
+  pre.sourceCode {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: green;
+  	border-style: solid;
+  	border-width: 2px;
+  }
+  
+  a.footnoteRef {
+  	text-decoration: none;
+  	color: blue;
+  }
+  
+  figure > img {
+  	width: 100%;
+  	height: auto;
+  }
+  
+  section.license {
+  	font-size: 60%;
+  	color: gray;
+  }
+  
+  section.license > a {
+  	color: gray;
+  }
+  
+  </style>
+</head>
+<body>
+<h1 id="getting-started">Getting Started</h1>
+<p>At this point you should have a working compiler and text-editor, so that we can start out with looking into the fundamental building-blocks of the language.</p>
+<p>This chapter may not appear to be very entertaining or of much direct use, but it is very important as everything we will encounter here is needed to procede to the more interessting topics that will build on top of it.</p>
+<h2 id="hello-world">Hello World</h2>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::cout &lt;&lt; <span class="st">&quot;Hello World!</span><span class="ch">\n</span><span class="st">&quot;</span>;
+}</code></pre>
+<pre class="output"><code>&gt;&gt; Hello World!</code></pre>
+<p>This program prints the text “Hello World!”, followed by a newline to the standard-output. Let's look at it line by line:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span></code></pre>
+<p>This line tells the compiler to use a “header” with the filename “iostream” when compiling. A header is basically another C++-file that will be pasted to the place where the include-statement appears.</p>
+<p>The “iostream”-header is part of the standard-library that should be shipped with every compiler and has therefore be available on every system. “iostream” contains lots of stuff that are related to reading and writing from and to other ressources like standard-input, standard-output, files and so on.</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main() {</code></pre>
+<p>This defines the main-function. Basically everything from the opening brace will now be executed in the order it appears until we reach the matching closing brace.</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">std::cout &lt;&lt; <span class="st">&quot;Hello World!</span><span class="ch">\n</span><span class="st">&quot;</span>;</code></pre>
+<p><code>std::cout</code> is a construct from the iostream-header that we included and linked to the standard-output. Via it we can write a lot of different things by “pushing them into it” with the output-operator “&lt;&lt;”. In this case we just push a so called string-literal into it. A string-literal is a text surrounded by two quotes (‘&quot;’); for the case that one wants to include a character that could create ambiguities, there are also some escape-sequences: A “\n” becomes a newline, a “\t” becomes a tab, a “\&quot;” becomes a quote and a “\\” becomes a backslash.</p>
+<p>So the string-literal in our example becomes the text “Hello World!” directly followed by a newline.</p>
+<p>Now for the last line:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">}</code></pre>
+<p>This is just the closing brace of the main-function an the point where the program ends.</p>
+<h2 id="basic-arithmetic-and-variables">Basic Arithmetic and Variables</h2>
+<p>Since we now know how to print stuff, we can go on to do some very basic calculations and safe their results.</p>
+<p>Say we want to calculate the sum of two numbers and multiply the result with itself. A very simple approach would be this:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::cout &lt;&lt; (<span class="dv">3</span> + <span class="dv">5</span>) * (<span class="dv">3</span> + <span class="dv">5</span>) &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
+}</code></pre>
+<pre class="output"><code>&gt;&gt; 64</code></pre>
+<p>What we can see here is that numbers are directly supported by the language and that we can use the usual notation to do calculations with them. The most basic operations on numbers supported by C++ directly (without help from libraries) are:</p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>+</code></td>
+<td style="text-align: left;">Addition</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>-</code></td>
+<td style="text-align: left;">Subraction</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>*</code></td>
+<td style="text-align: left;">Multiplication</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>/</code></td>
+<td style="text-align: left;">Division</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>%</code></td>
+<td style="text-align: left;">Modulo</td>
+</tr>
+</tbody>
+</table>
+<p>Most of these work just as one would think that they do, the later two will however require some further notes:</p>
+<ul>
+<li>Dividing two integers will result in an integer; this is done via truncation: <code>3 / 4</code> will have the result 0, since 0.75 will get rounded down. This is however not the case when calculating with real numbers (called <code>double</code>s in C++): <code>3.0 / 4</code> will have 0.75 as result.</li>
+<li>Modulo is only supported by integers, so <code>7.0 % 4</code> will <em>not</em> work.</li>
+<li>Since division by 0 doesn't make much sense, C++ strictly forbids to do this (same rule applies for modulo). Trying to do this will likely result in a crashing-program and is in fact undefined behavior (more about this and why you should really avoid it, will be explained soon).</li>
+</ul>
+<p>Aside from these restrictions the usual rules known from school apply here: Multiplication and division have higher precedence than addition and subtraction and if you want to change this, you have to use parenthesis.</p>
+<p>Back to our example: It surely works but it isn't very flexible and changing one value requires changes in two different places which is always a bad thing, since it can easily create errors. Also: There is no need to calculate the sum a second time after we have already done this. Variables solve this problem:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main() {
+	<span class="dt">int</span> a = <span class="dv">3</span>;
+	<span class="dt">int</span> b = <span class="dv">5</span>;
+	<span class="dt">int</span> sum = a + b;
+	std::cout &lt;&lt; sum * sum &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
+}</code></pre>
+<pre class="output"><code>&gt;&gt; 64</code></pre>
+<p><code>int</code> is the default type for integers. On most modern systems it can hold numbers between -2147483648 and 2147483647, which should be enough for most applications. The statement <code>int a = 3;</code> now creates a new integer with the name <code>a</code> and the value 3. <code>a</code> is called a variable since it holds a value that can be changed. Almost everything that can be done with literal numbers in the code can also be done with variables.</p>
+<p>The third statement (<code>int sum = a + b;</code>) demonstrates that variables can also have longer names than just one letter (which they should have almost always) and that we can initialize them from compund expressions like <code>a + b</code>.</p>
+<h2 id="reading-user-input">Reading User-input</h2>
+<p>In order to write programs that are not entirely static, we can read things too:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main() {
+	<span class="dt">int</span> num = <span class="dv">0</span>;
+	std::cout &lt;&lt; <span class="st">&quot;Please enter a number:</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	std::cin &gt;&gt; num;
+	std::cout &lt;&lt; <span class="st">&quot;You entered &quot;</span> &lt;&lt; num &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
+}</code></pre>
+<pre class="output"><code>&gt;&gt; Please enter a number:
+&lt;&lt; 42
+&gt;&gt;You entered 42</code></pre>
+<h2 id="conditional-execution">Conditional Execution</h2>
+<p>Let's write a program that prints the modulus of two numbers:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::cout &lt;&lt; <span class="st">&quot;Please enter two numbers seperated by whitespace:</span><span class="ch">\n</span><span class="st">&quot;</span>
+	<span class="dt">int</span> num1 = <span class="dv">0</span>;
+	<span class="dt">int</span> num2 = <span class="dv">0</span>;
+	std::cin &gt;&gt; num1 &gt;&gt; num2;
+	std::cout &lt;&lt; num1 &lt;&lt; <span class="st">&quot; / &quot;</span> &lt;&lt; num2
+	          &lt;&lt; <span class="st">&quot; = &quot;</span> &lt;&lt; num1 / num2 &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
+}</code></pre>
+<pre class="output"><code>&gt;&gt; Please enter two numbers seperated by whitespace:
+&lt;&lt; 8 4
+&gt;&gt; 8 / 4 = 2</code></pre>
+<p>At this point we see a great problem: What if the second number that we enter is 0? As already noted we are not allowed to do this calculation (aside from the fact that it doesn't make any sense). The solution is an <code>if</code>-statement:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::cout &lt;&lt; <span class="st">&quot;Please enter two numbers seperated by whitespace:</span><span class="ch">\n</span><span class="st">&quot;</span>
+	<span class="dt">int</span> num1 = <span class="dv">0</span>;
+	<span class="dt">int</span> num2 = <span class="dv">0</span>;
+	std::cin &gt;&gt; num1 &gt;&gt; num2;
+	<span class="kw">if</span> (num2 != <span class="dv">0</span>) {
+		std::cout &lt;&lt; num1 &lt;&lt; <span class="st">&quot; / &quot;</span> &lt;&lt; num2
+		          &lt;&lt; <span class="st">&quot; = &quot;</span> &lt;&lt; num1 / num2 &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	}
+}</code></pre>
+<pre class="output"><code>&gt;&gt; Please enter two numbers seperated by whitespace:
+&lt;&lt; 8 4
+&gt;&gt; 8 / 4 = 2</code></pre>
+<p>The structure of an <code>if</code>-statement is very simple: <code>if</code>, followed by a boolean expression between parenthesis, followed by a list of statements between braces. A boolean expression is a (small) piece of code that evaluates to a boolean value (true or false). Often this is achieved with a comparission like the above: <code>num2 != 0</code> is the C++-way of asking whether <code>num2</code> <span class="math"> ≠ 0</span>. The available comparission-operators are these:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">C++</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>a == b</code></td>
+<td style="text-align: left;"><span class="math"><em>a</em> = <em>b</em></span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>a != b</code></td>
+<td style="text-align: left;"><span class="math"><em>a</em> ≠ <em>b</em></span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>a &lt;  b</code></td>
+<td style="text-align: left;"><span class="math"><em>a</em> &lt; <em>b</em></span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>a &lt;= b</code></td>
+<td style="text-align: left;"><span class="math"><em>a</em> ≤ <em>b</em></span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>a &gt;  b</code></td>
+<td style="text-align: left;"><span class="math"><em>a</em> &gt; <em>b</em></span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>a &gt;= b</code></td>
+<td style="text-align: left;"><span class="math"><em>a</em> ≥ <em>b</em></span></td>
+</tr>
+</tbody>
+</table>
+<p>In addition to those an expression can be prefixed with “<code>!</code>”, which negates it's value: <code>!true == false</code>. To negate bigger expressions just enclose them in parenthesis: <code>!(true == false)</code> will be evaluated to <code>true</code>.</p>
+<p>Another thing that one should know is that integers (and some other types) can be implicitly converted to bool, if they are used as boolean expression; in that case <code>0</code> becomes <code>false</code> and every other value becomes <code>true</code>. There is no final consensus whether one should write <code>if (i != 0)</code> instead of <code>if (!i)</code>, but for the beginning it is certainly a good idea to be explicit here.</p>
+<p>Back to the <code>if</code>-statements: What if we want to do two different things for each case? For this, there is the so called <code>else</code>-statement that can follow an <code>if</code>-statement. it is basically the word <code>else</code> followed by statements between braces.</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (num2 != <span class="dv">0</span>) {
+	std::cout &lt;&lt; num1 / num2 &lt;&lt; std::endl;
+} <span class="kw">else</span> {
+	std::cout &lt;&lt; <span class="st">&quot;Error: division by zero!</span><span class="ch">\n</span><span class="st">&quot;</span>;
+}</code></pre>
+<p>This leads us to another problem: What if we have more than two cases? Then we can just use an <code>else if</code>:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (num == <span class="dv">0</span>) {
+} <span class="kw">else</span> <span class="kw">if</span> (num &lt; <span class="dv">0</span>) {
+	std::cout &lt;&lt; <span class="st">&quot;num is negative</span><span class="ch">\n</span><span class="st">&quot;</span>;
+} <span class="kw">else</span> {
+	std::cout &lt;&lt; <span class="st">&quot;num is positive</span><span class="ch">\n</span><span class="st">&quot;</span>;
+}</code></pre>
+<p>(Technically the braces around a single conditional statement are not mandatorry; they are however <strong>strongly</strong> recommended since ommiting them can very easily lead to bugs (misstakes), especially in the case where you nest conditionals.</p>
+<h2 id="undefined-behaviour">Undefined Behaviour</h2>
+<p>At this point it is time for the safety-instructions. C++ is a language that was designed to be very fast and portable which sometimes conflicts with ease of use. As a result the C++-standard explicitly does not always require a certain behaviour for programs that contains a given construct.</p>
+<p>These constructs are almost always very questionable to start with and disallowing them is usually a good thing. Examples include signed-integer-overflow, reading uninitialized variables and accessing unowned memory. Possible behaviour ranges from apperently doing what the programer expected, over randomly crashing to severe security-holes. Testing what happens and trusting that everything is fine won't work too, because the next version of your compiler might decide to do something completely different. To illustrate this, let's look at a real-world example:</p>
+<p>Postgresql, a very popular database, hat two integers <code>a</code> and <code>b</code> of type <code>int</code> that were both known to be positive. At this point they had to calculate the sum of these two but wanted to detect the case that the sum was outside of the representable range of <code>int</code>. They did it somewhat like this:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> sum = a + b;
+<span class="kw">if</span> (sum &lt;= b) {
+	<span class="co">// error-handling</span>
+}</code></pre>
+<p>The assumption that the result will be smaller than <code>b</code> if an overflow occurs was funded in the fact that practically every single modern cpu works that way. However: The C++-standard forbidds that kind of code and compilers started to optimize on the assumption that <code>a + b</code> would <em>never</em> overflow.</p>
+<p>As a result of this compilers deduced that adding a positive number to another number would never result in something smaller than the second numbers. Therefore the check whether <code>sum &lt;= b</code> would always be false and could be removed.</p>
+<p>When the first compiler introduced this behavior the postgres-maintainers protested and refused to fix their code. Instead the used some options that GCC provided to disable this optimisation. When other compilers also added this optimisation, they tried to continue doing similar things for them too, but in the end they had to surrender and fix their code.</p>
+<p>The lesson from this is that even if your code seems to work, it might stop doing this tomorow when the next version of your compiler will be released.</p>
+<p><strong>tl;dr:</strong> Avoid undefined behavior by any means necessary.</p>
+<h2 id="strings">Strings</h2>
+<p>We already took a very short look at string-literals and used them when printing stuff:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::cout &lt;&lt; <span class="st">&quot;Hello World!</span><span class="ch">\n</span><span class="st">&quot;</span>;
+}</code></pre>
+<p>Of course it is also possible to safe a string in a variable. In order to achieve that we have to include the <code>&lt;string&gt;</code>-header and create a variable of the type <code>std::string</code>:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;string&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::string str = <span class="st">&quot;some string.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	std::cout &lt;&lt; str;
+}</code></pre>
+<p>As with integers there are several operations that <code>std::string</code> supports: Copying, assigning and comparing all work as one would expect. In addition we can concatenate <code>std::string</code>s and string-literals using the <code>+</code>-operator:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;string&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::string str1 = <span class="st">&quot;foo&quot;</span>;
+	std::string str2 = <span class="st">&quot;bar&quot;</span>;
+	<span class="kw">if</span> (str1 == str2) {
+		std::cout &lt;&lt; <span class="st">&quot;ERROR: this should never happen!</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	}
+	std::string str3;  <span class="co">// str3 = &quot;&quot;</span>
+	str3 = str1 + str2;
+	<span class="kw">if</span> (str3 == <span class="st">&quot;foobar&quot;</span>) {
+		std::cout &lt;&lt; <span class="st">&quot;Everything is fine!</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	}
+}</code></pre>
+<pre class="output"><code>&gt;&gt; Everything is fine!</code></pre>
+<h2 id="vectors">Vectors</h2>
+<h2 id="loops">Loops</h2>
+<h2 id="summary">Summary</h2>
+<hr/>
+<section class="license">
+	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+		<img src="CC_BY_SA.png" height="31px" width="88px" alt="CC-BY-SA" align="left" hspace="2px"/>
+	</a>
+	This work from Florian Weber is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.<br/>
+	Dieses Werk von Florian Weber ist lizenziert unter einer <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.de">Creative Commons Namensnennung - Weitergabe unter gleichen Bedingungen 4.0 International Lizenz</a>
+</section>
+</body>
+</html>
