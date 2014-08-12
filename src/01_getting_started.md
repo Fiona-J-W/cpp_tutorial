@@ -407,7 +407,7 @@ int main() {
 	std::cout << str << '\n';
 }
 ```
-```ouput
+```output
 >> f
 >> fOobar
 ```

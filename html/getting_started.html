@@ -72,6 +72,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
   	font-style: italic;
   }
   
+  code {
+  	font-size: 125%;
+  }
   
   pre.sourceCode {
   	background-color: #fbfbfb;
@@ -358,7 +361,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	str[<span class="dv">1</span>] = <span class="st">&#39;O&#39;</span>;
 	std::cout &lt;&lt; str &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 }</code></pre>
-<pre class="ouput"><code>&gt;&gt; f
+<pre class="output"><code>&gt;&gt; f
 &gt;&gt; fOobar</code></pre>
 <p>To access the <span class="math"><em>n</em></span>'th Character we write <span class="math"><em>n</em> − 1</span> between the square-brackets that we attach to the variable. We will take a look into the reasons for this so-called zero-indexing later, for the meantime it is enough to know that this is how C++ (and most other programming-languages) work and just accept that.</p>
 <p>This leaves us with two questions: How do we find out the size of the string and what happens if our indexes refer to nonexisting characters.</p>
