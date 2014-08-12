@@ -329,6 +329,9 @@ int main() {
 	std::cout << str;
 }
 ```
+```output
+>> some string.
+```
 
 As with integers there are several operations that `std::string` supports: Copying, assigning and comparing
 all work as one would expect. In addition we can concatenate `std::string`s and string-literals using
@@ -353,6 +356,130 @@ int main() {
 ```
 ```output
 >> Everything is fine!
+```
+
+Conceptually a string is basically just a sequence of characters. In C++ there is a type called `char` that, as one
+might expect, represents a character. Technically a `char` is an integer with a width of one byte. This allows a
+range from either -128 to -127 or 0 to 255 (your own implementation will almost certainly use -128 to 127, but keep
+in mind that this is not everywhere the case). The values between 0 and 127 are the so called ASCII-characters that
+contain the latin alphabet(a-z in both upper and lower case), arabian numbers (0-9), basic punctuation (point, comma,
+semi-colon, colon, …) and some stuff that basically noone uses any more.
+
+To represent further characters like the “Ä”, “Ö”, “Ü” and “ß” several chars combined to a sequence (this is called UTF-8
+and you shouldn't use anything else). The problem with this approach is, that the number of chars ans logical characters
+in strings differ. There is no reasonable solution to that problem (In case you heard about UTF-32: It isn't either, since
+there is something called “combining characters”).
+
+Let's take a short look at how chars can be used:
+
+```cpp
+#include <iostream>
+
+int main() {
+	char c1 = 'A'; // Note the single-quotes!!
+	char c2 = 'B';
+	if (c1 != c2) {
+		std::cout << "Comparission works!\n";
+	}
+	auto c3 = 'C'; // A character in single-quotes has type char
+
+	char c4 = 65; // 'A' has the value 65, so this works, but you
+	              // shouldn't really do it
+	std::cout << c4 << '\n'; // newline is just one char, so this works
+}
+```
+```output
+>> Comparission works!
+>> A
+```
+
+The reason we are looking so deep into characters is that you can access them in a `std::string` with the
+“[]”-operator:
+
+```cpp
+#include <iostream>
+#include <string>
+
+int main() {
+	std::string str = "foobar";
+	std::cout << str[0] << '\n';
+	str[1] = 'O';
+	std::cout << str << '\n';
+}
+```
+```ouput
+>> f
+>> fOobar
+```
+
+To access the $n$'th Character we write $n - 1$ between the square-brackets that we attach to the variable.
+We will take a look into the reasons for this so-called zero-indexing later, for the meantime it is
+enough to know that this is how C++ (and most other programming-languages) work and just accept that.
+
+This leaves us with two questions: How do we find out the size of the string and what happens if our indexes
+refer to nonexisting characters.
+
+The first question is answered by the so called method `size()`. A later chapter will deal with the question
+what methods are, so for the meantime it is enough to know that if you have a variable `str` of the 
+type `std::string`, you can find out the number of chars in it with the following code: “`str.size()`”
+
+The answer to the second question is more terrifying: If your index is invalid, your program contains
+undefined behaviour and is likely to crash in an uncontrollable way. The one exzeption is the value returned
+by `size()`: It is guaranteed to return a char with the value zero (the value, not the character ‘0’), but it
+must not be written to.
+
+In order to somewhat reduce the dangers of this, there is another method called `at()` that mostly behaves like
+the square-brackets but is guaranteed to trigger C++'s error-handling-mechanisms (Since we haven't looked into
+those yet, this would currently mean a guaranteed controlled shut-down instead of undefined behavior).
+
+Let's look at how we can use these things in practice:
+
+```cpp
+#include <iostream>
+#include <string>
+
+int main() {
+	std::string str = "foo";
+	std::cout << "std.size() = " << str.size() << '\n';
+	// we will see a MUCH better way for this soon:
+	if(0 < str.size()) {
+		std::cout << str[0] << str.at(0);
+	}
+	if(1 < str.size()) {
+		std::cout << str[1] << str.at(1);
+	}
+	if(2 < str.size()) {
+		std::cout << str[2] << str.at(2);
+	}
+	if(3 < str.size()) { // false
+		std::cout << str[3] << str.at(3);
+	}
+	std::cout << '\n';
+}
+```
+```output
+>> 3
+>> ffoooo
+```
+
+The last thing strings for now will be how to read them from standard-input. The obvious way works
+but has the potential disadvantage, that it reads a word (words are seperated by whitespace in this
+context). Further words will of course be just ignored in that case:
+
+```cpp
+#include <iostream>
+#include <string>
+
+int main() {
+	std::string str1;
+	std::string str2;
+	std::cin >> str1 >> str2;
+	std::cout << str1 << ", " << str2 << '\n';
+}
+```
+```output
+>> word1 word2 word3
+<< word1, word2
 ```
 
 Vectors

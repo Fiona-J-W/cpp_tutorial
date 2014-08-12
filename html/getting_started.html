@@ -102,7 +102,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
   }
   
   section.license {
-  	font-size: 60%;
+  	font-size: 90%;
   	color: gray;
   }
   
@@ -311,6 +311,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	std::string str = <span class="st">&quot;some string.</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	std::cout &lt;&lt; str;
 }</code></pre>
+<pre class="output"><code>&gt;&gt; some string.</code></pre>
 <p>As with integers there are several operations that <code>std::string</code> supports: Copying, assigning and comparing all work as one would expect. In addition we can concatenate <code>std::string</code>s and string-literals using the <code>+</code>-operator:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;string&gt;</span>
@@ -328,6 +329,78 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	}
 }</code></pre>
 <pre class="output"><code>&gt;&gt; Everything is fine!</code></pre>
+<p>Conceptually a string is basically just a sequence of characters. In C++ there is a type called <code>char</code> that, as one might expect, represents a character. Technically a <code>char</code> is an integer with a width of one byte. This allows a range from either -128 to -127 or 0 to 255 (your own implementation will almost certainly use -128 to 127, but keep in mind that this is not everywhere the case). The values between 0 and 127 are the so called ASCII-characters that contain the latin alphabet(a-z in both upper and lower case), arabian numbers (0-9), basic punctuation (point, comma, semi-colon, colon, …) and some stuff that basically noone uses any more.</p>
+<p>To represent further characters like the “Ä”, “Ö”, “Ü” and “ß” several chars combined to a sequence (this is called UTF-8 and you shouldn't use anything else). The problem with this approach is, that the number of chars ans logical characters in strings differ. There is no reasonable solution to that problem (In case you heard about UTF-32: It isn't either, since there is something called “combining characters”).</p>
+<p>Let's take a short look at how chars can be used:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main() {
+	<span class="dt">char</span> c1 = <span class="st">&#39;A&#39;</span>; <span class="co">// Note the single-quotes!!</span>
+	<span class="dt">char</span> c2 = <span class="st">&#39;B&#39;</span>;
+	<span class="kw">if</span> (c1 != c2) {
+		std::cout &lt;&lt; <span class="st">&quot;Comparission works!</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	}
+	<span class="kw">auto</span> c3 = <span class="st">&#39;C&#39;</span>; <span class="co">// A character in single-quotes has type char</span>
+
+	<span class="dt">char</span> c4 = <span class="dv">65</span>; <span class="co">// &#39;A&#39; has the value 65, so this works, but you</span>
+	              <span class="co">// shouldn&#39;t really do it</span>
+	std::cout &lt;&lt; c4 &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>; <span class="co">// newline is just one char, so this works</span>
+}</code></pre>
+<pre class="output"><code>&gt;&gt; Comparission works!
+&gt;&gt; A</code></pre>
+<p>The reason we are looking so deep into characters is that you can access them in a <code>std::string</code> with the “[]”-operator:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;string&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::string str = <span class="st">&quot;foobar&quot;</span>;
+	std::cout &lt;&lt; str[<span class="dv">0</span>] &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	str[<span class="dv">1</span>] = <span class="st">&#39;O&#39;</span>;
+	std::cout &lt;&lt; str &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+}</code></pre>
+<pre class="ouput"><code>&gt;&gt; f
+&gt;&gt; fOobar</code></pre>
+<p>To access the <span class="math"><em>n</em></span>'th Character we write <span class="math"><em>n</em> − 1</span> between the square-brackets that we attach to the variable. We will take a look into the reasons for this so-called zero-indexing later, for the meantime it is enough to know that this is how C++ (and most other programming-languages) work and just accept that.</p>
+<p>This leaves us with two questions: How do we find out the size of the string and what happens if our indexes refer to nonexisting characters.</p>
+<p>The first question is answered by the so called method <code>size()</code>. A later chapter will deal with the question what methods are, so for the meantime it is enough to know that if you have a variable <code>str</code> of the type <code>std::string</code>, you can find out the number of chars in it with the following code: “<code>str.size()</code>”</p>
+<p>The answer to the second question is more terrifying: If your index is invalid, your program contains undefined behaviour and is likely to crash in an uncontrollable way. The one exzeption is the value returned by <code>size()</code>: It is guaranteed to return a char with the value zero (the value, not the character ‘0’), but it must not be written to.</p>
+<p>In order to somewhat reduce the dangers of this, there is another method called <code>at()</code> that mostly behaves like the square-brackets but is guaranteed to trigger C++'s error-handling-mechanisms (Since we haven't looked into those yet, this would currently mean a guaranteed controlled shut-down instead of undefined behavior).</p>
+<p>Let's look at how we can use these things in practice:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;string&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::string str = <span class="st">&quot;foo&quot;</span>;
+	std::cout &lt;&lt; <span class="st">&quot;std.size() = &quot;</span> &lt;&lt; str.size() &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	<span class="co">// we will see a MUCH better way for this soon:</span>
+	<span class="kw">if</span>(<span class="dv">0</span> &lt; str.size()) {
+		std::cout &lt;&lt; str[<span class="dv">0</span>] &lt;&lt; str.at(<span class="dv">0</span>);
+	}
+	<span class="kw">if</span>(<span class="dv">1</span> &lt; str.size()) {
+		std::cout &lt;&lt; str[<span class="dv">1</span>] &lt;&lt; str.at(<span class="dv">1</span>);
+	}
+	<span class="kw">if</span>(<span class="dv">2</span> &lt; str.size()) {
+		std::cout &lt;&lt; str[<span class="dv">2</span>] &lt;&lt; str.at(<span class="dv">2</span>);
+	}
+	<span class="kw">if</span>(<span class="dv">3</span> &lt; str.size()) { <span class="co">// false</span>
+		std::cout &lt;&lt; str[<span class="dv">3</span>] &lt;&lt; str.at(<span class="dv">3</span>);
+	}
+	std::cout &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+}</code></pre>
+<pre class="output"><code>&gt;&gt; 3
+&gt;&gt; ffoooo</code></pre>
+<p>The last thing strings for now will be how to read them from standard-input. The obvious way works but has the potential disadvantage, that it reads a word (words are seperated by whitespace in this context). Further words will of course be just ignored in that case:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;string&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::string str1;
+	std::string str2;
+	std::cin &gt;&gt; str1 &gt;&gt; str2;
+	std::cout &lt;&lt; str1 &lt;&lt; <span class="st">&quot;, &quot;</span> &lt;&lt; str2 &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+}</code></pre>
+<pre class="output"><code>&gt;&gt; word1 word2 word3
+&lt;&lt; word1, word2</code></pre>
 <h2 id="vectors">Vectors</h2>
 <h2 id="loops">Loops</h2>
 <h2 id="summary">Summary</h2>
@@ -337,7 +410,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
 		<img src="CC_BY_SA.png" height="31px" width="88px" alt="CC-BY-SA" align="left" hspace="2px"/>
 	</a>
 	This work from Florian Weber is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.<br/>
-	Dieses Werk von Florian Weber ist lizenziert unter einer <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/deed.de">Creative Commons Namensnennung - Weitergabe unter gleichen Bedingungen 4.0 International Lizenz</a>
 </section>
 </body>
 </html>

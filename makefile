@@ -17,10 +17,13 @@ html/%.html:
 	pandoc -fmarkdown -t html5 -p -s -o $@ $< \
 		-H "web/style.html" -A "web/license.html"
 
+html/CC_BY_SA.png: web/CC_BY_SA.png
+	cp web/CC_BY_SA.png html
+
 html: html/Intro.html html/getting_started.html html/functions.html\
 	html/references.html html/const.html html/function_templates.html\
 	html/classes.html html/class_templates.html html/inheritance.html\
-	html/stdlib.html html/index.html
+	html/stdlib.html html/index.html html/CC_BY_SA.png
 
 html/index.html:              web/index.md
 html/Intro.html:              src/00_Intro.md
