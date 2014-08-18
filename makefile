@@ -14,7 +14,7 @@ pdf/book.pdf: $(SOURCES)
 
 
 html/%.html: 
-	pandoc -fmarkdown -t html5 -p -s -o $@ $< \
+	pandoc -fmarkdown --mathml -t html5 -p -s -o $@ $< \
 		-H "web/style.html" -A "web/license.html"
 
 html/CC_BY_SA.png: web/CC_BY_SA.png

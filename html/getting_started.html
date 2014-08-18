@@ -235,7 +235,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="output"><code>&gt;&gt; Please enter two numbers seperated by whitespace:
 &lt;&lt; 8 4
 &gt;&gt; 8 / 4 = 2</code></pre>
-<p>The structure of an <code>if</code>-statement is very simple: <code>if</code>, followed by a boolean expression between parenthesis, followed by a list of statements between braces. A boolean expression is a (small) piece of code that evaluates to a boolean value (true or false). Often this is achieved with a comparission like the above: <code>num2 != 0</code> is the C++-way of asking whether <code>num2</code> <span class="math"> ≠ 0</span>. The available comparission-operators are these:</p>
+<p>The structure of an <code>if</code>-statement is very simple: <code>if</code>, followed by a boolean expression between parenthesis, followed by a list of statements between braces. A boolean expression is a (small) piece of code that evaluates to a boolean value (true or false). Often this is achieved with a comparission like the above: <code>num2 != 0</code> is the C++-way of asking whether <code>num2</code> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>≠</mo><mn>0</mn></mrow></math>. The available comparission-operators are these:</p>
 <table>
 <thead>
 <tr class="header">
@@ -246,27 +246,27 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><code>a == b</code></td>
-<td style="text-align: left;"><span class="math"><em>a</em> = <em>b</em></span></td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a</mi><mo>=</mo><mi>b</mi></mrow></math></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>a != b</code></td>
-<td style="text-align: left;"><span class="math"><em>a</em> ≠ <em>b</em></span></td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a</mi><mo>≠</mo><mi>b</mi></mrow></math></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><code>a &lt;  b</code></td>
-<td style="text-align: left;"><span class="math"><em>a</em> &lt; <em>b</em></span></td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a</mi><mo>&lt;</mo><mi>b</mi></mrow></math></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>a &lt;= b</code></td>
-<td style="text-align: left;"><span class="math"><em>a</em> ≤ <em>b</em></span></td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a</mi><mo>≤</mo><mi>b</mi></mrow></math></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><code>a &gt;  b</code></td>
-<td style="text-align: left;"><span class="math"><em>a</em> &gt; <em>b</em></span></td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a</mi><mo>&gt;</mo><mi>b</mi></mrow></math></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>a &gt;= b</code></td>
-<td style="text-align: left;"><span class="math"><em>a</em> ≥ <em>b</em></span></td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a</mi><mo>≥</mo><mi>b</mi></mrow></math></td>
 </tr>
 </tbody>
 </table>
@@ -363,7 +363,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 }</code></pre>
 <pre class="output"><code>&gt;&gt; f
 &gt;&gt; fOobar</code></pre>
-<p>To access the <span class="math"><em>n</em></span>'th Character we write <span class="math"><em>n</em> − 1</span> between the square-brackets that we attach to the variable. We will take a look into the reasons for this so-called zero-indexing later, for the meantime it is enough to know that this is how C++ (and most other programming-languages) work and just accept that.</p>
+<p>To access the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>n</mi></mrow></math>'th Character we write <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></math> between the square-brackets that we attach to the variable. We will take a look into the reasons for this so-called zero-indexing later, for the meantime it is enough to know that this is how C++ (and most other programming-languages) work and just accept that.</p>
 <p>This leaves us with two questions: How do we find out the size of the string and what happens if our indexes refer to nonexisting characters.</p>
 <p>The first question is answered by the so called method <code>size()</code>. A later chapter will deal with the question what methods are, so for the meantime it is enough to know that if you have a variable <code>str</code> of the type <code>std::string</code>, you can find out the number of chars in it with the following code: “<code>str.size()</code>”</p>
 <p>The answer to the second question is more terrifying: If your index is invalid, your program contains undefined behaviour and is likely to crash in an uncontrollable way. The one exzeption is the value returned by <code>size()</code>: It is guaranteed to return a char with the value zero (the value, not the character ‘0’), but it must not be written to.</p>
