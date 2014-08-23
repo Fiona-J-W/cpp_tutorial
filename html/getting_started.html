@@ -299,6 +299,27 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>When the first compiler introduced this behavior the postgres-maintainers protested and refused to fix their code. Instead the used some options that GCC provided to disable this optimisation. When other compilers also added this optimisation, they tried to continue doing similar things for them too, but in the end they had to surrender and fix their code.</p>
 <p>The lesson from this is that even if your code seems to work, it might stop doing this tomorow when the next version of your compiler will be released.</p>
 <p><strong>tl;dr:</strong> Avoid undefined behavior by any means necessary.</p>
+<h2 id="loops">Loops</h2>
+<p>If we want to check a condition once, we can use <code>if</code>. What however if we want to execute something a previously unknown number of times? This is where loops come into play. There are several ones, but for now, we will just look into the so called <code>for</code>-loop. The basic syntax is this:</p>
+<p>for (<em>variable-declaration</em>; <em>condition</em>; <em>loop-operation</em>) { <em>loop-body</em> }</p>
+<ul>
+<li><em>variable-declaration</em> may either be empty or create a new varible that exists during the loop</li>
+<li><em>condition</em> is a conditional statement as we know it from the <code>if</code>-statement. Before every execution of the loops body the condition is checked, and if it isn't true, the loop won't be excuted any more.</li>
+<li><em>loop-operation</em> is a statement that is executed after every execution of the loops body. It should only be used to do things like incrementing a counter that is responsible for how often the body should be executed.</li>
+<li><em>loop-body</em> is similar to the if's conditional body: It is executed as long as the loops condition is met.</li>
+</ul>
+<p>Since this is quite theoretical, let's look at an example:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main() {
+	<span class="kw">for</span>(<span class="dt">int</span> i = <span class="dv">3</span>; i &lt; <span class="dv">6</span>; ++i) {
+		std::cout &lt;&lt; i &lt;&lt; <span class="st">&quot;, &quot;</span>;
+	}
+	std::cout &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+}</code></pre>
+<pre class="output"><code>&gt;&gt; 3, 4, 5, </code></pre>
+<p>Here <code>int i = 3</code> is the variable declaration. It creates an integer <code>i</code> and intializes it with 3. The condition of this loop is that <code>i</code> is smaller than 6 which is of course true in the beginning.</p>
+<p><code>++i</code> adds one to the value of <code>i</code> and thereby concludes the loop-header that will execute the loop-body (<code>std::cout &lt;&lt; i &lt;&lt; '\n';</code>) three times with i having the values 3, 4 and finally 5.</p>
 <h2 id="strings">Strings</h2>
 <p>We already took a very short look at string-literals and used them when printing stuff:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
@@ -375,18 +396,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="dt">int</span> main() {
 	std::string str = <span class="st">&quot;foo&quot;</span>;
 	std::cout &lt;&lt; <span class="st">&quot;std.size() = &quot;</span> &lt;&lt; str.size() &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-	<span class="co">// we will see a MUCH better way for this soon:</span>
-	<span class="kw">if</span>(<span class="dv">0</span> &lt; str.size()) {
-		std::cout &lt;&lt; str[<span class="dv">0</span>] &lt;&lt; str.at(<span class="dv">0</span>);
-	}
-	<span class="kw">if</span>(<span class="dv">1</span> &lt; str.size()) {
-		std::cout &lt;&lt; str[<span class="dv">1</span>] &lt;&lt; str.at(<span class="dv">1</span>);
-	}
-	<span class="kw">if</span>(<span class="dv">2</span> &lt; str.size()) {
-		std::cout &lt;&lt; str[<span class="dv">2</span>] &lt;&lt; str.at(<span class="dv">2</span>);
-	}
-	<span class="kw">if</span>(<span class="dv">3</span> &lt; str.size()) { <span class="co">// false</span>
-		std::cout &lt;&lt; str[<span class="dv">3</span>] &lt;&lt; str.at(<span class="dv">3</span>);
+	<span class="kw">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; str.size() ++i) {
+		std::cout &lt;&lt; str[i] &lt;&lt; str.at(i);
 	}
 	std::cout &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 }</code></pre>
@@ -402,11 +413,112 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	std::cin &gt;&gt; str1 &gt;&gt; str2;
 	std::cout &lt;&lt; str1 &lt;&lt; <span class="st">&quot;, &quot;</span> &lt;&lt; str2 &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 }</code></pre>
-<pre class="output"><code>&gt;&gt; word1 word2 word3
-&lt;&lt; word1, word2</code></pre>
+<pre class="output"><code>&lt;&lt; word1 word2 word3
+&gt;&gt; word1, word2</code></pre>
 <h2 id="vectors">Vectors</h2>
-<h2 id="loops">Loops</h2>
+<p>Strings are sequences of characters, but what if we want a sequence of something else? This is what <code>std::vector</code> is designed for. In order to use it we have to include the <code>&lt;vector&gt;</code>-header first and then declare what it should contain:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;vector&gt;</span>
+<span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main() {
+	<span class="co">// a vector of ints:</span>
+	std::vector&lt;<span class="dt">int</span>&gt; integers = {<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>};
+
+	<span class="co">// a vector of strings:</span>
+	std::vector&lt;std::string&gt; strings = {<span class="st">&quot;Foo&quot;</span>, <span class="st">&quot;Bar&quot;</span>};
+}</code></pre>
+<p>Aside from reading, printing and concatenating with <code>+</code> all the things that we just learned about strings can also be done with <code>std::vector</code>:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;vector&gt;</span>
+<span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::vector&lt;<span class="dt">int</span>&gt; vec1 = {<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>};
+	std::cout &lt;&lt; vec[<span class="dv">1</span>] &lt;&lt; <span class="st">&quot;, &quot;</span> &lt;&lt; vec.at(<span class="dv">2</span>) &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	std::vector&lt;<span class="dt">int</span>&gt; vec2 = {<span class="dv">2</span>, <span class="dv">3</span>};
+	<span class="kw">if</span> (vec1 != vec2) {
+		std::cout &lt;&lt; <span class="st">&quot;the vectors contain different elements</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	}
+}</code></pre>
+<pre class="output"><code>&gt;&gt; 2, 3
+&gt;&gt; the vectors contain different elements</code></pre>
+<p>As we can see above, initializing a vector with elements is as easy as writing the values in braces and assigning these during construction. Alternativly we can pass it an integer (and optionally a value) in parenthesis in order to create a vector of a certain size with all elements being defaulted to the given value or, if none is given, it's default value (empty string for strings, zero for numbers):</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;vector&gt;</span>
+<span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main() {
+	<span class="co">// a vector of 1000 integers:</span>
+	std::vector&lt;<span class="dt">int</span>&gt; vec1(<span class="dv">1000</span>);
+
+	<span class="co">// a vector of 100 strings with value &quot;foo&quot;:</span>
+	std::vector&lt;std::string&gt; vec2(<span class="dv">100</span>, <span class="st">&quot;foo&quot;</span>);
+}</code></pre>
+<h2 id="foreach-loops">Foreach-Loops</h2>
+<p>We already know the for-loops and we have already seen how we can use them to iterate over all elements in a <code>std::vector</code> or <code>std::string</code>:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;vector&gt;</span>
+<span class="ot">#include &lt;string&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::vector&lt;std::string&gt; vec = {<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>};
+	<span class="kw">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; vec.size(); ++i) {
+		std::cout &lt;&lt; vec[i] &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	}
+}</code></pre>
+<pre class="output"><code>&gt;&gt; foo
+&gt;&gt; bar</code></pre>
+<p>This works, but it is both verbose and not very general: At some point we will come across data-structures that hold sequences, but don't allow access with square-brackets.</p>
+<p>To solve these (and some other) problems, C++ has a so called range-based-for-loop, that allows us to say what we really want:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;vector&gt;</span>
+<span class="ot">#include &lt;string&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::vector&lt;std::string&gt; vec = {<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>};
+	<span class="kw">for</span> (std::string str: vec) { <span class="co">// read: for each str in vec:</span>
+		std::cout &lt;&lt; str &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	}
+}</code></pre>
+<pre class="output"><code>&gt;&gt; foo
+&gt;&gt; bar</code></pre>
+<p>Nobody will deny that this code is much cleaner and easier to follow, but we will encounter problems if we try to assign a new value to <code>str</code>: <code>str</code> is a copy of the <code>std::string</code> in the vector, so changing it won't change the value in the vector. Another problem is that the copy may be expensive if the string is large. Last but not least it is tedious to repeat the type that is already stated (in the definition of vec). The solution to these problems is to just write “<code>auto&amp;&amp;</code>” instead of the type. What this does exactly is quite advanced, but it will always do what you actually want it to do and even has the potential of being faster.</p>
+<p>So our final version looks like this:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;vector&gt;</span>
+<span class="ot">#include &lt;string&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::vector&lt;std::string&gt; vec = {<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>};
+	<span class="kw">for</span> (<span class="kw">auto</span>&amp;&amp; str: vec) { <span class="co">// read: for each str in vec:</span>
+		std::cout &lt;&lt; str &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	}
+}</code></pre>
 <h2 id="summary">Summary</h2>
+<p>In this chapter we took a short look into the very basics of C++. In order to keep the complexity at managable levels we skipped over many details and simplified a few other things.</p>
+<p>The reason is that we will need everything we learned here in basically all of the upcomming chapters, that will hopefully provide more of a red thread and make things clearer.</p>
+<p>The topics that you should remember from now on, are:</p>
+<ul>
+<li>How to print stuff</li>
+<li>What a variable is</li>
+<li>What integers, strings and vectors are, and how we can use them</li>
+<li>The basic control-structures: <code>if</code>, <code>else</code>, normal <code>for</code> and range-<code>for</code></li>
+</ul>
+<p>Before you continue, you should do the training-tasks to get some basic feelings about how to program and how the language behaves. It is impossible to learn programming without writing code yourself.</p>
+<h2 id="training">Training</h2>
+<ul>
+<li>Write a programm that asks the user for their name and prints “Hello <em>&lt;username&gt;</em> ” after that.
+<ul>
+<li>Hint: Safe the name in a <code>std::string</code></li>
+</ul></li>
+<li>Write a programm that will print all integral numbers between 1 and 100.
+<ul>
+<li>Hint: Use a normal <code>for</code>-loop</li>
+</ul></li>
+<li>Modify the above programm, so that it will print “Fizz” if the number can be cleanly divided by 3, “Buzz” if it can be cleanly divided by 5 and “Fizzbuzz” if it can be cleanly divided by 15. Otherwise keep printing the number itself.
+<ul>
+<li>Hint: <code>7 % 3 == 0</code> will tell you, if seven can be cleanly divided by three.</li>
+<li>Hint: You will have to put the <code>if</code>'s and <code>else</code>'s inside the loop.</li>
+</ul></li>
+</ul>
 <hr/>
 <section class="license">
 	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">

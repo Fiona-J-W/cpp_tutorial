@@ -304,6 +304,44 @@ next version of your compiler will be released.
 
 **tl;dr:** Avoid undefined behavior by any means necessary.
 
+Loops
+-----
+
+If we want to check a condition once, we can use `if`. What however if we want to execute something
+a previously unknown number of times? This is where loops come into play. There are several ones, but
+for now, we will just look into the so called `for`-loop. The basic syntax is this:
+
+for (*variable-declaration*; *condition*; *loop-operation*) { *loop-body* }
+
+* *variable-declaration* may either be empty or create a new varible that exists during the loop
+* *condition* is a conditional statement as we know it from the `if`-statement. Before every execution
+  of the loops body the condition is checked, and if it isn't true, the loop won't be excuted any more.
+* *loop-operation* is a statement that is executed after every execution of the loops body. It should
+  only be used to do things like incrementing a counter that is responsible for how often the body
+  should be executed.
+* *loop-body* is similar to the if's conditional body: It is executed as long as the loops condition is met.
+
+Since this is quite theoretical, let's look at an example:
+
+```cpp
+#include <iostream>
+
+int main() {
+	for(int i = 3; i < 6; ++i) {
+		std::cout << i << ", ";
+	}
+	std::cout << '\n';
+}
+```
+```output
+>> 3, 4, 5, 
+```
+Here `int i = 3` is the variable declaration. It creates an integer `i` and intializes it with 3.
+The condition of this loop is that `i` is smaller than 6 which is of course true in the beginning.
+
+`++i` adds one to the value of `i` and thereby concludes the loop-header that will execute the
+loop-body (`std::cout << i << '\n';`) three times with i having the values 3, 4 and finally 5.
+
 Strings
 -------
 
@@ -441,18 +479,8 @@ Let's look at how we can use these things in practice:
 int main() {
 	std::string str = "foo";
 	std::cout << "std.size() = " << str.size() << '\n';
-	// we will see a MUCH better way for this soon:
-	if(0 < str.size()) {
-		std::cout << str[0] << str.at(0);
-	}
-	if(1 < str.size()) {
-		std::cout << str[1] << str.at(1);
-	}
-	if(2 < str.size()) {
-		std::cout << str[2] << str.at(2);
-	}
-	if(3 < str.size()) { // false
-		std::cout << str[3] << str.at(3);
+	for (int i = 0; i < str.size() ++i) {
+		std::cout << str[i] << str.at(i);
 	}
 	std::cout << '\n';
 }
@@ -478,18 +506,175 @@ int main() {
 }
 ```
 ```output
->> word1 word2 word3
-<< word1, word2
+<< word1 word2 word3
+>> word1, word2
 ```
 
 Vectors
 -------
 
-Loops
------
+Strings are sequences of characters, but what if we want a sequence of something else? This is what
+`std::vector` is designed for. In order to use it we have to include the `<vector>`-header first and
+then declare what it should contain:
+
+```cpp
+#include <vector>
+#include <iostream>
+
+int main() {
+	// a vector of ints:
+	std::vector<int> integers = {0, 1, 2, 3, 4};
+
+	// a vector of strings:
+	std::vector<std::string> strings = {"Foo", "Bar"};
+}
+```
+
+Aside from reading, printing and concatenating with `+` all the things that we just learned
+about strings can also be done with `std::vector`:
+
+```cpp
+#include <vector>
+#include <iostream>
+
+int main() {
+	std::vector<int> vec1 = {1, 2, 3};
+	std::cout << vec[1] << ", " << vec.at(2) << '\n';
+	std::vector<int> vec2 = {2, 3};
+	if (vec1 != vec2) {
+		std::cout << "the vectors contain different elements\n";
+	}
+}
+```
+```output
+>> 2, 3
+>> the vectors contain different elements
+```
+
+As we can see above, initializing a vector with elements is as easy as writing
+the values in braces and assigning these during construction. Alternativly we can
+pass it an integer (and optionally a value) in parenthesis in order to create a vector
+of a certain size with all elements being defaulted to the given value or, if none is given,
+it's default value (empty string for strings, zero for numbers):
+
+```cpp
+#include <vector>
+#include <iostream>
+
+int main() {
+	// a vector of 1000 integers:
+	std::vector<int> vec1(1000);
+
+	// a vector of 100 strings with value "foo":
+	std::vector<std::string> vec2(100, "foo");
+}
+```
+
+
+Foreach-Loops
+-------------
+
+We already know the for-loops and we have already seen how we can use them to
+iterate over all elements in a `std::vector` or `std::string`:
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main() {
+	std::vector<std::string> vec = {"foo", "bar"};
+	for (int i = 0; i < vec.size(); ++i) {
+		std::cout << vec[i] << '\n';
+	}
+}
+```
+```output
+>> foo
+>> bar
+```
+
+This works, but it is both verbose and not very general: At some point we will come
+across data-structures that hold sequences, but don't allow access with square-brackets.
+
+To solve these (and some other) problems, C++ has a so called range-based-for-loop, that
+allows us to say what we really want:
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main() {
+	std::vector<std::string> vec = {"foo", "bar"};
+	for (std::string str: vec) { // read: for each str in vec:
+		std::cout << str << '\n';
+	}
+}
+```
+```output
+>> foo
+>> bar
+```
+
+Nobody will deny that this code is much cleaner and easier to follow, but we
+will encounter problems if we try to assign a new value to `str`: `str` is
+a copy of the `std::string` in the vector, so changing it won't change the value
+in the vector. Another problem is that the copy may be expensive if the string
+is large. Last but not least it is tedious to repeat the type that is already
+stated (in the definition of vec). The solution to these problems is to just write
+“`auto&&`” instead of the type. What this does exactly is quite advanced, but it will
+always do what you actually want it to do and even has the potential of being faster.
+
+So our final version looks like this:
+
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+
+int main() {
+	std::vector<std::string> vec = {"foo", "bar"};
+	for (auto&& str: vec) { // read: for each str in vec:
+		std::cout << str << '\n';
+	}
+}
+```
+
+
 
 
 Summary
 -------
 
+In this chapter we took a short look into the very basics of C++. In order to keep the
+complexity at managable levels we skipped over many details and simplified a few other things.
+
+The reason is that we will need everything we learned here in basically all of the upcomming
+chapters, that will hopefully provide more of a red thread and make things clearer.
+
+The topics that you should remember from now on, are:
+
+* How to print stuff
+* What a variable is
+* What integers, strings and vectors are, and how we can use them
+* The basic control-structures: `if`, `else`, normal `for` and range-`for`
+
+Before you continue, you should do the training-tasks to get some basic feelings about how
+to program and how the language behaves. It is impossible to learn programming without
+writing code yourself.
+
+Training
+--------
+
+* Write a programm that asks the user for their name and prints “Hello *\<username>* ” after that.
+	* Hint: Safe the name in a `std::string`
+* Write a programm that will print all integral numbers between 1 and 100.
+	* Hint: Use a normal `for`-loop
+* Modify the above programm, so that it will print “Fizz” if the number can be cleanly divided
+  by 3, “Buzz” if it can be cleanly divided by 5 and “Fizzbuzz” if it can be cleanly divided by 15.
+  Otherwise keep printing the number itself.
+	* Hint: `7 % 3 == 0` will tell you, if seven can be cleanly divided by three.
+	* Hint: You will have to put the `if`'s and `else`'s inside the loop.
 
