@@ -9,7 +9,7 @@ clean:
 
 pdf/book.pdf: $(SOURCES)
 	pandoc -fmarkdown -t latex -p -o pdf/book.pdf\
-		--toc --number-sections -V documentclass:book\
+		--toc --number-sections -V documentclass:scrbook\
 		$(SOURCES)
 
 
