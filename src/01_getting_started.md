@@ -435,10 +435,10 @@ in mind that this is not everywhere the case). The values between 0 and 127 are 
 contain the latin alphabet(a-z in both upper and lower case), arabian numbers (0-9), basic punctuation (point, comma,
 semi-colon, colon, …) and some stuff that basically noone uses any more.
 
-To represent further characters like the “Ä”, “Ö”, “Ü” and “ß” several chars combined to a sequence (this is called UTF-8
-and you shouldn't use anything else). The problem with this approach is, that the number of chars ans logical characters
-in strings differ. There is no reasonable solution to that problem (In case you heard about UTF-32: It isn't either, since
-there is something called “combining characters”).
+To represent further characters like the “Ä”, “Ö”, “Ü” and “ß” several chars have to be combined to a sequence (this
+is called UTF-8 and you shouldn't use anything else). The problem with this approach is, that the number of chars
+ans logical characters in strings differ. There is no reasonable solution to that problem (In case you heard about
+UTF-32: It isn't either, since there is something called “combining characters”).
 
 Let's take a short look at how chars can be used:
 
