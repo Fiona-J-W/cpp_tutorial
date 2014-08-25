@@ -437,7 +437,7 @@ semi-colon, colon, …) and some stuff that basically noone uses any more.
 
 To represent further characters like the “Ä”, “Ö”, “Ü” and “ß” several chars have to be combined to a sequence (this
 is called UTF-8 and you shouldn't use anything else). The problem with this approach is, that the number of chars
-ans logical characters in strings differ. There is no reasonable solution to that problem (In case you heard about
+and logical characters in strings differ. There is no reasonable solution to that problem (In case you heard about
 UTF-32: It isn't either, since there is something called “combining characters”).
 
 Let's take a short look at how chars can be used:
