@@ -236,7 +236,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="output"><code>&gt;&gt; Please enter two numbers seperated by whitespace:
 &lt;&lt; 8 4
 &gt;&gt; 8 / 4 = 2</code></pre>
-<p>The structure of an <code>if</code>-statement is very simple: <code>if</code>, followed by a boolean expression between parenthesis, followed by a list of statements between braces. A boolean expression is a (small) piece of code that evaluates to a boolean value (true or false). Often this is achieved with a comparission like the above: <code>num2 != 0</code> is the C++-way of asking whether <code>num2</code> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>≠</mo><mn>0</mn></mrow></math>. The available comparission-operators are these:</p>
+<p>The structure of an <code>if</code>-statement is very simple: <code>if</code>, followed by a boolean expression between parenthesis, followed by a list of statements between braces. A boolean expression is a (small) piece of code that evaluates to a value of the type <code>bool</code> (that is either true or false). Often this is achieved with a comparission like the above: <code>num2 != 0</code> is the C++-way of asking whether <code>num2</code> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>≠</mo><mn>0</mn></mrow></math>. The available comparission-operators are these:</p>
 <table>
 <thead>
 <tr class="header">
@@ -272,7 +272,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </tbody>
 </table>
 <p>In addition to those an expression can be prefixed with “<code>!</code>”, which negates it's value: <code>!true == false</code>. To negate bigger expressions just enclose them in parenthesis: <code>!(true == false)</code> will be evaluated to <code>true</code>.</p>
-<p>Another thing that one should know is that integers (and some other types) can be implicitly converted to bool, if they are used as boolean expression; in that case <code>0</code> becomes <code>false</code> and every other value becomes <code>true</code>. There is no final consensus whether one should write <code>if (i != 0)</code> instead of <code>if (!i)</code>, but for the beginning it is certainly a good idea to be explicit here.</p>
+<p>Another thing that one should know is that integers (and some other types) can be implicitly converted to bool, if they are used as boolean expression; in that case <code>0</code> becomes <code>false</code> and every other value becomes <code>true</code>. There is no final consensus whether one should write <code>if (i != 0)</code> instead of <code>if (i)</code>, but for the beginning it is certainly a good idea to be explicit here.</p>
 <p>Back to the <code>if</code>-statements: What if we want to do two different things for each case? For this, there is the so called <code>else</code>-statement that can follow an <code>if</code>-statement. it is basically the word <code>else</code> followed by statements between braces.</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (num2 != <span class="dv">0</span>) {
 	std::cout &lt;&lt; num1 / num2 &lt;&lt; std::endl;

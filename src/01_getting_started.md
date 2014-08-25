@@ -213,9 +213,9 @@ int main() {
 
 The structure of an `if`-statement is very simple: `if`, followed by a boolean expression between
 parenthesis, followed by a list of statements between braces. A boolean expression is a (small) piece
-of code that evaluates to a boolean value (true or false). Often this is achieved with a comparission
-like the above: `num2 != 0` is the C++-way of asking whether `num2` $\ne 0$. The available 
-comparission-operators are these:
+of code that evaluates to a value of the type `bool` (that is either true or false). Often this is
+achieved with a comparission like the above: `num2 != 0` is the C++-way of asking whether
+`num2` $\ne 0$. The available comparission-operators are these:
 
 C++      Meaning
 -------- -----------------------
@@ -233,7 +233,7 @@ To negate bigger expressions just enclose them in parenthesis: `!(true == false)
 
 Another thing that one should know is that integers (and some other types) can be implicitly converted
 to bool, if they are used as boolean expression; in that case `0` becomes `false` and every other value
-becomes `true`. There is no final consensus whether one should write `if (i != 0)` instead of `if (!i)`,
+becomes `true`. There is no final consensus whether one should write `if (i != 0)` instead of `if (i)`,
 but for the beginning it is certainly a good idea to be explicit here.
 
 Back to the `if`-statements: What if we want to do two different things for each case? For this, there
