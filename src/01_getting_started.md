@@ -511,7 +511,7 @@ Let's look at how we can use these things in practice:
 int main() {
 	std::string str = "foo";
 	std::cout << "std.size() = " << str.size() << '\n';
-	for (int i = 0; i < str.size() ++i) {
+	for (int i = 0; i < str.size(); ++i) {
 		std::cout << str[i] << str.at(i);
 	}
 	std::cout << '\n';
