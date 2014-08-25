@@ -264,17 +264,18 @@ if (num == 0) {
 recommended since ommiting them can very easily lead to bugs (misstakes), especially in the case where you
 nest conditionals.
 
-Undefined Behaviour
+Undefined Behavior
 -------------------
 
 At this point it is time for the safety-instructions. C++ is a language that was designed to be very
 fast and portable which sometimes conflicts with ease of use. As a result the C++-standard explicitly
-does not always require a certain behaviour for programs that contains a given construct.
+does not always require a certain behavior for programs that contains a given construct.
 
 These constructs are almost always very questionable to start with and disallowing them is usually a
-good thing. Examples include signed-integer-overflow, reading uninitialized variables and accessing
-unowned memory. Possible behaviour ranges from apperently doing what the programer expected, over
-randomly crashing to severe security-holes. Testing what happens and trusting that everything is fine
+good thing. Examples include signed-integer-overflow (calculating a value that is outside the representable
+range of int, for example by executing “`2'000'000'000 + 2'000'000'000`”), reading uninitialized variables
+and accessing unowned memory. Possible behavior ranges from apperently doing what the programer expected,
+over randomly crashing to severe security-holes. Testing what happens and trusting that everything is fine
 won't work too, because the next version of your compiler might decide to do something completely
 different. To illustrate this, let's look at a real-world example:
 
@@ -493,7 +494,7 @@ what methods are, so for the meantime it is enough to know that if you have a va
 type `std::string`, you can find out the number of chars in it with the following code: “`str.size()`”
 
 The answer to the second question is more terrifying: If your index is invalid, your program contains
-undefined behaviour and is likely to crash in an uncontrollable way. The one exzeption is the value returned
+undefined behavior and is likely to crash in an uncontrollable way. The one exzeption is the value returned
 by `size()`: It is guaranteed to return a char with the value zero (the value, not the character ‘0’), but it
 must not be written to.
 
