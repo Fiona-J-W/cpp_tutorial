@@ -204,6 +204,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="output"><code>&gt;&gt; Please enter a number:
 &lt;&lt; 42
 &gt;&gt;You entered 42</code></pre>
+<p>TODO: explanation</p>
 <h2 id="conditional-execution">Conditional Execution</h2>
 <p>Let's write a program that prints the modulus of two numbers:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
@@ -300,26 +301,43 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>The lesson from this is that even if your code seems to work, it might stop doing this tomorow when the next version of your compiler will be released.</p>
 <p><strong>tl;dr:</strong> Avoid undefined behavior by any means necessary.</p>
 <h2 id="loops">Loops</h2>
-<p>If we want to check a condition once, we can use <code>if</code>. What however if we want to execute something a previously unknown number of times? This is where loops come into play. There are several ones, but for now, we will just look into the so called <code>for</code>-loop. The basic syntax is this:</p>
-<p>for (<em>variable-declaration</em>; <em>condition</em>; <em>loop-operation</em>) { <em>loop-body</em> }</p>
-<ul>
-<li><em>variable-declaration</em> may either be empty or create a new varible that exists during the loop</li>
-<li><em>condition</em> is a conditional statement as we know it from the <code>if</code>-statement. Before every execution of the loops body the condition is checked, and if it isn't true, the loop won't be excuted any more.</li>
-<li><em>loop-operation</em> is a statement that is executed after every execution of the loops body. It should only be used to do things like incrementing a counter that is responsible for how often the body should be executed.</li>
-<li><em>loop-body</em> is similar to the if's conditional body: It is executed as long as the loops condition is met.</li>
-</ul>
-<p>Since this is quite theoretical, let's look at an example:</p>
+<p>If we want to check a condition once, we can use <code>if</code>. What however if we want to execute something a previously unknown number of times? This is where loops come into play. The simplest form is the so-called <code>while</code>-loop. The syntax is basically the same as it is for the the <code>if</code>-statement.</p>
+<p>The main-difference is that the condition will not be checked once, but again after every execution of the loop-body:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
-	<span class="kw">for</span>(<span class="dt">int</span> i = <span class="dv">3</span>; i &lt; <span class="dv">6</span>; ++i) {
-		std::cout &lt;&lt; i &lt;&lt; <span class="st">&quot;, &quot;</span>;
+	<span class="dt">int</span> i = <span class="dv">0</span>;
+
+	<span class="kw">while</span> (i != <span class="dv">3</span>) {
+		std::cout &lt;&lt; <span class="st">&quot;i still isn&#39;t 3.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+		<span class="co">// &#39;++i&#39; is a shorthand-notation for &#39;i = i + 1&#39;</span>
+		++i;
 	}
-	std::cout &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	std::cout &lt;&lt; <span class="st">&quot;i is now 3.</span><span class="ch">\n</span><span class="st">&quot;</span>;
 }</code></pre>
-<pre class="output"><code>&gt;&gt; 3, 4, 5, </code></pre>
-<p>Here <code>int i = 3</code> is the variable declaration. It creates an integer <code>i</code> and intializes it with 3. The condition of this loop is that <code>i</code> is smaller than 6 which is of course true in the beginning.</p>
-<p><code>++i</code> adds one to the value of <code>i</code> and thereby concludes the loop-header that will execute the loop-body (<code>std::cout &lt;&lt; i &lt;&lt; '\n';</code>) three times with i having the values 3, 4 and finally 5.</p>
+<pre class="output"><code>&gt;&gt; i still isn&#39;t equal to 3.
+&gt;&gt; i still isn&#39;t equal to 3.
+&gt;&gt; i still isn&#39;t equal to 3.
+&gt;&gt; i is now 3.</code></pre>
+<p>The way we used <code>i</code> here is quite commont: A counter that counts the number of times that the loop-body was executed and is compared then to the required number of executions. We call this kind of variables loop-counters and they are conventially often named <code>i</code>, <code>j</code> and <code>k</code> (this is one of the rare cases where single-letter-names are acceptable).</p>
+<p>Since the concept of a loop-counter is needed so often, there is also some special syntax to support it: The <code>for</code>-loop. It has the following structure:</p>
+<p>for (<em>variable-declaration</em>; <em>condition</em>; <em>loop-operation</em>) { <em>loop-body</em> }</p>
+<ul>
+<li><em>variable-declaration</em> Is a place to declare variables that will live during the execution of the loop. At this point this will most of the time be the loop-counter.</li>
+<li><em>condition</em> is a conditional statement that works exactly like it does in the while-loop.</li>
+<li><em>loop-operation</em> is a statement that is executed after every execution of the loops body. It should only be used to do things like incrementing the loop-counter.</li>
+<li><em>loop-body</em> is similar to the if's conditional body: It is executed as long as the loops condition is met.</li>
+</ul>
+<p>Since this is quite theoretical, let's revisit the example that we used for the <code>while</code>-loop:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main() {
+	<span class="kw">for</span>(<span class="dt">int</span> i = <span class="dv">0</span>; i != <span class="dv">3</span>; ++i) {
+		std::cout &lt;&lt; <span class="st">&quot;i still isn&#39;t 3.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	}
+	std::cout &lt;&lt; <span class="st">&quot;i is now 3.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+}</code></pre>
+<p>Here <code>int i = 3</code> is the variable declaration. It creates an integer <code>i</code> and intializes it with 0. The condition of this loop is that <code>i</code> is not equal to 3 which is of course true in the beginning.</p>
 <h2 id="strings">Strings</h2>
 <p>We already took a very short look at string-literals and used them when printing stuff:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>

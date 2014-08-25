@@ -161,6 +161,9 @@ int main() {
 >>You entered 42
 ```
 
+
+TODO: explanation
+
 Conditional Execution
 ---------------------
 
@@ -308,39 +311,67 @@ Loops
 -----
 
 If we want to check a condition once, we can use `if`. What however if we want to execute something
-a previously unknown number of times? This is where loops come into play. There are several ones, but
-for now, we will just look into the so called `for`-loop. The basic syntax is this:
+a previously unknown number of times? This is where loops come into play. The simplest form is the
+so-called `while`-loop. The syntax is basically the same as it is for the the `if`-statement.
 
-for (*variable-declaration*; *condition*; *loop-operation*) { *loop-body* }
-
-* *variable-declaration* may either be empty or create a new varible that exists during the loop
-* *condition* is a conditional statement as we know it from the `if`-statement. Before every execution
-  of the loops body the condition is checked, and if it isn't true, the loop won't be excuted any more.
-* *loop-operation* is a statement that is executed after every execution of the loops body. It should
-  only be used to do things like incrementing a counter that is responsible for how often the body
-  should be executed.
-* *loop-body* is similar to the if's conditional body: It is executed as long as the loops condition is met.
-
-Since this is quite theoretical, let's look at an example:
+The main-difference is that the condition will not be checked once, but again after every execution
+of the loop-body:
 
 ```cpp
 #include <iostream>
 
 int main() {
-	for(int i = 3; i < 6; ++i) {
-		std::cout << i << ", ";
+	int i = 0;
+
+	while (i != 3) {
+		std::cout << "i still isn't 3.\n";
+		// '++i' is a shorthand-notation for 'i = i + 1'
+		++i;
 	}
-	std::cout << '\n';
+	std::cout << "i is now 3.\n";
 }
 ```
 ```output
->> 3, 4, 5, 
+>> i still isn't equal to 3.
+>> i still isn't equal to 3.
+>> i still isn't equal to 3.
+>> i is now 3.
 ```
-Here `int i = 3` is the variable declaration. It creates an integer `i` and intializes it with 3.
-The condition of this loop is that `i` is smaller than 6 which is of course true in the beginning.
 
-`++i` adds one to the value of `i` and thereby concludes the loop-header that will execute the
-loop-body (`std::cout << i << '\n';`) three times with i having the values 3, 4 and finally 5.
+The way we used `i` here is quite commont: A counter that counts the number of times
+that the loop-body was executed and is compared then to the required number of executions.
+We call this kind of variables loop-counters and they are conventially often named `i`, `j`
+and `k` (this is one of the rare cases where single-letter-names are acceptable).
+
+Since the concept of a loop-counter is needed so often, there is also some special syntax to
+support it: The `for`-loop. It has the following structure:
+
+
+for (*variable-declaration*; *condition*; *loop-operation*) { *loop-body* }
+
+* *variable-declaration* Is a place to declare variables that will live during the execution of the
+  loop. At this point this will most of the time be the loop-counter.
+* *condition* is a conditional statement that works exactly like it does in the while-loop.
+* *loop-operation* is a statement that is executed after every execution of the loops body. It should
+  only be used to do things like incrementing the loop-counter.
+* *loop-body* is similar to the if's conditional body: It is executed as long as the loops condition is met.
+
+Since this is quite theoretical, let's revisit the example that we used for the `while`-loop:
+
+```cpp
+#include <iostream>
+
+int main() {
+	for(int i = 0; i != 3; ++i) {
+		std::cout << "i still isn't 3.\n";
+	}
+	std::cout << "i is now 3.\n";
+}
+```
+
+Here `int i = 3` is the variable declaration. It creates an integer `i` and intializes it with 0.
+The condition of this loop is that `i` is not equal to 3 which is of course true in the beginning.
+
 
 Strings
 -------
