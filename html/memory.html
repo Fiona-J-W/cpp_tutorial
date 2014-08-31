@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style type="text/css">
+  body {
+  	max-width: 20cm;
+  	margin-left: auto;
+  	margin-right: auto;
+  	text-align: justify;
+  }
+  @media screen {
+  	body {
+  		font-family: sans;
+  	}
+  }
+  @media print {
+  	body {
+  		font-family: serif;
+  	}
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+  	font-family: sans;
+  }
+  
+  h1 {
+  	text-align: center;
+  	border-bottom: 2px solid gray;
+  }
+  
+  h2 {
+  	margin-top: 1cm;
+  	border-bottom: 2px dotted gray;
+  }
+  
+  blockquote {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: blue;
+  	border-style: solid;
+  	border-width: 2px;
+  	margin-left: 0;
+  	margin-right: 0;
+  	font-style: italic;
+  }
+  
+  code {
+  	font-size: 125%;
+  }
+  
+  pre.sourceCode {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: green;
+  	border-style: solid;
+  	border-width: 2px;
+  }
+  
+  pre.output {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: blue;
+  	border-style: solid;
+  	border-width: 2px;
+  }
+  
+  a.footnoteRef {
+  	text-decoration: none;
+  	color: blue;
+  }
+  
+  figure > img {
+  	width: 100%;
+  	height: auto;
+  }
+  
+  section.license {
+  	font-size: 90%;
+  	color: gray;
+  }
+  
+  section.license > a {
+  	color: gray;
+  }
+  
+  </style>
+</head>
+<body>
+<h1 id="memory">Memory</h1>
+<p>In this chapter we will take a first look into the memory-model of C++. It should be noted beforehand that while these things are often very useful in order to understand the behavior or design-decissions of the language, things like naked pointers are usually <strong>not</strong> language-features that should be used in regular code.</p>
+<p>It should also be noted, that the compiler is usually very good in making highlevel-code fast, so using these things won't make your code faster. In fact the chances are good, that using the stdlib-facilities will usually be faster due to more optimization there.</p>
+<p>Finally, these things are dangerous. In this chapter we will come around undefined behavior more often then in any other chapter so far (only multithreading will rival us in that regard). The things here are like the nuclear weapons of C++ and you should treat them with the proper respect.</p>
+<h2 id="what-is-memory">What is memory?</h2>
+<hr/>
+<section class="license">
+	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+		<img src="CC_BY_SA.png" height="31px" width="88px" alt="CC-BY-SA" align="left" hspace="2px"/>
+	</a>
+	This work from Florian Weber is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.<br/>
+</section>
+</body>
+</html>
