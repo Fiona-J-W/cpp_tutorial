@@ -9,3 +9,4 @@
 * [Classtemplates](class_templates.html)
 * [Inheritance](inheritance.html)
 * [The standard-library](stdlib.html)
+* [Memory](memory.html)
