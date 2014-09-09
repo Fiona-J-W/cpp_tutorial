@@ -21,7 +21,8 @@ for that. If you do so, please consider the following aspects:
   mmd-markdown are fully compatible with that. Therefore
   they are *not* a target.
 * If your patch doesn't add much actual content but “only”
-  fixes minor bugs, I ask you to provide it as public domain
+  fixes minor bugs (this is heavily welcome and very
+  necessary), I ask you to provide it as public domain
   in order to keep the amount of authors who have legal
   control over this tutorial managable. (This might for
   instance be important, should this tutorial get a
