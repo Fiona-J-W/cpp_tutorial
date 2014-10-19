@@ -1,5 +1,5 @@
-The Standard-Library
-====================
+Containers
+==========
 
 At this point we understand enough about the core-language in order to take a look at the
 standard-library. Until now we have already made use of things like the io-facilities, `std::vector`
@@ -11,8 +11,8 @@ to big to learn completeley in one attempt. It is therefore strongly recommended
 some time and go reading references; sometimes one will come across real gems where there were none
 expected.
 
-Containers and Iterators
-------------------------
+Iterators
+---------
 
 Whenever we needed an arbitrary amount of elements so far, we resorted to `std::vector` without looking
 to deep into it's concepts and features. We already saw that we can copy them, request an element at
@@ -264,18 +264,4 @@ Algorithms
 
 Tuples and Pairs
 ----------------
-
-
-
-Threads and Atomics
--------------------
-
-
-Random Numbers
---------------
-
-
-Time and Clocks
----------------
-
 
