@@ -120,9 +120,9 @@ problem:
 #include <iostream>
 
 int main() {
-	int a = 3;
-	int b = 5;
-	int sum = a + b;
+	auto a = 3;
+	auto b = 5;
+	auto sum = a + b;
 	std::cout << sum * sum << "\n";
 }
 ```
@@ -130,15 +130,28 @@ int main() {
 >> 64
 ```
 
-`int` is the default type for integers. On most modern systems it can hold numbers between -2147483648
-and 2147483647, which should be enough for most applications. The statement `int a = 3;` now creates
-a new integer with the name `a` and the value 3. `a` is called a variable since it holds a value
-that can be changed. Almost everything that can be done with literal numbers in the code can also be
-done with variables.
+The line `auto a = 3;` creates a new variable named “a” that holds the value 3. Since “3” is an integer
+it has the type `int` in C++. The language infers the type of a variable from the value it is initialized
+with and checks that all uses of all variables are consistent after that. It is important to understand
+that the type of a variable will never change after it has been created; if you try to assign a value
+of a different type your code may sometimes compile, but this is because the compiler found a way to
+convert the argument to the type of your variable.
 
-The third statement (`int sum = a + b;`) demonstrates that variables can also have longer names than
+In all places where you can use a literal number it is also possible to use a variable, for that reason
+you shouldn't be stingy with variables since they can vastly increase readability;
+
+Let's take a closer look at the type that we are using in this example: `int`. It is the languages default
+type for integers and can on most modern systems hold numbers between -2147483648
+and 2147483647, which should be enough for most applications.
+
+The third statement (`auto sum = a + b;`) demonstrates that variables can also have longer names than
 just one letter (which they should have almost always) and that we can initialize them from compund
 expressions like `a + b`.
+
+Finally it should be mentioned that there are other ways to create in variables in C++ too and that
+encountering them in other peoples code is basically guaranteed, but that this style is usually
+recommended in the context of modern C++, because it avoids several gotchas in the language, is easy to
+read and relatively consistent.
 
 Reading User-input
 ------------------
@@ -149,7 +162,7 @@ In order to write programs that are not entirely static, we can read things too:
 #include <iostream>
 
 int main() {
-	int num = 0;
+	auto num = 0;
 	std::cout << "Please enter a number:\n";
 	std::cin >> num;
 	std::cout << "You entered " << num << "\n";
@@ -174,8 +187,8 @@ Let's write a program that prints the modulus of two numbers:
 
 int main() {
 	std::cout << "Please enter two numbers seperated by whitespace:\n"
-	int num1 = 0;
-	int num2 = 0;
+	auto num1 = 0;
+	auto num2 = 0;
 	std::cin >> num1 >> num2;
 	std::cout << num1 << " / " << num2
 	          << " = " << num1 / num2 << "\n";
@@ -196,8 +209,8 @@ fact that it doesn't make any sense). The solution is an `if`-statement:
 
 int main() {
 	std::cout << "Please enter two numbers seperated by whitespace:\n"
-	int num1 = 0;
-	int num2 = 0;
+	auto num1 = 0;
+	auto num2 = 0;
 	std::cin >> num1 >> num2;
 	if (num2 != 0) {
 		std::cout << num1 << " / " << num2
@@ -322,7 +335,7 @@ of the loop-body:
 #include <iostream>
 
 int main() {
-	int i = 0;
+	auto i = 0;
 
 	while (i != 3) {
 		std::cout << "i still isn't 3.\n";
@@ -363,6 +376,7 @@ Since this is quite theoretical, let's revisit the example that we used for the 
 #include <iostream>
 
 int main() {
+	// TODO: unsigned
 	for(int i = 0; i != 3; ++i) {
 		std::cout << "i still isn't 3.\n";
 	}
@@ -395,7 +409,7 @@ the `<string>`-header and create a variable of the type `std::string`:
 #include <string>
 
 int main() {
-	std::string str = "some string.\n";
+	auto str = std::string{"some string.\n"};
 	std::cout << str;
 }
 ```
@@ -412,12 +426,12 @@ the `+`-operator:
 #include <string>
 
 int main() {
-	std::string str1 = "foo";
-	std::string str2 = "bar";
+	auto str1 = std::string{"foo"};
+	auto str2 = std::string{"bar"};
 	if (str1 == str2) {
 		std::cout << "ERROR: this should never happen!\n";
 	}
-	std::string str3;  // str3 = ""
+	auto str3 = std::string{}; // str3 = ""
 	str3 = str1 + str2;
 	if (str3 == "foobar") {
 		std::cout << "Everything is fine!\n";
@@ -446,15 +460,14 @@ Let's take a short look at how chars can be used:
 #include <iostream>
 
 int main() {
-	char c1 = 'A'; // Note the single-quotes!!
-	char c2 = 'B';
+	auto c1 = 'A'; // Note the single-quotes!!
+	auto c2 = 'B'; // a symbol encoded in them has type char
 	if (c1 != c2) {
 		std::cout << "Comparission works!\n";
 	}
-	auto c3 = 'C'; // A character in single-quotes has type char
 
-	char c4 = 65; // 'A' has the value 65, so this works, but you
-	              // shouldn't really do it
+	auto c4 = char{65}; // 'A' has the value 65, so this works, but you
+	                    // shouldn't really do it
 	std::cout << c4 << '\n'; // newline is just one char, so this works
 }
 ```
@@ -471,7 +484,7 @@ The reason we are looking so deep into characters is that you can access them in
 #include <string>
 
 int main() {
-	std::string str = "foobar";
+	auto str = std::string{"foobar"};
 	std::cout << str[0] << '\n';
 	str[1] = 'O';
 	std::cout << str << '\n';
@@ -509,9 +522,9 @@ Let's look at how we can use these things in practice:
 #include <string>
 
 int main() {
-	std::string str = "foo";
+	auto str = std::string{"foo"};
 	std::cout << "std.size() = " << str.size() << '\n';
-	for (int i = 0; i < str.size(); ++i) {
+	for (auto i = 0u; i < str.size(); ++i) {
 		std::cout << str[i] << str.at(i);
 	}
 	std::cout << '\n';
@@ -531,8 +544,8 @@ context). Further words will of course be just ignored in that case:
 #include <string>
 
 int main() {
-	std::string str1;
-	std::string str2;
+	auto str1 = std::string{};
+	auto str2 = std::string{};
 	std::cin >> str1 >> str2;
 	std::cout << str1 << ", " << str2 << '\n';
 }
@@ -555,10 +568,10 @@ then declare what it should contain:
 
 int main() {
 	// a vector of ints:
-	std::vector<int> integers = {0, 1, 2, 3, 4};
+	auto  ints = std::vector<int>{0, 1, 2, 3, 4};
 
 	// a vector of strings:
-	std::vector<std::string> strings = {"Foo", "Bar"};
+	auto strings = std::vector<std::string>{"Foo", "Bar"};
 }
 ```
 
@@ -570,9 +583,9 @@ about strings can also be done with `std::vector`:
 #include <iostream>
 
 int main() {
-	std::vector<int> vec1 = {1, 2, 3};
+	auto vec1 = std::vector<int>{1, 2, 3};
 	std::cout << vec[1] << ", " << vec.at(2) << '\n';
-	std::vector<int> vec2 = {2, 3};
+	auto vec2 = std::vector<int>{2, 3};
 	if (vec1 != vec2) {
 		std::cout << "the vectors contain different elements\n";
 	}
@@ -595,10 +608,10 @@ it's default value (empty string for strings, zero for numbers):
 
 int main() {
 	// a vector of 1000 integers:
-	std::vector<int> vec1(1000);
+	auto vec1 = std::vector<int>(1000);
 
 	// a vector of 100 strings with value "foo":
-	std::vector<std::string> vec2(100, "foo");
+	auto vec2 = std::vector<std::string>(100, "foo");
 }
 ```
 
@@ -615,8 +628,8 @@ iterate over all elements in a `std::vector` or `std::string`:
 #include <string>
 
 int main() {
-	std::vector<std::string> vec = {"foo", "bar"};
-	for (int i = 0; i < vec.size(); ++i) {
+	auto vec = std::vector<std::string>{"foo", "bar"};
+	for (auto i = 0u; i < vec.size(); ++i) {
 		std::cout << vec[i] << '\n';
 	}
 }
@@ -638,7 +651,7 @@ allows us to say what we really want:
 #include <string>
 
 int main() {
-	std::vector<std::string> vec = {"foo", "bar"};
+	auto vec = std::vector<std::string>{"foo", "bar"};
 	for (std::string str: vec) { // read: for each str in vec:
 		std::cout << str << '\n';
 	}
@@ -655,8 +668,9 @@ a copy of the `std::string` in the vector, so changing it won't change the value
 in the vector. Another problem is that the copy may be expensive if the string
 is large. Last but not least it is tedious to repeat the type that is already
 stated (in the definition of vec). The solution to these problems is to just write
-“`auto&&`” instead of the type. What this does exactly is quite advanced, but it will
-always do what you actually want it to do and even has the potential of being faster.
+“`auto&`” instead of the type. The ampersand (the “&”) makes sure that `str` is not
+a copy of the element in the container, but just an alias (another name) for
+the element itself.
 
 So our final version looks like this:
 
@@ -667,8 +681,8 @@ So our final version looks like this:
 #include <string>
 
 int main() {
-	std::vector<std::string> vec = {"foo", "bar"};
-	for (auto&& str: vec) { // read: for each str in vec:
+	auto vec = std::vector<std::string>{"foo", "bar"};
+	for (auto& str: vec) { // read: for each str in vec:
 		std::cout << str << '\n';
 	}
 }
@@ -700,7 +714,7 @@ writing code yourself.
 Training
 --------
 
-* Write a programm that asks the user for their name and prints “Hello *\<username>* ” after that.
+* Write a programm that asks the user for their name and prints “`Hello <username>`” after that.
 	* Hint: Safe the name in a `std::string`
 * Write a programm that will print all integral numbers between 1 and 100.
 	* Hint: Use a normal `for`-loop

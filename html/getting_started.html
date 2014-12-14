@@ -183,20 +183,23 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
-	<span class="dt">int</span> a = <span class="dv">3</span>;
-	<span class="dt">int</span> b = <span class="dv">5</span>;
-	<span class="dt">int</span> sum = a + b;
+	<span class="kw">auto</span> a = <span class="dv">3</span>;
+	<span class="kw">auto</span> b = <span class="dv">5</span>;
+	<span class="kw">auto</span> sum = a + b;
 	std::cout &lt;&lt; sum * sum &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
 }</code></pre>
 <pre class="output"><code>&gt;&gt; 64</code></pre>
-<p><code>int</code> is the default type for integers. On most modern systems it can hold numbers between -2147483648 and 2147483647, which should be enough for most applications. The statement <code>int a = 3;</code> now creates a new integer with the name <code>a</code> and the value 3. <code>a</code> is called a variable since it holds a value that can be changed. Almost everything that can be done with literal numbers in the code can also be done with variables.</p>
-<p>The third statement (<code>int sum = a + b;</code>) demonstrates that variables can also have longer names than just one letter (which they should have almost always) and that we can initialize them from compund expressions like <code>a + b</code>.</p>
+<p>The line <code>auto a = 3;</code> creates a new variable named “a” that holds the value 3. Since “3” is an integer it has the type <code>int</code> in C++. The language infers the type of a variable from the value it is initialized with and checks that all uses of all variables are consistent after that. It is important to understand that the type of a variable will never change after it has been created; if you try to assign a value of a different type your code may sometimes compile, but this is because the compiler found a way to convert the argument to the type of your variable.</p>
+<p>In all places where you can use a literal number it is also possible to use a variable, for that reason you shouldn't be stingy with variables since they can vastly increase readability;</p>
+<p>Let's take a closer look at the type that we are using in this example: <code>int</code>. It is the languages default type for integers and can on most modern systems hold numbers between -2147483648 and 2147483647, which should be enough for most applications.</p>
+<p>The third statement (<code>auto sum = a + b;</code>) demonstrates that variables can also have longer names than just one letter (which they should have almost always) and that we can initialize them from compund expressions like <code>a + b</code>.</p>
+<p>Finally it should be mentioned that there are other ways to create in variables in C++ too and that encountering them in other peoples code is basically guaranteed, but that this style is usually recommended in the context of modern C++, because it avoids several gotchas in the language, is easy to read and relatively consistent.</p>
 <h2 id="reading-user-input">Reading User-input</h2>
 <p>In order to write programs that are not entirely static, we can read things too:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
-	<span class="dt">int</span> num = <span class="dv">0</span>;
+	<span class="kw">auto</span> num = <span class="dv">0</span>;
 	std::cout &lt;&lt; <span class="st">&quot;Please enter a number:</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	std::cin &gt;&gt; num;
 	std::cout &lt;&lt; <span class="st">&quot;You entered &quot;</span> &lt;&lt; num &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
@@ -211,8 +214,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="dt">int</span> main() {
 	std::cout &lt;&lt; <span class="st">&quot;Please enter two numbers seperated by whitespace:</span><span class="ch">\n</span><span class="st">&quot;</span>
-	<span class="dt">int</span> num1 = <span class="dv">0</span>;
-	<span class="dt">int</span> num2 = <span class="dv">0</span>;
+	<span class="kw">auto</span> num1 = <span class="dv">0</span>;
+	<span class="kw">auto</span> num2 = <span class="dv">0</span>;
 	std::cin &gt;&gt; num1 &gt;&gt; num2;
 	std::cout &lt;&lt; num1 &lt;&lt; <span class="st">&quot; / &quot;</span> &lt;&lt; num2
 	          &lt;&lt; <span class="st">&quot; = &quot;</span> &lt;&lt; num1 / num2 &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
@@ -225,8 +228,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="dt">int</span> main() {
 	std::cout &lt;&lt; <span class="st">&quot;Please enter two numbers seperated by whitespace:</span><span class="ch">\n</span><span class="st">&quot;</span>
-	<span class="dt">int</span> num1 = <span class="dv">0</span>;
-	<span class="dt">int</span> num2 = <span class="dv">0</span>;
+	<span class="kw">auto</span> num1 = <span class="dv">0</span>;
+	<span class="kw">auto</span> num2 = <span class="dv">0</span>;
 	std::cin &gt;&gt; num1 &gt;&gt; num2;
 	<span class="kw">if</span> (num2 != <span class="dv">0</span>) {
 		std::cout &lt;&lt; num1 &lt;&lt; <span class="st">&quot; / &quot;</span> &lt;&lt; num2
@@ -306,7 +309,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
-	<span class="dt">int</span> i = <span class="dv">0</span>;
+	<span class="kw">auto</span> i = <span class="dv">0</span>;
 
 	<span class="kw">while</span> (i != <span class="dv">3</span>) {
 		std::cout &lt;&lt; <span class="st">&quot;i still isn&#39;t 3.</span><span class="ch">\n</span><span class="st">&quot;</span>;
@@ -332,6 +335,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
+	<span class="co">// TODO: unsigned</span>
 	<span class="kw">for</span>(<span class="dt">int</span> i = <span class="dv">0</span>; i != <span class="dv">3</span>; ++i) {
 		std::cout &lt;&lt; <span class="st">&quot;i still isn&#39;t 3.</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	}
@@ -350,7 +354,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="ot">#include &lt;string&gt;</span>
 
 <span class="dt">int</span> main() {
-	std::string str = <span class="st">&quot;some string.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	<span class="kw">auto</span> str = std::string{<span class="st">&quot;some string.</span><span class="ch">\n</span><span class="st">&quot;</span>};
 	std::cout &lt;&lt; str;
 }</code></pre>
 <pre class="output"><code>&gt;&gt; some string.</code></pre>
@@ -359,12 +363,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="ot">#include &lt;string&gt;</span>
 
 <span class="dt">int</span> main() {
-	std::string str1 = <span class="st">&quot;foo&quot;</span>;
-	std::string str2 = <span class="st">&quot;bar&quot;</span>;
+	<span class="kw">auto</span> str1 = std::string{<span class="st">&quot;foo&quot;</span>};
+	<span class="kw">auto</span> str2 = std::string{<span class="st">&quot;bar&quot;</span>};
 	<span class="kw">if</span> (str1 == str2) {
 		std::cout &lt;&lt; <span class="st">&quot;ERROR: this should never happen!</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	}
-	std::string str3;  <span class="co">// str3 = &quot;&quot;</span>
+	<span class="kw">auto</span> str3 = std::string{}; <span class="co">// str3 = &quot;&quot;</span>
 	str3 = str1 + str2;
 	<span class="kw">if</span> (str3 == <span class="st">&quot;foobar&quot;</span>) {
 		std::cout &lt;&lt; <span class="st">&quot;Everything is fine!</span><span class="ch">\n</span><span class="st">&quot;</span>;
@@ -377,15 +381,14 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
-	<span class="dt">char</span> c1 = <span class="st">&#39;A&#39;</span>; <span class="co">// Note the single-quotes!!</span>
-	<span class="dt">char</span> c2 = <span class="st">&#39;B&#39;</span>;
+	<span class="kw">auto</span> c1 = <span class="st">&#39;A&#39;</span>; <span class="co">// Note the single-quotes!!</span>
+	<span class="kw">auto</span> c2 = <span class="st">&#39;B&#39;</span>; <span class="co">// a symbol encoded in them has type char</span>
 	<span class="kw">if</span> (c1 != c2) {
 		std::cout &lt;&lt; <span class="st">&quot;Comparission works!</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	}
-	<span class="kw">auto</span> c3 = <span class="st">&#39;C&#39;</span>; <span class="co">// A character in single-quotes has type char</span>
 
-	<span class="dt">char</span> c4 = <span class="dv">65</span>; <span class="co">// &#39;A&#39; has the value 65, so this works, but you</span>
-	              <span class="co">// shouldn&#39;t really do it</span>
+	<span class="kw">auto</span> c4 = <span class="dt">char</span>{<span class="dv">65</span>}; <span class="co">// &#39;A&#39; has the value 65, so this works, but you</span>
+	                    <span class="co">// shouldn&#39;t really do it</span>
 	std::cout &lt;&lt; c4 &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>; <span class="co">// newline is just one char, so this works</span>
 }</code></pre>
 <pre class="output"><code>&gt;&gt; Comparission works!
@@ -395,7 +398,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="ot">#include &lt;string&gt;</span>
 
 <span class="dt">int</span> main() {
-	std::string str = <span class="st">&quot;foobar&quot;</span>;
+	<span class="kw">auto</span> str = std::string{<span class="st">&quot;foobar&quot;</span>};
 	std::cout &lt;&lt; str[<span class="dv">0</span>] &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 	str[<span class="dv">1</span>] = <span class="st">&#39;O&#39;</span>;
 	std::cout &lt;&lt; str &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
@@ -412,9 +415,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="ot">#include &lt;string&gt;</span>
 
 <span class="dt">int</span> main() {
-	std::string str = <span class="st">&quot;foo&quot;</span>;
+	<span class="kw">auto</span> str = std::string{<span class="st">&quot;foo&quot;</span>};
 	std::cout &lt;&lt; <span class="st">&quot;std.size() = &quot;</span> &lt;&lt; str.size() &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-	<span class="kw">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; str.size(); ++i) {
+	<span class="kw">for</span> (<span class="kw">auto</span> i = <span class="dv">0u</span>; i &lt; str.size(); ++i) {
 		std::cout &lt;&lt; str[i] &lt;&lt; str.at(i);
 	}
 	std::cout &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
@@ -426,8 +429,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="ot">#include &lt;string&gt;</span>
 
 <span class="dt">int</span> main() {
-	std::string str1;
-	std::string str2;
+	<span class="kw">auto</span> str1 = std::string{};
+	<span class="kw">auto</span> str2 = std::string{};
 	std::cin &gt;&gt; str1 &gt;&gt; str2;
 	std::cout &lt;&lt; str1 &lt;&lt; <span class="st">&quot;, &quot;</span> &lt;&lt; str2 &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 }</code></pre>
@@ -440,19 +443,19 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="dt">int</span> main() {
 	<span class="co">// a vector of ints:</span>
-	std::vector&lt;<span class="dt">int</span>&gt; integers = {<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>};
+	<span class="kw">auto</span>  ints = std::vector&lt;<span class="dt">int</span>&gt;{<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>};
 
 	<span class="co">// a vector of strings:</span>
-	std::vector&lt;std::string&gt; strings = {<span class="st">&quot;Foo&quot;</span>, <span class="st">&quot;Bar&quot;</span>};
+	<span class="kw">auto</span> strings = std::vector&lt;std::string&gt;{<span class="st">&quot;Foo&quot;</span>, <span class="st">&quot;Bar&quot;</span>};
 }</code></pre>
 <p>Aside from reading, printing and concatenating with <code>+</code> all the things that we just learned about strings can also be done with <code>std::vector</code>:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;vector&gt;</span>
 <span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
-	std::vector&lt;<span class="dt">int</span>&gt; vec1 = {<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>};
+	<span class="kw">auto</span> vec1 = std::vector&lt;<span class="dt">int</span>&gt;{<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>};
 	std::cout &lt;&lt; vec[<span class="dv">1</span>] &lt;&lt; <span class="st">&quot;, &quot;</span> &lt;&lt; vec.at(<span class="dv">2</span>) &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-	std::vector&lt;<span class="dt">int</span>&gt; vec2 = {<span class="dv">2</span>, <span class="dv">3</span>};
+	<span class="kw">auto</span> vec2 = std::vector&lt;<span class="dt">int</span>&gt;{<span class="dv">2</span>, <span class="dv">3</span>};
 	<span class="kw">if</span> (vec1 != vec2) {
 		std::cout &lt;&lt; <span class="st">&quot;the vectors contain different elements</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	}
@@ -465,10 +468,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="dt">int</span> main() {
 	<span class="co">// a vector of 1000 integers:</span>
-	std::vector&lt;<span class="dt">int</span>&gt; vec1(<span class="dv">1000</span>);
+	<span class="kw">auto</span> vec1 = std::vector&lt;<span class="dt">int</span>&gt;(<span class="dv">1000</span>);
 
 	<span class="co">// a vector of 100 strings with value &quot;foo&quot;:</span>
-	std::vector&lt;std::string&gt; vec2(<span class="dv">100</span>, <span class="st">&quot;foo&quot;</span>);
+	<span class="kw">auto</span> vec2 = std::vector&lt;std::string&gt;(<span class="dv">100</span>, <span class="st">&quot;foo&quot;</span>);
 }</code></pre>
 <h2 id="foreach-loops">Foreach-Loops</h2>
 <p>We already know the for-loops and we have already seen how we can use them to iterate over all elements in a <code>std::vector</code> or <code>std::string</code>:</p>
@@ -477,8 +480,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="ot">#include &lt;string&gt;</span>
 
 <span class="dt">int</span> main() {
-	std::vector&lt;std::string&gt; vec = {<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>};
-	<span class="kw">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; vec.size(); ++i) {
+	<span class="kw">auto</span> vec = std::vector&lt;std::string&gt;{<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>};
+	<span class="kw">for</span> (<span class="kw">auto</span> i = <span class="dv">0u</span>; i &lt; vec.size(); ++i) {
 		std::cout &lt;&lt; vec[i] &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 	}
 }</code></pre>
@@ -491,22 +494,22 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="ot">#include &lt;string&gt;</span>
 
 <span class="dt">int</span> main() {
-	std::vector&lt;std::string&gt; vec = {<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>};
+	<span class="kw">auto</span> vec = std::vector&lt;std::string&gt;{<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>};
 	<span class="kw">for</span> (std::string str: vec) { <span class="co">// read: for each str in vec:</span>
 		std::cout &lt;&lt; str &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 	}
 }</code></pre>
 <pre class="output"><code>&gt;&gt; foo
 &gt;&gt; bar</code></pre>
-<p>Nobody will deny that this code is much cleaner and easier to follow, but we will encounter problems if we try to assign a new value to <code>str</code>: <code>str</code> is a copy of the <code>std::string</code> in the vector, so changing it won't change the value in the vector. Another problem is that the copy may be expensive if the string is large. Last but not least it is tedious to repeat the type that is already stated (in the definition of vec). The solution to these problems is to just write “<code>auto&amp;&amp;</code>” instead of the type. What this does exactly is quite advanced, but it will always do what you actually want it to do and even has the potential of being faster.</p>
+<p>Nobody will deny that this code is much cleaner and easier to follow, but we will encounter problems if we try to assign a new value to <code>str</code>: <code>str</code> is a copy of the <code>std::string</code> in the vector, so changing it won't change the value in the vector. Another problem is that the copy may be expensive if the string is large. Last but not least it is tedious to repeat the type that is already stated (in the definition of vec). The solution to these problems is to just write “<code>auto&amp;</code>” instead of the type. The ampersand (the “&amp;”) makes sure that <code>str</code> is not a copy of the element in the container, but just an alias (another name) for the element itself.</p>
 <p>So our final version looks like this:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;vector&gt;</span>
 <span class="ot">#include &lt;string&gt;</span>
 
 <span class="dt">int</span> main() {
-	std::vector&lt;std::string&gt; vec = {<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>};
-	<span class="kw">for</span> (<span class="kw">auto</span>&amp;&amp; str: vec) { <span class="co">// read: for each str in vec:</span>
+	<span class="kw">auto</span> vec = std::vector&lt;std::string&gt;{<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>};
+	<span class="kw">for</span> (<span class="kw">auto</span>&amp; str: vec) { <span class="co">// read: for each str in vec:</span>
 		std::cout &lt;&lt; str &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 	}
 }</code></pre>
@@ -523,7 +526,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Before you continue, you should do the training-tasks to get some basic feelings about how to program and how the language behaves. It is impossible to learn programming without writing code yourself.</p>
 <h2 id="training">Training</h2>
 <ul>
-<li>Write a programm that asks the user for their name and prints “Hello <em>&lt;username&gt;</em> ” after that.
+<li>Write a programm that asks the user for their name and prints “<code>Hello &lt;username&gt;</code>” after that.
 <ul>
 <li>Hint: Safe the name in a <code>std::string</code></li>
 </ul></li>

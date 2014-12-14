@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <style type="text/css">
+  body {
+  	max-width: 20cm;
+  	margin-left: auto;
+  	margin-right: auto;
+  	text-align: justify;
+  }
+  @media screen {
+  	body {
+  		font-family: sans;
+  	}
+  }
+  @media print {
+  	body {
+  		font-family: serif;
+  	}
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+  	font-family: sans;
+  }
+  
+  h1 {
+  	text-align: center;
+  	border-bottom: 2px solid gray;
+  }
+  
+  h2 {
+  	margin-top: 1cm;
+  	border-bottom: 2px dotted gray;
+  }
+  
+  blockquote {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: blue;
+  	border-style: solid;
+  	border-width: 2px;
+  	margin-left: 0;
+  	margin-right: 0;
+  	font-style: italic;
+  }
+  
+  code {
+  	font-size: 125%;
+  }
+  
+  pre.sourceCode {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: green;
+  	border-style: solid;
+  	border-width: 2px;
+  }
+  
+  pre.output {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: blue;
+  	border-style: solid;
+  	border-width: 2px;
+  }
+  
+  a.footnoteRef {
+  	text-decoration: none;
+  	color: blue;
+  }
+  
+  figure > img {
+  	width: 100%;
+  	height: auto;
+  }
+  
+  section.license {
+  	font-size: 90%;
+  	color: gray;
+  }
+  
+  section.license > a {
+  	color: gray;
+  }
+  
+  </style>
+</head>
+<body>
+<h1 id="containers">Containers</h1>
+<p>At this point we understand enough about the core-language in order to take a look at the standard-library. Until now we have already made use of things like the io-facilities, <code>std::vector</code> and <code>std::string</code>. This chapter will now try to get a somewhat more systematic view of what is already offered and how it can be used to it's best effect.</p>
+<p>While the standard-library of C++ is much smaller than the ones of some other languages, it is still to big to learn completeley in one attempt. It is therefore strongly recommended to occasionaly take some time and go reading references; sometimes one will come across real gems where there were none expected.</p>
+<h2 id="iterators">Iterators</h2>
+<p>Whenever we needed an arbitrary amount of elements so far, we resorted to <code>std::vector</code> without looking to deep into it's concepts and features. We already saw that we can copy them, request an element at a certain index, iterate over all elements and insert at the end:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;vector&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::vector&lt;<span class="dt">int</span>&gt; vec = {<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>};
+	vec.push_back(<span class="dv">4</span>);
+	<span class="kw">for</span> (<span class="kw">auto</span>&amp;&amp; elem: vec) {
+		std::cout &lt;&lt; elem &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	}
+	<span class="kw">auto</span> vec2 = vec; <span class="co">// copy</span>
+}</code></pre>
+<pre><code>&gt;&gt; 1
+&gt;&gt; 2
+&gt;&gt; 3
+&gt;&gt; 4</code></pre>
+<p>Usually <code>std::vector</code> is exactly what we want, but sometimes we would like to use different data-structures, because they are faster or have otherwise different semantics. The most important container aside from <code>std::vector</code> is probably <code>std::array</code> from the <code>&lt;array&gt;</code>-header. It is basically like <code>std::vector</code> except that the size is fixed at compile-time which implies that methods like <code>push_back</code> or <code>pop_back</code> do not exist for it. In exchange it can be faster, especially for very small element-counts.</p>
+<p>Another container from the stdlib is <code>std::list</code>. It is a so called doubly-linked-list and allows relatively cheap insertion in the middle of the sequence in exchange for much slower iteration and insertion at the end. In many real-world problems it is a much worse alternative compared to <code>std::vector</code> so you really shouldn't use it, unless <strong>measuring(!)</strong> shows that <code>std::vector</code> is the bottleneck for some problem and <code>std::list</code> vastly improves this.</p>
+<p>The reason for looking into <code>std::list</code> is at this point however not to actually use it, but because it points us to a problem that we didn't have so far: Since we cannot access an element in the middle of a list efficiently, the classtemplate doesn't offer us <code>operator[]</code> or <code>at()</code>. Instead it forces us to use the way more general <em>iterators</em>.</p>
+<p>Iterators are C++'s answer to the question how to represent a generic range. An iterator is basically an object that points to a certain object in a sequence. We can retrive that object or move the iterator on. For starters, let's look at the iterators of <code>std::vector</code>:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;vector&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::vector&lt;std::string&gt; vec = {<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>, <span class="st">&quot;baz&quot;</span>};
+	
+	<span class="co">// get an iterator that points to the first element</span>
+	<span class="co">// in the vector (1):</span>
+	std::vector&lt;std::string&gt;::iterator it = vec.begin();
+	
+	<span class="co">// retrive the element that the iterator points to</span>
+	<span class="co">// using the dereferencing-operator &#39;*&#39;:</span>
+	std::cout &lt;&lt; *it &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	
+	<span class="co">// since the iterator is not constant we can assign</span>
+	<span class="co">// new values through it too:</span>
+	*it = <span class="st">&quot;meow&quot;</span>;
+	std::cout &lt;&lt; *it &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	
+	<span class="co">// finally we can move the iterator to the next element</span>
+	<span class="co">// using the increment-operator:</span>
+	++it;
+	std::cout &lt;&lt; *it &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	
+	<span class="co">// To call a method on the referenced object, we can</span>
+	<span class="co">// either dereference it  first or just use the</span>
+	<span class="co">// arrow-operator:</span>
+	std::cout &lt;&lt; (*it).size() &lt;&lt; <span class="st">&quot;, &quot;</span> &lt;&lt; it-&gt;size() &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	
+	<span class="co">// finally we can compare iterators:</span>
+	<span class="kw">if</span> (it != vec.begin()) {
+		std::cout &lt;&lt; <span class="st">&quot;it doesn&#39;t point to the first &quot;</span>
+		             <span class="st">&quot;element anymore.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	}
+	<span class="kw">if</span> (it == ++(vec.begin())) {
+		std::cout &lt;&lt; <span class="st">&quot;it does instead point to the second.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	}
+}</code></pre>
+<pre class="output"><code>&gt;&gt; foo
+&gt;&gt; meow
+&gt;&gt; bar
+&gt;&gt; 3, 3
+&gt;&gt; it doesn&#39;t point to the first element anymore.
+&gt;&gt; it does instead point to the second.</code></pre>
+<p>Most of the above operations are supported by all iterators. The exceptions for this rule are comparission and ironically the methods to access the value: Some iterators only allow reading, but not writing those, others only allow writing, but not reading. Most however allow both.</p>
+<p>Another possible limitation is that we are not allowed to make a copy of the iterator, increment the original and then use the copy:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// this may be illegal for some iterators:</span>
+
+<span class="kw">auto</span> original_iterator = get_output_iterator();
+<span class="kw">auto</span> copy = original_iterator;
+
+++original_iterator;
+++copy;</code></pre>
+<p>Since this is quite complicated but doesn't help with understanding the basic ideas and concepts, let's put these iterators aside for a moment and focus on those that do allow these things.</p>
+<p>We call these <em>forward-iterators</em> since they allow us to traverse a sequence in a “forward order”.</p>
+<p>Forward-iterators are split into two categories: Const and mutable iterators. As the names suggest, you are not allowed to change a value through a const-iterator and the compiler enforces this. Obviously it is a good idea to prefer them to mutable iterators, <em>if</em> this is possible.</p>
+<p>Now, sometimes we want to do more than just access all elements of a sequence in ordern. A very simple thing that we might wish in addition is to move backwards. This is where <em>bidirectional-iterators</em> come into play.</p>
+<p>A bidirectional-iterator allows us to move backwards by using the decrement-operator; this is by the way the kind of iterator that <code>std::list</code> offers:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">std::list&lt;<span class="dt">int</span>&gt; my_list = {<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>};
+<span class="co">// to get an iterator to the first element, we call .begin():</span>
+<span class="kw">auto</span> it = list.begin(); <span class="co">// it -&gt; 1</span>
+++it; <span class="co">// it -&gt; 2</span>
+++it; <span class="co">// it -&gt; 3</span>
+--it; <span class="co">// it -&gt; 2</span>
+--it; <span class="co">// it -&gt; 1</span></code></pre>
+<p>So far, so unsurprising. It should also be noted, that we are always allowed to use the post-increment/decrement-operator, when we are allowed to use the pre-versions.</p>
+<p>Before we move on to the most powerfull iterator-category, let's take a look at how we can use iterators to represent a range.</p>
+<p>Obviously we need two iterators to do this: One to indicate the begining of the range and one to indicate the end. The obvious choice for this would be to use an iterator to the first element as start, and an iterator to the last element as end. This would hovever lead to several problems, one being that we could not represent an empty range.</p>
+<p>The solution to this problem is that we use a so called half-open range: The first iterator points to a valid element, but the last one points one element past the last valid one. If the range is empty, both iterators are equal. Let's take a look at this:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;list&gt;</span>
+
+<span class="dt">int</span> main() {
+	std::list&lt;<span class="dt">int</span>&gt; lst;
+	
+	<span class="co">// .end() returns the past-the-end-iterator:</span>
+	<span class="kw">if</span> (lst.begin() == lst.end()) {
+		std::cout &lt;&lt; <span class="st">&quot;The list is emtpy.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	}
+	
+	lst.push_back(<span class="dv">23</span>);
+	
+	<span class="kw">if</span> (lst.begin() != lst.end()) {
+		std::cout &lt;&lt; <span class="st">&quot;The list is not empty.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	}
+	
+	<span class="co">// this is how we can use iterators to iterate over</span>
+	<span class="co">// all elements of a sequence:</span>
+	<span class="kw">for</span> (<span class="kw">auto</span> it = lst.begin(); it != lst.end(); ++it){
+		std::cout &lt;&lt; *it;
+	}
+}</code></pre>
+<pre class="output"><code>&gt;&gt; The list is empty.
+&gt;&gt; The list is not empty.
+&gt;&gt; 23</code></pre>
+<p>Now that we have seen that it is time to look at the most powerfull iterators of all: <em>Random-access-iterators</em>.</p>
+<p>Random-access-iterators are iterators that allow moving more then one element in either direction and have the ordering-comparission-operators in addition to the equality-operators. Let's take a look at all these things in order.</p>
+<p>In order to move a random-access-iterator more than one element, we use the normal arithmetic operators (plus and minus):</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// the iterators of std::vector provide random-access,</span>
+<span class="co">// which is one of many reasons why std::vector is so</span>
+<span class="co">// awsome:</span>
+std::vector&lt;<span class="dt">int</span>&gt; vec = {<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>};
+
+<span class="kw">auto</span> it = vec.begin(); <span class="co">// it -&gt; 0</span>
+it += <span class="dv">3</span>; <span class="co">// it -&gt; 3</span>
+it -= <span class="dv">1</span>; <span class="co">// it -&gt; 2</span>
+
+<span class="co">// note that we can add negative offsets:</span>
+it += <span class="dv">-2</span>; <span class="co">// it -&gt; 1</span>
+
+<span class="kw">auto</span> it2 = it + <span class="dv">3</span>; <span class="co">// it2 -&gt; 4</span>
+it2 += <span class="dv">3</span>; <span class="co">// it2 = past-the-end-iterator</span></code></pre>
+<p>Concerning the comparission: In general we are only allowed to compare iterators that are part of the same range for anythying but equality. As one might expect, the iterators to elements that come earlier in a sequence compare smaller to iterators to later elements:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">std::vector&lt;<span class="dt">int</span>&gt; vec = {<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>};
+
+<span class="kw">auto</span> it1 = vec.begin();
+<span class="kw">auto</span> it2 = it1 + <span class="dv">3</span>;
+
+assert(it1 &lt; it2);</code></pre>
+<p>Before you continue, you should make sure, that you have understood at least the basic concepts of iterators, since large parts of the standard-library are basically built around them. Let's take a look at some examples for that:</p>
+<ul>
+<li>If we want to concatenate the contents of a container to a <code>std::vector</code>, we use iterators for that: <code>vec.insert(vec.end(), other_container.begin(), other_container.end());</code></li>
+<li>If we want to write our own container and want it to be usable with range-<code>for</code>, all we need to do is implement iterators and the appropriate <code>.begin()</code> and <code>.end()</code> member-functions.</li>
+<li>Whenever the standard-library provides functionality that is intended to be used with sequences, it works on iterators.</li>
+</ul>
+<h2 id="algorithms">Algorithms</h2>
+<h2 id="tuples-and-pairs">Tuples and Pairs</h2>
+<hr/>
+<section class="license">
+	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+		<img src="CC_BY_SA.png" height="31px" width="88px" alt="CC-BY-SA" align="left" hspace="2px"/>
+	</a>
+	This work from Florian Weber is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.<br/>
+</section>
+</body>
+</html>
