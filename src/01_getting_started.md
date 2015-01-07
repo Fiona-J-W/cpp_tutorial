@@ -171,11 +171,35 @@ int main() {
 ```output
 >> Please enter a number:
 << 42
->>You entered 42
+>> You entered 42
 ```
 
+Reading behaves somewhat similar to writing: We have a character-stream of incoming
+characters (usually from the keyboard) and push those into variables with a stream-operator.
 
-TODO: explanation
+To read more than one value, we can also chain these reads:
+
+```cpp
+#include <iostream>
+
+int main() {
+	auto i1 = 0;
+	auto i2 = 0;
+	auto i3 = 0;
+	std::cout << "Please enter three numbers:\n";
+	std::cin >> i1 >> i2 >> i3;
+	std::cout << "The sum of your numbers is " << i1+i2+i3 << "\n";
+}
+```
+```output
+>> Please enter three numbers:
+<< 23 42 5
+>> The sum of your numbers is 70
+```
+
+We will see later that we can read a lot of types other than integers, including the not
+yet covered strings that can store simple text.
+
 
 Conditional Execution
 ---------------------
@@ -297,7 +321,7 @@ be positive. At this point they had to calculate the sum of these two but wanted
 the sum was outside of the representable range of `int`. They did it somewhat like this:
 
 ```cpp
-int sum = a + b;
+auto sum = a + b;
 if (sum <= b) {
 	// error-handling
 }
@@ -377,7 +401,7 @@ Since this is quite theoretical, let's revisit the example that we used for the 
 
 int main() {
 	// TODO: unsigned
-	for(int i = 0; i != 3; ++i) {
+	for(auto i = 0; i != 3; ++i) {
 		std::cout << "i still isn't 3.\n";
 	}
 	std::cout << "i is now 3.\n";

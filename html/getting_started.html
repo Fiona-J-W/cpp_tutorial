@@ -206,8 +206,23 @@ code > span.er { color: #ff0000; font-weight: bold; }
 }</code></pre>
 <pre class="output"><code>&gt;&gt; Please enter a number:
 &lt;&lt; 42
-&gt;&gt;You entered 42</code></pre>
-<p>TODO: explanation</p>
+&gt;&gt; You entered 42</code></pre>
+<p>Reading behaves somewhat similar to writing: We have a character-stream of incoming characters (usually from the keyboard) and push those into variables with a stream-operator.</p>
+<p>To read more than one value, we can also chain these reads:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main() {
+	<span class="kw">auto</span> i1 = <span class="dv">0</span>;
+	<span class="kw">auto</span> i2 = <span class="dv">0</span>;
+	<span class="kw">auto</span> i3 = <span class="dv">0</span>;
+	std::cout &lt;&lt; <span class="st">&quot;Please enter three numbers:</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	std::cin &gt;&gt; i1 &gt;&gt; i2 &gt;&gt; i3;
+	std::cout &lt;&lt; <span class="st">&quot;The sum of your numbers is &quot;</span> &lt;&lt; i1+i2+i3 &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
+}</code></pre>
+<pre class="output"><code>&gt;&gt; Please enter three numbers:
+&lt;&lt; 23 42 5
+&gt;&gt; The sum of your numbers is 70</code></pre>
+<p>We will see later that we can read a lot of types other than integers, including the not yet covered strings that can store simple text.</p>
 <h2 id="conditional-execution">Conditional Execution</h2>
 <p>Let's write a program that prints the modulus of two numbers:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
@@ -294,7 +309,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>At this point it is time for the safety-instructions. C++ is a language that was designed to be very fast and portable which sometimes conflicts with ease of use. As a result the C++-standard explicitly does not always require a certain behavior for programs that contains a given construct.</p>
 <p>These constructs are almost always very questionable to start with and disallowing them is usually a good thing. Examples include overflowing an <code>int</code> (calculating a value that is outside the representable range of int, for example by executing “<code>2'000'000'000 + 2'000'000'000</code>”), reading uninitialized variables and accessing unowned memory. Possible behavior ranges from apperently doing what the programer expected, over randomly crashing to severe security-holes. Testing what happens and trusting that everything is fine won't work too, because the next version of your compiler might decide to do something completely different. To illustrate this, let's look at a real-world example:</p>
 <p>Postgresql, a very popular database, hat two integers <code>a</code> and <code>b</code> of type <code>int</code> that were both known to be positive. At this point they had to calculate the sum of these two but wanted to detect the case that the sum was outside of the representable range of <code>int</code>. They did it somewhat like this:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> sum = a + b;
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">auto</span> sum = a + b;
 <span class="kw">if</span> (sum &lt;= b) {
 	<span class="co">// error-handling</span>
 }</code></pre>
@@ -336,7 +351,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="dt">int</span> main() {
 	<span class="co">// TODO: unsigned</span>
-	<span class="kw">for</span>(<span class="dt">int</span> i = <span class="dv">0</span>; i != <span class="dv">3</span>; ++i) {
+	<span class="kw">for</span>(<span class="kw">auto</span> i = <span class="dv">0</span>; i != <span class="dv">3</span>; ++i) {
 		std::cout &lt;&lt; <span class="st">&quot;i still isn&#39;t 3.</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	}
 	std::cout &lt;&lt; <span class="st">&quot;i is now 3.</span><span class="ch">\n</span><span class="st">&quot;</span>;
