@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <style type="text/css">
+  body {
+  	max-width: 20cm;
+  	margin-left: auto;
+  	margin-right: auto;
+  	text-align: justify;
+  }
+  @media screen {
+  	body {
+  		font-family: sans;
+  	}
+  }
+  @media print {
+  	body {
+  		font-family: serif;
+  	}
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+  	font-family: sans;
+  }
+  
+  h1 {
+  	text-align: center;
+  	border-bottom: 2px solid gray;
+  }
+  
+  h2 {
+  	margin-top: 1cm;
+  	border-bottom: 2px dotted gray;
+  }
+  
+  blockquote {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: blue;
+  	border-style: solid;
+  	border-width: 2px;
+  	margin-left: 0;
+  	margin-right: 0;
+  	font-style: italic;
+  }
+  
+  code {
+  	font-size: 125%;
+  }
+  
+  pre.sourceCode {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: green;
+  	border-style: solid;
+  	border-width: 2px;
+  }
+  
+  pre.output {
+  	background-color: #fbfbfb;
+  	padding: 0.3cm;
+  	border-radius: 0.2cm;
+  	border-color: blue;
+  	border-style: solid;
+  	border-width: 2px;
+  }
+  
+  a.footnoteRef {
+  	text-decoration: none;
+  	color: blue;
+  }
+  
+  figure > img {
+  	width: 100%;
+  	height: auto;
+  }
+  
+  section.license {
+  	font-size: 90%;
+  	color: gray;
+  }
+  
+  section.license > a {
+  	color: gray;
+  }
+  
+  </style>
+</head>
+<body>
+<h1 id="more-basics">More Basics</h1>
+<p>In the last chapter we learned about some of the most important basics, that we absolutely need to use C++; many of them apply with little changes to other languages. This chapter now intends to deepen this knowledge and add some information that are more specific to C++ and provide more structure.</p>
+<h2 id="integers">Integers</h2>
+<p>So far we know <code>int</code>; it is an integer-type that is usually 4 bytes wide and can therefore hold values between about minus and plus two billion. Historically <code>int</code> has been considered a reasonable default-choice for integers. It did however have some problems from day one on:</p>
+<ul>
+<li>While <code>int</code> is <strong>usually</strong> four bytes wide, this is totaly plattform-dependent, making it a bad idea to use <code>int</code> for truly plattform-indipendent code.</li>
+<li>When 64-Bit computers became popular, compiler-vendors decided agains increasing the size of <code>int</code> to eight byte, making it a realistic problem that there may be strings or vectors with elements that <strong>cannot</strong> be adressed with <code>int</code> <strong>at all</strong>.</li>
+<li><code>int</code>s can be negative, but can get super-problematic if negative values don't make any sense (indexes into vectors for example).</li>
+</ul>
+<p>Since these problems are not recent discoveries, C++ has answers to all of them. Some of those are however imperfect too or have similar problems, which is why we won't cover the topic of integer-types completely for now, but will just take a large enough look at it, to equip ourselves with the subset that is actually usefull.</p>
+<p>First we will take a look at integers of different width: Sometimes using 4 bytes for a number would be a complete waste of spaces; sometimes 4 bytes are not nearly enough to store all numbers that we might come across. To accomodate for those needs C++ also has the integer-types <code>short</code>, <code>long</code> and <code>long long</code>; additionally <code>char</code> may is used as integer as well. Since their size is however non standardized as well, we won't use those directly. Instead the header <code>&lt;cstdint&gt;</code> provides us with aliases that finally give us what we want:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;cstdint&gt;</span>
+
+<span class="dt">int</span> main() {
+	<span class="kw">auto</span> one_byte_integer   = std::int8_t{};  <span class="co">// value: 0</span>
+	<span class="kw">auto</span> two_byte_integer   = std::int16_t{<span class="dv">23</span>};
+	<span class="kw">auto</span> four_byte_integer  = std::int32_t{<span class="dv">42</span>};
+	<span class="kw">auto</span> eight_byte_integer = std::int64_t{<span class="dv">-5</span>};
+}</code></pre>
+<p>Note that we have to state the type at the right side of the initializations, otherwise the default (<code>int</code>) would be used which is not what we want here.</p>
+<p>This solves problem number one. The second problem is that we all of those integer-types can store negative values, which sometimes wouldn't make any sense. If we want to know for sure that this is not the case, we can use the unsigned-family: All the core-language-types can be prefixed with <code>unsigned</code> to annotate that they won't store negative numbers. Instead they may store somewhat bigger positive numbers (the maximum of the signed version times two plus one). Be aware that this brings some problems with it: If you subtract one from zero, the the numbers will wrap around and result in the biggest possible value of that type (unlike for signed integers, this is guaranteed by the standard instead of undefined behavior).</p>
+<p>Let's take a look at code:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main() {
+	<span class="co">// unsigned without further type means unsigned int:</span>
+	<span class="kw">auto</span> u1 = <span class="dt">unsigned</span>{}; <span class="co">// value: 0</span>
+	
+	<span class="co">// alternatively we may add a u after a numer</span>
+	<span class="co">// to make it to an unsigned int:</span>
+	<span class="kw">auto</span> u2 = <span class="dv">42u</span>;
+	
+	<span class="co">// if we want to state the complete type we have</span>
+	<span class="co">// to use parenthesis because it consists of two</span>
+	<span class="co">// words:</span>
+	<span class="kw">auto</span> u3 = (<span class="dt">unsigned</span> <span class="dt">int</span>){}; <span class="co">// 0</span>
+
+	<span class="co">// Just for demonstration how you can use the</span>
+	<span class="co">// other unsigned integers:</span>
+	<span class="kw">auto</span> u2 = (<span class="dt">unsigned</span> <span class="dt">short</span>){<span class="dv">23</span>};
+	<span class="kw">auto</span> u3 = (<span class="dt">unsigned</span> <span class="dt">long</span>){<span class="dv">1234567890</span>};
+}</code></pre>
+<p>Obviously the parenthesis are ugly and we are back at the problem of the unspecified sizes. The answer is the same that we already got for the signed integers: “Use the <code>&lt;cstdint&gt;</code>-header!”</p>
+<p>The unsigned integers follow the same naming-scheme that signed ones do, except for an added ‘u’ in front of the name:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;cstdint&gt;</span>
+
+<span class="dt">int</span> main() {
+	<span class="kw">auto</span> one_byte_integer   = std::uint8_t{};  <span class="co">// value: 0</span>
+	<span class="kw">auto</span> two_byte_integer   = std::uint16_t{<span class="dv">23</span>};
+	<span class="kw">auto</span> four_byte_integer  = std::uint32_t{<span class="dv">42</span>};
+	<span class="kw">auto</span> eight_byte_integer = std::uint64_t{<span class="dv">-5</span>};
+}</code></pre>
+<p>It should be mentioned for completeness, that there is also a <code>signed</code>-keyword which may be used instead of the <code>unsigned</code>-keyword and has the obvious meaning. Since most integer types are however guaranteed to be signed from the start, it doesn't have any effect at all most of the time. The one exception to that rule is <code>char</code>:</p>
+<p>Unlike all other integer-types, <code>char</code> and <code>signed char</code> are not different names for the same type, but different types. In fact it is not guaranteed that <code>char</code> is signed (it will most likely be on your plattform, but there are definitely others for which this is not the case). Basically this is just another reason to use <code>std::int8_t</code> and <code>std::uint8_t</code> if you need integers that are one byte wide and only use <code>char</code> if you want a character.</p>
+<p>// TODO: size_t, signed/unsigned-conversions, integer-promotion</p>
+<h2 id="auto"><code>auto</code></h2>
+<hr/>
+<section class="license">
+	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+		<img src="CC_BY_SA.png" height="31px" width="88px" alt="CC-BY-SA" align="left" hspace="2px"/>
+	</a>
+	This work from Florian Weber is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.<br/>
+</section>
+</body>
+</html>

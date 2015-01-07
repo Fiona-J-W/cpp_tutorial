@@ -36,6 +36,7 @@ Chapters
 --------
 
 * [Getting Started](getting_started.html)
+* [More Basics](more_basics.html)
 * [Functions](functions.html)
 * [References](references.html)
 * [Const](const.html)
