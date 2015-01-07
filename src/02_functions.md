@@ -19,7 +19,7 @@ int main() {
 	for (auto x: vec) {
 		if (x<smallest_element) {
 			smallest_element = x;
-		} 
+		}
 	}
 	std::cout << "smallest element is " << smallest_element << '\n';
 }
