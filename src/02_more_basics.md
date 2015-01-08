@@ -121,7 +121,7 @@ just another reason to use `std::int8_t` and `std::uint8_t`
 if you need integers that are one byte wide and only use
 `char` if you want a character.
 
-// TODO: size_t, signed/unsigned-conversions, integer-promotion
+TODO: size_t, warnings about signed/unsigned-conversions and integer-promotions
 
 `auto`
 ----
