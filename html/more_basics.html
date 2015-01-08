@@ -164,7 +164,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	<span class="kw">auto</span> one_byte_integer   = std::uint8_t{};  <span class="co">// value: 0</span>
 	<span class="kw">auto</span> two_byte_integer   = std::uint16_t{<span class="dv">23</span>};
 	<span class="kw">auto</span> four_byte_integer  = std::uint32_t{<span class="dv">42</span>};
-	<span class="kw">auto</span> eight_byte_integer = std::uint64_t{<span class="dv">-5</span>};
+	<span class="kw">auto</span> eight_byte_integer = std::uint64_t{<span class="dv">5</span>};
 }</code></pre>
 <p>It should be mentioned for completeness, that there is also a <code>signed</code>-keyword which may be used instead of the <code>unsigned</code>-keyword and has the obvious meaning. Since most integer types are however guaranteed to be signed from the start, it doesn't have any effect at all most of the time. The one exception to that rule is <code>char</code>:</p>
 <p>Unlike all other integer-types, <code>char</code> and <code>signed char</code> are not different names for the same type, but different types. In fact it is not guaranteed that <code>char</code> is signed (it will most likely be on your plattform, but there are definitely others for which this is not the case). Basically this is just another reason to use <code>std::int8_t</code> and <code>std::uint8_t</code> if you need integers that are one byte wide and only use <code>char</code> if you want a character.</p>

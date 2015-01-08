@@ -101,7 +101,7 @@ int main() {
 	auto one_byte_integer   = std::uint8_t{};  // value: 0
 	auto two_byte_integer   = std::uint16_t{23};
 	auto four_byte_integer  = std::uint32_t{42};
-	auto eight_byte_integer = std::uint64_t{-5};
+	auto eight_byte_integer = std::uint64_t{5};
 }
 ```
 
