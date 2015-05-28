@@ -19,11 +19,10 @@ ensures, that it will not be changed. Let's start by looking at const variables,
 #include <iostream>
 #include <string>
 
-int main()
-{
-	const int zero = 0;
-	const int one = 1;
-	const std::string str = "some const string";
+int main() {
+	const auto zero = 0;
+	const auto one = 1;
+	const auto str = std::string{"some const string"};
 	
 	// reading and printing constants is perfectly fine:
 	std::cout << "zero=" << zero << ", one=" << one
@@ -66,9 +65,8 @@ examples:
 ```cpp
 #include <iostream>
 
-int main()
-{
-	for(double m = 0.0; m <= 2.0; m+=0.5) {
+int main() {
+	for(auto m = 0.0; m <= 2.0; m+=0.5) {
 		std::cout << m << "kg create " << m * 9.81
 		          << " newton of force.\n";
 	}
@@ -86,13 +84,12 @@ int main()
 #include <iostream>
 
 //gravitational_acceleration of earth
-const double GRAVITATIONAL_ACCELERATION = 9.81;
+const double g_earth = 9.81;
 
-int main()
-{
+int main() {
 	for(double m = 0.0; m <= 2.0; m+=0.5) {
 		std::cout << m << "kg create "
-		          << m * GRAVITATIONAL_ACCELERATION 
+		          << m * g_earth
 		          << " newton of force.\n";
 	}
 }
@@ -121,28 +118,27 @@ variable may not be changed through this handle:
 ```cpp
 #include <iostream>
 
-int main()
-{
-	int x = 0;
-	const int y = 1;
+int main() {
+	auto x = 0;
+	const auto y = 1;
 	
-	int& z = x;
+	auto& z = x;
 	
-	const int& cref1 = x;
-	const int& cref2 = y;
-	const int& cref3 = z;
+	const auto& cref1 = x;
+	const auto& cref2 = y;
+	const auto& cref3 = z;
 	
-	// int& illegal_ref1 = y; // error
-	// int& illegal_ref3 = cref1; // error
+	// auto& illegal_ref1 = y; // error
+	// auto& illegal_ref3 = cref1; // error
 	
 	std::cout << "x=" << x << ", y=" << y << ", z=" << z
-		<< ", cref1=" << cref1 << ", cref2=" << cref2 
+		<< ", cref1=" << cref1 << ", cref2=" << cref2
 		<< ", cref3=" << cref3 << '\n';
 	
 	x = 10;
 	
 	std::cout << "x=" << x << ", y=" << y << ", z=" << z
-		<< ", cref1=" << cref1 << ", cref2=" << cref2 
+		<< ", cref1=" << cref1 << ", cref2=" << cref2
 		<< ", cref3=" << cref3 << '\n';
 	
 	// ++ref1 // error
@@ -171,10 +167,9 @@ ease of reasoning about possible changes to variables.
 ```cpp
 #include <iostream>
 #include <vector>
- 
+
 //pass by const-reference
-int smallest_element(const std::vector<int>& vec)
-{
+int smallest_element(const std::vector<int>& vec) {
 	auto smallest_value = vec[0];
 	for (auto x: vec) {
 		if (x<smallest_value) {
@@ -186,8 +181,8 @@ int smallest_element(const std::vector<int>& vec)
  
 int main()
 {
-	std::vector<int> vec;
-	for(size_t i=0; i < 10000000; ++i) {
+	auto vec = std::vector<int>{};
+	for(auto i = -1'000'000; i < 1'000'000; ++i) {
 		vec.push_back(i);
 	}
 	// getting a const reference to any variable is trivial,
@@ -213,26 +208,23 @@ argument is just a temporary value like in the following code:
 
 ```cpp
 #include <iostream>
-#include <locale> // for toupper()
+#include <cctype> // for toupper()
 #include <string>
 
-std::string get_some_string()
-{
+std::string get_some_string() {
 	return "some very long string";
 }
 
-std::string make_loud(std::string str)
-{
-	for(char& c: str){
+std::string make_loud(std::string str) {
+	for(auto& c: str){
 		// toupper converts every character to it's equivalent
 		// uppercase-character
-		c = std::toupper(c, std::locale{});
+		c = std::toupper(c);
 	}
 	return str;
 }
 
-int main()
-{
+int main() {
 	std::cout << make_loud(get_some_string()) << '\n';
 }
 ```
@@ -246,3 +238,4 @@ want to change the original (often the only reasonable thing). On the other hand
 instance changing the original would not be a problem, since it is only a temporary value. The great
 thing at this point is, that our compiler knows this and will in fact not create a copy for this but
 just “move” the string in and tell the function: “This is as good as a copy; change it as you want.”
+

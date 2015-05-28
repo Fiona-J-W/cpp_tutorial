@@ -124,11 +124,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;string&gt;</span>
 
-<span class="dt">int</span> main()
-{
-	<span class="dt">const</span> <span class="dt">int</span> zero = <span class="dv">0</span>;
-	<span class="dt">const</span> <span class="dt">int</span> one = <span class="dv">1</span>;
-	<span class="dt">const</span> std::string str = <span class="st">&quot;some const string&quot;</span>;
+<span class="dt">int</span> main() {
+	<span class="dt">const</span> <span class="kw">auto</span> zero = <span class="dv">0</span>;
+	<span class="dt">const</span> <span class="kw">auto</span> one = <span class="dv">1</span>;
+	<span class="dt">const</span> <span class="kw">auto</span> str = std::string{<span class="st">&quot;some const string&quot;</span>};
 	
 	<span class="co">// reading and printing constants is perfectly fine:</span>
 	std::cout &lt;&lt; <span class="st">&quot;zero=&quot;</span> &lt;&lt; zero &lt;&lt; <span class="st">&quot;, one=&quot;</span> &lt;&lt; one
@@ -155,9 +154,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>On the other hand constants are almost always better then literal constants. Consider the following examples:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
-<span class="dt">int</span> main()
-{
-	<span class="kw">for</span>(<span class="dt">double</span> m = <span class="fl">0.</span><span class="dv">0</span>; m &lt;= <span class="fl">2.</span><span class="dv">0</span>; m+=<span class="fl">0.</span><span class="dv">5</span>) {
+<span class="dt">int</span> main() {
+	<span class="kw">for</span>(<span class="kw">auto</span> m = <span class="fl">0.</span><span class="dv">0</span>; m &lt;= <span class="fl">2.</span><span class="dv">0</span>; m+=<span class="fl">0.</span><span class="dv">5</span>) {
 		std::cout &lt;&lt; m &lt;&lt; <span class="st">&quot;kg create &quot;</span> &lt;&lt; m * <span class="fl">9.</span><span class="dv">81</span>
 		          &lt;&lt; <span class="st">&quot; newton of force.</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	}
@@ -170,13 +168,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="co">//gravitational_acceleration of earth</span>
-<span class="dt">const</span> <span class="dt">double</span> GRAVITATIONAL_ACCELERATION = <span class="fl">9.</span><span class="dv">81</span>;
+<span class="dt">const</span> <span class="dt">double</span> g_earth = <span class="fl">9.</span><span class="dv">81</span>;
 
-<span class="dt">int</span> main()
-{
+<span class="dt">int</span> main() {
 	<span class="kw">for</span>(<span class="dt">double</span> m = <span class="fl">0.</span><span class="dv">0</span>; m &lt;= <span class="fl">2.</span><span class="dv">0</span>; m+=<span class="fl">0.</span><span class="dv">5</span>) {
 		std::cout &lt;&lt; m &lt;&lt; <span class="st">&quot;kg create &quot;</span>
-		          &lt;&lt; m * GRAVITATIONAL_ACCELERATION 
+		          &lt;&lt; m * g_earth
 		          &lt;&lt; <span class="st">&quot; newton of force.</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	}
 }</code></pre>
@@ -190,28 +187,27 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>At this point we understand how constant values work. The next step are constant references. We recall that a reference is an alias for a variable. If we add constness to it, we annotate, that the aliased variable may not be changed through this handle:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
-<span class="dt">int</span> main()
-{
-	<span class="dt">int</span> x = <span class="dv">0</span>;
-	<span class="dt">const</span> <span class="dt">int</span> y = <span class="dv">1</span>;
+<span class="dt">int</span> main() {
+	<span class="kw">auto</span> x = <span class="dv">0</span>;
+	<span class="dt">const</span> <span class="kw">auto</span> y = <span class="dv">1</span>;
 	
-	<span class="dt">int</span>&amp; z = x;
+	<span class="kw">auto</span>&amp; z = x;
 	
-	<span class="dt">const</span> <span class="dt">int</span>&amp; cref1 = x;
-	<span class="dt">const</span> <span class="dt">int</span>&amp; cref2 = y;
-	<span class="dt">const</span> <span class="dt">int</span>&amp; cref3 = z;
+	<span class="dt">const</span> <span class="kw">auto</span>&amp; cref1 = x;
+	<span class="dt">const</span> <span class="kw">auto</span>&amp; cref2 = y;
+	<span class="dt">const</span> <span class="kw">auto</span>&amp; cref3 = z;
 	
-	<span class="co">// int&amp; illegal_ref1 = y; // error</span>
-	<span class="co">// int&amp; illegal_ref3 = cref1; // error</span>
+	<span class="co">// auto&amp; illegal_ref1 = y; // error</span>
+	<span class="co">// auto&amp; illegal_ref3 = cref1; // error</span>
 	
 	std::cout &lt;&lt; <span class="st">&quot;x=&quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&quot;, y=&quot;</span> &lt;&lt; y &lt;&lt; <span class="st">&quot;, z=&quot;</span> &lt;&lt; z
-		&lt;&lt; <span class="st">&quot;, cref1=&quot;</span> &lt;&lt; cref1 &lt;&lt; <span class="st">&quot;, cref2=&quot;</span> &lt;&lt; cref2 
+		&lt;&lt; <span class="st">&quot;, cref1=&quot;</span> &lt;&lt; cref1 &lt;&lt; <span class="st">&quot;, cref2=&quot;</span> &lt;&lt; cref2
 		&lt;&lt; <span class="st">&quot;, cref3=&quot;</span> &lt;&lt; cref3 &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 	
 	x = <span class="dv">10</span>;
 	
 	std::cout &lt;&lt; <span class="st">&quot;x=&quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&quot;, y=&quot;</span> &lt;&lt; y &lt;&lt; <span class="st">&quot;, z=&quot;</span> &lt;&lt; z
-		&lt;&lt; <span class="st">&quot;, cref1=&quot;</span> &lt;&lt; cref1 &lt;&lt; <span class="st">&quot;, cref2=&quot;</span> &lt;&lt; cref2 
+		&lt;&lt; <span class="st">&quot;, cref1=&quot;</span> &lt;&lt; cref1 &lt;&lt; <span class="st">&quot;, cref2=&quot;</span> &lt;&lt; cref2
 		&lt;&lt; <span class="st">&quot;, cref3=&quot;</span> &lt;&lt; cref3 &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 	
 	<span class="co">// ++ref1 // error</span>
@@ -229,10 +225,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>With this knowledge it is pretty easy to solve our initial problem of passing arguments to functions by reference: We just pass them by <code>const</code> reference which unites the performance-advantage with the ease of reasoning about possible changes to variables.</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;vector&gt;</span>
- 
+
 <span class="co">//pass by const-reference</span>
-<span class="dt">int</span> smallest_element(<span class="dt">const</span> std::vector&lt;<span class="dt">int</span>&gt;&amp; vec)
-{
+<span class="dt">int</span> smallest_element(<span class="dt">const</span> std::vector&lt;<span class="dt">int</span>&gt;&amp; vec) {
 	<span class="kw">auto</span> smallest_value = vec[<span class="dv">0</span>];
 	<span class="kw">for</span> (<span class="kw">auto</span> x: vec) {
 		<span class="kw">if</span> (x&lt;smallest_value) {
@@ -244,8 +239,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
  
 <span class="dt">int</span> main()
 {
-	std::vector&lt;<span class="dt">int</span>&gt; vec;
-	<span class="kw">for</span>(size_t i=<span class="dv">0</span>; i &lt; <span class="dv">10000000</span>; ++i) {
+	<span class="kw">auto</span> vec = std::vector&lt;<span class="dt">int</span>&gt;{};
+	<span class="kw">for</span>(<span class="kw">auto</span> i = <span class="dv">-1&#39;000&#39;000</span>; i &lt; <span class="dv">1&#39;000&#39;000</span>; ++i) {
 		vec.push_back(i);
 	}
 	<span class="co">// getting a const reference to any variable is trivial,</span>
@@ -261,26 +256,23 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul>
 <p>The rationale for this rule is simple: Big copies are very expensive, so you should avoid them. But if you need to make one anyways, passing by value enables the language to create much faster code if the argument is just a temporary value like in the following code:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
-<span class="ot">#include &lt;locale&gt; </span><span class="co">// for toupper()</span>
+<span class="ot">#include &lt;cctype&gt; </span><span class="co">// for toupper()</span>
 <span class="ot">#include &lt;string&gt;</span>
 
-std::string get_some_string()
-{
+std::string get_some_string() {
 	<span class="kw">return</span> <span class="st">&quot;some very long string&quot;</span>;
 }
 
-std::string make_loud(std::string str)
-{
-	<span class="kw">for</span>(<span class="dt">char</span>&amp; c: str){
+std::string make_loud(std::string str) {
+	<span class="kw">for</span>(<span class="kw">auto</span>&amp; c: str){
 		<span class="co">// toupper converts every character to it&#39;s equivalent</span>
 		<span class="co">// uppercase-character</span>
-		c = std::toupper(c, std::locale{});
+		c = std::toupper(c);
 	}
 	<span class="kw">return</span> str;
 }
 
-<span class="dt">int</span> main()
-{
+<span class="dt">int</span> main() {
 	std::cout &lt;&lt; make_loud(get_some_string()) &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 }</code></pre>
 <pre><code>&gt;&gt; SOME VERY LONG STRING</code></pre>
