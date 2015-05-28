@@ -7,9 +7,8 @@ Let's look at our `smallest_element`-function again:
 ```cpp
 #include <vector>
 #include <iostream>
- 
-int smallest_element(std::vector<int> vec)
-{
+
+int smallest_element(std::vector<int> vec) {
 	auto smallest_value = vec[0];
 	for (auto x: vec) {
 		if (x<smallest_value) {
@@ -18,9 +17,8 @@ int smallest_element(std::vector<int> vec)
 	}
 	return smallest_value;
 }
- 
-int main()
-{
+
+int main() {
 	auto vec = std::vector<int>{};
 	for(auto i = -1'000'000; i < 1'000'000; ++i) {
 		vec.push_back(i);
@@ -48,8 +46,7 @@ The easiest way to understand them is probably some code:
 ```cpp
 #include <iostream>
 
-int main()
-{
+int main() {
 	auto x = 0; // a normal int
 	
 	auto& ref = x;
@@ -108,8 +105,7 @@ function. The solution is now very straightforward:
 
 // pass a reference instead of a value:
 //                                   ↓
-int smallest_element(std::vector<int>& vec)
-{
+int smallest_element(std::vector<int>& vec) {
 	auto smallest_value = vec[0];
 	for (auto x: vec) {
 		if (x<smallest_value) {
@@ -118,9 +114,8 @@ int smallest_element(std::vector<int>& vec)
 	}
 	return smallest_value;
 }
- 
-int main()
-{
+
+int main() {
 	auto vec = std::vector<int>{};
 	for(size_t i=-1'000'000; i < 1'000'000; ++i) {
 		vec.push_back(i);
@@ -143,13 +138,11 @@ change the value of the original too:
 ```cpp
 #include <iostream>
 
-void increase(int& n)
-{
+void increase(int& n) {
 	n += 10;
 }
 
-int main()
-{
+int main() {
 	auto x = 0;
 	std::cout << "the value of x is " << x << '\n';
 	increase(x);
