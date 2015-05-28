@@ -1,4 +1,13 @@
 
+***WARNING: This tutorial is still under development. It must not be used for actual learning at
+this point.***
+
+It should furthermore be noted, that it is written for use with pandoc-marcdown and should
+therefore not be read on github directly but on the [official site](http://cpp.florianjw.de/)
+which is adfree, works without Javascript and the only kind of tracking it does is 
+keeping the webservers access.log. HTTPS will be supported once [Let's encrypt](https://letsencrypt.org/)
+arrives.
+
 Top-Down C++-Tutorial
 =====================
 
