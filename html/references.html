@@ -134,15 +134,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
  
 <span class="dt">int</span> main()
 {
-	std::vector&lt;<span class="dt">int</span>&gt; vec;
-	<span class="kw">for</span>(size_t i=<span class="dv">0</span>; i &lt; <span class="dv">10000000</span>; ++i) {
+	<span class="kw">auto</span> vec = std::vector&lt;<span class="dt">int</span>&gt;{};
+	<span class="kw">for</span>(<span class="kw">auto</span> i = <span class="dv">-1&#39;000&#39;000</span>; i &lt; <span class="dv">1&#39;000&#39;000</span>; ++i) {
 		vec.push_back(i);
 	}
 
 	std::cout &lt;&lt; <span class="st">&quot;smallest element of vec is &quot;</span>
 	          &lt;&lt; smallest_element(vec) &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 }</code></pre>
-<pre><code>&gt;&gt; smallest element of vec is 0</code></pre>
+<pre><code>&gt;&gt; smallest element of vec is -1000000</code></pre>
 <p>The problem that we face here is somewhat non-obvious: Remember that the arguments to a function are copied. While this is no problem for a single integer, we do not want to copy a big vector if we can avoid it. If we examine the code we see, that there wouldn't be any problem if <code>smallest_element</code> operated on the original vector instead of a copy.</p>
 <p>This is where references come into play.</p>
 <p>A reference is an alias for another variable. It must therefore be initialized with one the moment it is constructed. It is not possible to make it alias another variable after that. The easiest way to understand them is probably some code:</p>
@@ -150,12 +150,13 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="dt">int</span> main()
 {
-	<span class="dt">int</span> x = <span class="dv">0</span>; <span class="co">// a normal integer</span>
+	<span class="kw">auto</span> x = <span class="dv">0</span>; <span class="co">// a normal int</span>
 	
-	<span class="dt">int</span>&amp; ref = x;
-	<span class="co">// a reference to x. Note that the type is </span>
-	<span class="co">// written almost identical with the exception</span>
-	<span class="co">// of the &#39;&amp;&#39; that makes ref a reference.</span>
+	<span class="kw">auto</span>&amp; ref = x;
+	<span class="co">// a reference to x. Note that it is created similar</span>
+	<span class="co">// to variables, except that we append a `&amp;` to the auto</span>
+	<span class="co">// (Or to the type if you don&#39;t use auto:</span>
+	<span class="co">// int&amp; ref = x;)</span>
 	
 	std::cout &lt;&lt; <span class="st">&quot;x=&quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&quot;, ref=&quot;</span> &lt;&lt; ref &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 	
@@ -165,7 +166,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	ref = <span class="dv">4</span>;
 	std::cout &lt;&lt; <span class="st">&quot;x=&quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&quot;, ref=&quot;</span> &lt;&lt; ref &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 	
-	<span class="dt">int</span> y = ref;
+	<span class="kw">auto</span> y = ref;
 	std::cout &lt;&lt; <span class="st">&quot;x=&quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&quot;, y=&quot;</span> &lt;&lt; y
 	          &lt;&lt; <span class="st">&quot;, ref=&quot;</span> &lt;&lt; ref &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 
@@ -209,15 +210,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
  
 <span class="dt">int</span> main()
 {
-	std::vector&lt;<span class="dt">int</span>&gt; vec;
-	<span class="kw">for</span>(size_t i=<span class="dv">0</span>; i &lt; <span class="dv">10000000</span>; ++i) {
+	<span class="kw">auto</span> vec = std::vector&lt;<span class="dt">int</span>&gt;{};
+	<span class="kw">for</span>(size_t i=<span class="dv">-1&#39;000&#39;000</span>; i &lt; <span class="dv">1&#39;000&#39;000</span>; ++i) {
 		vec.push_back(i);
 	}
 	<span class="co">// vec is automatically passed as reference:</span>
 	std::cout &lt;&lt; <span class="st">&quot;smallest element of vec is &quot;</span>
 	          &lt;&lt; smallest_element(vec) &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 }</code></pre>
-<pre><code>&gt;&gt; smallest element of vec is 0</code></pre>
+<pre><code>&gt;&gt; smallest element of vec is -1000000</code></pre>
 <p>We see that it doesn't make any difference from the callside, whether a function copies it's arguments (this is called ‘pass by value’) or just uses the original (‘pass by reference’).</p>
 <p>Aside from the fact that passing by reference is often faster than passing by value, it allows us to change the value of the original too:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
@@ -229,7 +230,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="dt">int</span> main()
 {
-	<span class="dt">int</span> x = <span class="dv">0</span>;
+	<span class="kw">auto</span> x = <span class="dv">0</span>;
 	std::cout &lt;&lt; <span class="st">&quot;the value of x is &quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 	increase(x);
 	std::cout &lt;&lt; <span class="st">&quot;the value of x is &quot;</span> &lt;&lt; x &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;

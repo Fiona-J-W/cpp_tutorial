@@ -21,8 +21,8 @@ int smallest_element(std::vector<int> vec)
  
 int main()
 {
-	std::vector<int> vec;
-	for(size_t i=0; i < 10000000; ++i) {
+	auto vec = std::vector<int>{};
+	for(auto i = -1'000'000; i < 1'000'000; ++i) {
 		vec.push_back(i);
 	}
 
@@ -31,7 +31,7 @@ int main()
 }
 ```
 ```
->> smallest element of vec is 0
+>> smallest element of vec is -1000000
 ```
 
 The problem that we face here is somewhat non-obvious: Remember that the arguments to a function are
@@ -50,12 +50,13 @@ The easiest way to understand them is probably some code:
 
 int main()
 {
-	int x = 0; // a normal integer
+	auto x = 0; // a normal int
 	
-	int& ref = x;
-	// a reference to x. Note that the type is 
-	// written almost identical with the exception
-	// of the '&' that makes ref a reference.
+	auto& ref = x;
+	// a reference to x. Note that it is created similar
+	// to variables, except that we append a `&` to the auto
+	// (Or to the type if you don't use auto:
+	// int& ref = x;)
 	
 	std::cout << "x=" << x << ", ref=" << ref << '\n';
 	
@@ -65,7 +66,7 @@ int main()
 	ref = 4;
 	std::cout << "x=" << x << ", ref=" << ref << '\n';
 	
-	int y = ref;
+	auto y = ref;
 	std::cout << "x=" << x << ", y=" << y
 	          << ", ref=" << ref << '\n';
 
@@ -120,8 +121,8 @@ int smallest_element(std::vector<int>& vec)
  
 int main()
 {
-	std::vector<int> vec;
-	for(size_t i=0; i < 10000000; ++i) {
+	auto vec = std::vector<int>{};
+	for(size_t i=-1'000'000; i < 1'000'000; ++i) {
 		vec.push_back(i);
 	}
 	// vec is automatically passed as reference:
@@ -130,7 +131,7 @@ int main()
 }
 ```
 ```
->> smallest element of vec is 0
+>> smallest element of vec is -1000000
 ```
 
 We see that it doesn't make any difference from the callside, whether a function copies it's arguments
@@ -149,7 +150,7 @@ void increase(int& n)
 
 int main()
 {
-	int x = 0;
+	auto x = 0;
 	std::cout << "the value of x is " << x << '\n';
 	increase(x);
 	std::cout << "the value of x is " << x << '\n';
@@ -163,3 +164,4 @@ int main()
 Note however, that while this is possible, it is often a bad idea, since it makes reasoning about where
 a variable is changed much harder. On the other hand there are situations where this really is the best
 alternative. As a general advice: If you are unsure, don't do it.
+
