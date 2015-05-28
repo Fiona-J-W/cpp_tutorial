@@ -332,8 +332,8 @@ Solutions:
   number to get astronomically large and the default-width should be enough
   for this case.
 
-  Alternatively the same points could be made in favour of `std::uint16_t` and
-  `std::uint32_t`. A good rule of thumb is however to pick the default until
+    Alternatively the same points could be made in favour of `std::uint16_t` and
+    `std::uint32_t`. A good rule of thumb is however to pick the default until
   it turns out to be problematic.
 * Since the mean value is general not representable using integers
   ($\frac{1 + 2}{2} = 0.666\dots$), we need floating points. In that case
@@ -341,9 +341,9 @@ Solutions:
   is different however: Since it is an actual value from the set, it should
   have the same integer-type as you picked for your points.
 
-  Alternatively you might argue for the median to use `double` too, since
-  it might be the mean of two values if your set has even size and means
-  should be represented as `double`s. This is fine too.
+    Alternatively you might argue for the median to use `double` too, since
+    it might be the mean of two values if your set has even size and means
+    should be represented as `double`s. This is fine too.
 * Since the numbers between 0 and 15 are never negative we again pick an unsigned
   integer type. In this case we do however know a clear upper bound and see
   that it fits easily into a `std::uint8_t`, which is therefore what we should pick.
