@@ -293,9 +293,58 @@ of cases still needed it should be mentioned here too:
 ```cpp
 	double var1 = 0;
 	int var2 = 23;
-	std::string foo;
+	std::string foo; // We don't have to explictly assign a value
 
-	double var2; // DON'T DO THIS
+	double var2; // For some type with disatrous consequences. DON'T DO THIS!
 ```
 
+Aside from loosing the advantage of being able to find the definiton by looking
+for `auto name`, we also introduce a class of bugs that way: For some types (most notably
+all build-in ones, that is all integers, floats, …) the state of the variable is not
+defined after creating it like that and reading it is undefined behavior.
+
+The one exception where we will use this style is when we are forced to do so
+because the type disallows the creation with auto. A notable example for this
+is `std::random_device` which we will encounter when learning about randomness
+and on older plattforms that don't yet suppport C++11 completely the filestreams.
+
+Whether or not you follow the AAA-style is your own decission in the end, but however
+you choose, be *consistent*. For the start it is certainly not a bad approach of
+using it to see whether it works for you.
+
+Training
+--------
+
+* You are giving classes to pupils and students. For their grading you want to
+  to save the points that they scored on their training-excercises. What would
+  you use as datatype for those points? You don't give anyone half points.
+* You want to calculate the mean points of all your students. What should you
+  use as datatype? What for the [median](https://en.wikipedia.org/wiki/Median)?
+* You are a German upper school student and want to save all your grades (those
+  are between 0 and 15). Since you get tons of them, you don't want to use a
+  lot of memory. What will you use as datatype?
+
+Solutions:
+
+* Since there are no negative points you should pick an unsigned integer. At
+  this point there are several ways to argue for several among them. A good
+  first approach would be to just take `unsigned` since we don't expect the
+  number to get astronomically large and the default-width should be enough
+  for this case.
+
+  Alternatively the same points could be made in favour of `std::uint16_t` and
+  `std::uint32_t`. A good rule of thumb is however to pick the default until
+  it turns out to be problematic.
+* Since the mean value is general not representable using integers
+  ($\frac{1 + 2}{2} = 0.666\dots$), we need floating points. In that case
+  we just pick a `double` and are happy. The situation for the median
+  is different however: Since it is an actual value from the set, it should
+  have the same integer-type as you picked for your points.
+
+  Alternatively you might argue for the median to use `double` too, since
+  it might be the mean of two values if your set has even size and means
+  should be represented as `double`s. This is fine too.
+* Since the numbers between 0 and 15 are never negative we again pick an unsigned
+  integer type. In this case we do however know a clear upper bound and see
+  that it fits easily into a `std::uint8_t`, which is therefore what we should pick.
 

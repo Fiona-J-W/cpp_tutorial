@@ -257,9 +257,24 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Technically it says „Create a variable named var with the value ‘<code>some_value</code>’ and the type of ‘<code>some_value</code>’“. Since another style is also <strong>very</strong> common and in a small number of cases still needed it should be mentioned here too:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp">	<span class="dt">double</span> var1 = <span class="dv">0</span>;
 	<span class="dt">int</span> var2 = <span class="dv">23</span>;
-	std::string foo;
+	std::string foo; <span class="co">// We don&#39;t have to explictly assign a value</span>
 
-	<span class="dt">double</span> var2; <span class="co">// DON&#39;T DO THIS</span></code></pre>
+	<span class="dt">double</span> var2; <span class="co">// For some type with disatrous consequences. DON&#39;T DO THIS!</span></code></pre>
+<p>Aside from loosing the advantage of being able to find the definiton by looking for <code>auto name</code>, we also introduce a class of bugs that way: For some types (most notably all build-in ones, that is all integers, floats, …) the state of the variable is not defined after creating it like that and reading it is undefined behavior.</p>
+<p>The one exception where we will use this style is when we are forced to do so because the type disallows the creation with auto. A notable example for this is <code>std::random_device</code> which we will encounter when learning about randomness and on older plattforms that don't yet suppport C++11 completely the filestreams.</p>
+<p>Whether or not you follow the AAA-style is your own decission in the end, but however you choose, be <em>consistent</em>. For the start it is certainly not a bad approach of using it to see whether it works for you.</p>
+<h2 id="training">Training</h2>
+<ul>
+<li>You are giving classes to pupils and students. For their grading you want to to save the points that they scored on their training-excercises. What would you use as datatype for those points? You don't give anyone half points.</li>
+<li>You want to calculate the mean points of all your students. What should you use as datatype? What for the <a href="https://en.wikipedia.org/wiki/Median">median</a>?</li>
+<li>You are a German upper school student and want to save all your grades (those are between 0 and 15). Since you get tons of them, you don't want to use a lot of memory. What will you use as datatype?</li>
+</ul>
+<p>Solutions:</p>
+<ul>
+<li>Since there are no negative points you should pick an unsigned integer. At this point there are several ways to argue for several among them. A good first approach would be to just take <code>unsigned</code> since we don't expect the number to get astronomically large and the default-width should be enough for this case.</li>
+</ul>
+<p>Alternatively the same points could be made in favour of <code>std::uint16_t</code> and <code>std::uint32_t</code>. A good rule of thumb is however to pick the default until it turns out to be problematic. * Since the mean value is general not representable using integers (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>1</mn><mo>+</mo><mn>2</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>0</mn><mo>.</mo><mn>666</mn><mo>…</mo></mrow></math>), we need floating points. In that case we just pick a <code>double</code> and are happy. The situation for the median is different however: Since it is an actual value from the set, it should have the same integer-type as you picked for your points.</p>
+<p>Alternatively you might argue for the median to use <code>double</code> too, since it might be the mean of two values if your set has even size and means should be represented as <code>double</code>s. This is fine too. * Since the numbers between 0 and 15 are never negative we again pick an unsigned integer type. In this case we do however know a clear upper bound and see that it fits easily into a <code>std::uint8_t</code>, which is therefore what we should pick.</p>
 <hr/>
 <section class="license">
 	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
