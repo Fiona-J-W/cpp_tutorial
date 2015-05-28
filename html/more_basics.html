@@ -118,6 +118,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <body>
 <h1 id="more-basics">More Basics</h1>
 <p>In the last chapter we learned about some of the most important basics, that we absolutely need to use C++; many of them apply with little changes to other languages. This chapter now intends to deepen this knowledge and add some information that are more specific to C++ and provide more structure.</p>
+<p>Most of what is covered here is the kind of knowledge that we should have heard about at some point, but that we don't need to worry too much about once we pass on.</p>
 <h2 id="integers">Integers</h2>
 <p>So far we know <code>int</code>; it is an integer-type that is usually 4 bytes wide and can therefore hold values between about minus and plus two billion. Historically <code>int</code> has been considered a reasonable default-choice for integers. It did however have some problems from day one on:</p>
 <ul>
@@ -168,8 +169,97 @@ code > span.er { color: #ff0000; font-weight: bold; }
 }</code></pre>
 <p>It should be mentioned for completeness, that there is also a <code>signed</code>-keyword which may be used instead of the <code>unsigned</code>-keyword and has the obvious meaning. Since most integer types are however guaranteed to be signed from the start, it doesn't have any effect at all most of the time. The one exception to that rule is <code>char</code>:</p>
 <p>Unlike all other integer-types, <code>char</code> and <code>signed char</code> are not different names for the same type, but different types. In fact it is not guaranteed that <code>char</code> is signed (it will most likely be on your plattform, but there are definitely others for which this is not the case). Basically this is just another reason to use <code>std::int8_t</code> and <code>std::uint8_t</code> if you need integers that are one byte wide and only use <code>char</code> if you want a character.</p>
-<p>TODO: size_t, warnings about signed/unsigned-conversions and integer-promotions</p>
+<p>The final integer-types that we need for now are those to work with containers: <code>std::size_t</code> and <code>std::ptrdiff_t</code>, where the first one is what we need most often.</p>
+<p><code>std::size_t</code> is an unsigned integer that is guaranteed to be able to index any value in an array and is <em>not</em> necessarily the same as <code>unsigned int</code>. In fact, on most modern system it won't be.</p>
+<p><code>std::ptrdiff_t</code> is basically the signed version of <code>std::size_t</code> it's mostly needed to represent the distance between two values in containers (distances can be negative if the first element comes after the second). Aside from that there aren't a lot of situations where we would reach for it.</p>
+<p>Now, for one of those parts where c++ really shows it's age and it becomes obvious why many consider it to be a complicated language:</p>
+<p>What is the result-type if an operation involves two integers of types <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>I</mi><mn>1</mn></msub></mrow></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>I</mi><mn>2</mn></msub></mrow></math>? The sad answer is that this is ridicoulusly complicated, hard to predict and strongly depends on the plattform. The best thing here really is to make no assumptions and be very explicit for any mixed types and hope the best for expressions where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>=</mo><msub><mi>I</mi><mn>2</mn></msub></mrow></math>.</p>
+<p>Two provide two examples of just how retarded the situation is:</p>
+<ol type="1">
+<li>The common type of <code>unsigned int</code> and <code>signed long</code> may well be <code>unsigned int</code> (though admittedly only on plattforms where the size of <code>int</code> and <code>long</code> are the same).</li>
+<li>The common type of <code>std::uint8_t</code> and <code>std::int8_t</code> is <code>std::int32_t</code> on most plattforms (that is because all types that are smaller than <code>int</code> are promoted to <code>int</code> before there values are used and <code>int</code> is often 32 bits wide.</li>
+</ol>
+<p>One very important implication of this mess is that you should never compare signed and unsigned integers:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (<span class="dv">-1</span> &gt; <span class="dv">1u</span>) {std::cout &lt;&lt; <span class="st">&quot;-1 is greater than 1</span><span class="ch">\n</span><span class="st">&quot;</span>;}</code></pre>
+<p>This print statement will be executed, because it will be promoted to <code>unsigned int</code> where it will represent the largest possible value. Again: <strong>Never</strong> compare signed and unsigned values directly.</p>
+<p>Now that we swallowed this, for the good news: While there are still a handfull of other places where C++ behaves very strange, we won't see anything that is really worse than integer-conversions, so basically it can only get better from here on.</p>
+<p>To sum this section up, let's sum up what integers we actually need, and when we need them:</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">When to use</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>std::size_t</code></td>
+<td style="text-align: left;">As index for containers like <code>std::vector</code> (<code>vec[i]</code>)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>std::ptr_diff_t</code></td>
+<td style="text-align: left;">To safe the distance between two elements in a container</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">To safe a signed number of average size that is not an index</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>unsigned</code></td>
+<td style="text-align: left;">To safe a non-negative number of average size that is not an index</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>std::uintXX_t</code> <code>std::intXX_t</code></td>
+<td style="text-align: left;">Mostly needed when a certain size is strictly required or for optimisations; this is a surprisingly rare thing</td>
+</tr>
+</tbody>
+</table>
+<h2 id="floatingpoint-numbers">Floatingpoint Numbers</h2>
+<p>Since we have now seen C++'s integers and learned a bit about why they are weird, we can now take a relaxing look at the way easier floats.</p>
+<p>Or we could if they were easy, but sadly they too are surprisingly complex. In this case it isn't C++'s fault however: The problems we will talk about now are basically inherent properties of floating-point precission, the standard that describes what most implementations do and the sometimes weird behavior of x86/x64-CPUs.</p>
+<p>Let's start with the easy part: C++ offers three floatingpoint-types:</p>
+<ul>
+<li><code>float</code></li>
+<li><code>double</code></li>
+<li><code>long double</code></li>
+</ul>
+<p>The default one is <code>double</code> and unless you have good reasons to do something else, you should probably use that.</p>
+<p>Now, what is a floating-point number? Basically it is similar to what is also known as scientific notation for numbers: Instead of “<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>123</mn><mo>.</mo><mn>45</mn></mrow></math>” we can also write “<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>.</mo><mn>2345</mn><mo>⋅</mo><msup><mn>10</mn><mn>3</mn></msup></mrow></math>”. The advantages of that approach is that we can easily keep the relative differences between numbers small no matter whether they are very big or very small. While the absolute difference between <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>.</mo><mn>23</mn><mo>⋅</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>23</mn></mrow></msup></mrow></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>3</mn><mo>.</mo><mn>5</mn><mo>⋅</mo><msup><mn>12</mn><mrow><mo>−</mo><mn>23</mn></mrow></msup></mrow></math> is much smaller than the difference between <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>10000000000</mn></mrow></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>10000001234</mn></mrow></math>, we will probably care much more about it, because the second number is actually twice as big as opposed to a difference of less than one part in a million.</p>
+<p>Furthermore it gets much easier to save very large and very small numbers that way: We can easily write down a number with a hundred digits or a number with a hundred zeros between the decimal-point and the first non-zero number: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msup><mn>10</mn><mn>100</mn></msup></mrow></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msup><mn>10</mn><mrow><mo>−</mo><mn>100</mn></mrow></msup></mrow></math>.</p>
+<p>Floating point numbers as the ones used in C++ basically do it like that, except that they don't work by saving decimal but binary numbers. We don't have to know about the details here though, since at the end of the day most things just work.</p>
+<p>Except when they don't: The problems that we face here are with the finite precission of computers and the fact that they have to do rounding. Furthermore some numbers cannot be represented exactly, so for instance the check whether <code>0.1 * 10.0 == 1.0</code> may return false in C++.</p>
+<p>It is important to note that this is not a problem of C++, but of basically every programming-language that supports some kind of non-integer-numbers.</p>
+<p>Now, how do we tackle those problems? Well, the usual workaround is to never compare such numbers directly but always to use an „epsilon“ which is a small number that we will accept as error. An example probably shows it best:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+
+<span class="dt">int</span> main() {
+	<span class="kw">auto</span> size_1 = <span class="dt">double</span>{}:
+	<span class="kw">auto</span> size_2 = <span class="dt">double</span>{};
+	std::cout &lt;&lt; <span class="st">&quot;Please enter two sizes: &quot;</span>;
+	std::cin &gt;&gt; size_1 &gt;&gt; size_2;
+	<span class="kw">if</span> (size_1 + <span class="fl">0.</span><span class="bn">00001</span> &lt; size_2) {
+		std::cout &lt;&lt; <span class="st">&quot;The first size is smaller.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	} <span class="kw">else</span> <span class="kw">if</span> (size_2 + <span class="fl">0.</span><span class="bn">00001</span> &lt; size_1) {
+		std::cout &lt;&lt; <span class="st">&quot;The first size is larger.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	} <span class="kw">else</span> {
+		std::cout &lt;&lt; <span class="st">&quot;Both sizes are about the same</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	}
+}</code></pre>
+<p>As a general rule of thumb: If you can reasonably avoid floating-point, avoid it. This doesn't say that you should never use it (in fact you should sometimes), but that you will probably have an easier time with integers.</p>
 <h2 id="auto"><code>auto</code></h2>
+<p>So far we have created all our variables like this:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">	<span class="kw">auto</span> var = some_value;</code></pre>
+<p>This style is also known as „Almost Allways Auto“ and is recommended by Herb Sutter (a very famous C++-guru and head of the standards-committee).</p>
+<p>Technically it says „Create a variable named var with the value ‘<code>some_value</code>’ and the type of ‘<code>some_value</code>’“. Since another style is also <strong>very</strong> common and in a small number of cases still needed it should be mentioned here too:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">	<span class="dt">double</span> var1 = <span class="dv">0</span>;
+	<span class="dt">int</span> var2 = <span class="dv">23</span>;
+	std::string foo;
+
+	<span class="dt">double</span> var2; <span class="co">// DON&#39;T DO THIS</span></code></pre>
 <hr/>
 <section class="license">
 	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
