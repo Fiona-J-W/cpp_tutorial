@@ -121,53 +121,49 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h2 id="basic-principles">Basic principles</h2>
 <p>Function templates are defined by adding <code>template&lt;</code><em>type list</em><code>&gt;</code> before the declaration of the function. For example, <!--TODO--></p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;
-<span class="dt">void</span> foo(<span class="dt">int</span> x)
-{
-    <span class="co">/* put code here */</span>
+<span class="dt">void</span> foo(<span class="dt">int</span> x) {
+	<span class="co">/* put code here */</span>
 }</code></pre>
 <p>Now we can use <code>Type</code> within the function body as any other type such as <code>char</code> or <code>double</code>. The template parameter list may contain multiple parameters. Each of them must be prepended with either of <code>class</code> or <code>typename</code> keywords.</p>
 <p>The above function can be called as e.g. <code>foo&lt;char&gt;(2)</code>. Each time the function is called, the compiler “pastes“ <code>char</code> into each location where <code>Type</code> is used and checks whether the resulting code is valid. If it's not valid, an error is raised. Otherwise, the function behaves in the same way as if <code>Type</code> was <code>char</code> or any other given type. See the example below:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;iomanip&gt;</span>
- 
-<span class="co">// Converts integer to different types and prints it</span>
+
+<span class="co">// Read a type from std::cin and return the value</span>
 <span class="kw">template</span>&lt;<span class="kw">class</span> Type&gt;
-<span class="dt">void</span> foo(<span class="dt">int</span> x)
-{
-    std::cout &lt;&lt; Type(x) &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
+Type read() {
+	<span class="kw">auto</span> value = Type{};
+	std::cin &gt;&gt; value;
+	<span class="kw">return</span> value;
 }
  
-<span class="dt">int</span> main()
-{
-    std::cout &lt;&lt; std::fixed &lt;&lt; std::setprecision(<span class="dv">3</span>); <span class="co">// setup formatting</span>
-    foo&lt;<span class="dt">int</span>&gt;(<span class="dv">67</span>);    <span class="co">// print 67 as an int</span>
-    foo&lt;<span class="dt">double</span>&gt;(<span class="dv">67</span>); <span class="co">// print 67 as double</span>
-    foo&lt;<span class="dt">char</span>&gt;(<span class="dv">67</span>);   <span class="co">// print 67 as a character</span>
+<span class="dt">int</span> main() {
+	<span class="dt">const</span> <span class="kw">auto</span> integer = read&lt;<span class="dt">int</span>&gt;();
+	<span class="dt">const</span> <span class="kw">auto</span> str = read&lt;std::string&gt;();
+	<span class="dt">const</span> <span class="kw">auto</span> c = read&lt;<span class="dt">char</span>&gt;();
+	std::cout &lt;&lt; integer &lt;&lt; <span class="st">&quot;, &quot;</span> &lt;&lt; str &lt;&lt; <span class="st">&quot;, &quot;</span> &lt;&lt; c &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 }</code></pre>
-<pre><code>&gt;&gt; 67
-&gt;&gt; 67.000
-&gt;&gt; C</code></pre>
+<pre><code>&lt;&lt; 123 foobar x
+&gt;&gt; 123, foobar, x</code></pre>
 <h2 id="deduction">Deduction</h2>
 <p>Template parameters can be used anywhere in the function, including the parameter list. For example, <code>template&lt;class T&gt; void bar(T a, T b) { ... }</code>. If all template parameters appear in the function parameter list, then the compiler can deduce the actual type of the parameter automatically, so the function template can be called in the same way as any other function, e.g. <code>bar(2, 3)</code>. See the example below:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;iomanip&gt;</span>
- 
+
 <span class="co">// Prints the given type</span>
 <span class="kw">template</span>&lt;<span class="kw">class</span> T&gt;
-<span class="dt">void</span> print(T x)
-{
-    std::cout &lt;&lt; x &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
+<span class="dt">void</span> print(<span class="dt">const</span> T&amp; x) {
+	std::cout &lt;&lt; x &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
 }
  
-<span class="dt">int</span> main()
-{
-    std::cout &lt;&lt; std::fixed &lt;&lt; std::setprecision(<span class="dv">3</span>); <span class="co">// setup formatting</span>
-    print(<span class="dv">64</span>);         <span class="co">// prints 64 as an int</span>
-    print(<span class="fl">64.</span><span class="dv">2</span>);       <span class="co">// prints 64.2 as a double</span>
-    print(<span class="dt">double</span>(<span class="dv">64</span>)); <span class="co">// prints 64 as a double</span>
-    print&lt;<span class="dt">char</span>&gt;(<span class="dv">64</span>);   <span class="co">// override the automatic deduction -- force T to be char</span>
-    print(<span class="st">&#39;c&#39;</span>);        <span class="co">// print &#39;c&#39; as a char</span>
-    print(<span class="st">&quot;bar&quot;</span>);      <span class="co">// prints &quot;bar&quot; as const char*</span>
+<span class="dt">int</span> main() {
+	std::cout &lt;&lt; std::fixed &lt;&lt; std::setprecision(<span class="dv">3</span>); <span class="co">// setup formatting</span>
+	print(<span class="dv">64</span>);         <span class="co">// prints 64 as an int</span>
+	print(<span class="fl">64.</span><span class="dv">2</span>);       <span class="co">// prints 64.2 as a double</span>
+	print(<span class="fl">64.</span><span class="dv">0</span>);       <span class="co">// prints 64 as a double</span>
+	print&lt;<span class="dt">char</span>&gt;(<span class="dv">64</span>);   <span class="co">// override the automatic deduction -- force T to be char</span>
+	print(<span class="st">&#39;c&#39;</span>);        <span class="co">// print &#39;c&#39; as a char</span>
+	print(<span class="st">&quot;bar&quot;</span>);      <span class="co">// prints &quot;bar&quot; as string-literal</span>
 }</code></pre>
 <pre><code>&gt;&gt; 64
 &gt;&gt; 64.200
@@ -175,9 +171,36 @@ code > span.er { color: #ff0000; font-weight: bold; }
 &gt;&gt; D
 &gt;&gt; c
 &gt;&gt; bar</code></pre>
-<p>In general one should never pass template-arguments that can be inferred, since the compiler knows better anyways and the function-template may do unexpected things.</p>
-<h2 id="non-type-parameters">Non-type parameters</h2>
-<!---TODO-->
+<p>But this is not everything: We can even infer the <em>parts</em> of the argument types:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">template</span>&lt;<span class="kw">typename</span> T&gt;
+<span class="dt">void</span> print_all(<span class="dt">const</span> std::vector&lt;T&gt;&amp; vec) {
+	<span class="kw">for</span>(<span class="dt">const</span> <span class="kw">auto</span>&amp; element: vec) {
+		std::cout &lt;&lt; element &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	}
+}
+
+<span class="dt">int</span> main() {
+	<span class="dt">const</span> <span class="kw">auto</span> intvec = std::vector&lt;<span class="dt">int</span>&gt;{<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>};
+	print_all(intvec);
+	<span class="dt">const</span> <span class="kw">auto</span> strvec = std::vector&lt;std::string&gt;{<span class="st">&quot;foo&quot;</span>, <span class="st">&quot;bar&quot;</span>};
+	print_all(strvec);
+}</code></pre>
+<pre><code>&gt;&gt; 1
+&gt;&gt; 2
+&gt;&gt; 3
+&gt;&gt; foo
+&gt;&gt; bar</code></pre>
+<p>Maybe you have already guessed that <code>std::vector</code> is some kind of template too, which is true and we will look into the details of that soon, but for the meantime it is enough to note that code like the above works as long as it stays relatively simple.</p>
+<p>In general one should almost never pass template-arguments that can be inferred, since the compiler knows better anyways and the function-template may do unexpected things, if you override the inferred types.</p>
+<h2 id="training">Training</h2>
+<ul>
+<li>Take the <code>smallest_element</code>-function from the last chapter and turn it into a function-template that works on
+<ol type="1">
+<li>Arbitrary containers</li>
+<li>Arbitrary <code>std::vector</code>s, but not on other containers</li>
+</ol></li>
+<li>Modify the <code>print_all</code> example so that it doesn't append a newline to each element, but separates all elements with a comma and a space. Make sure that those characters are not printed after the last element.</li>
+</ul>
 <hr/>
 <section class="license">
 	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">

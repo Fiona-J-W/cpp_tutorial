@@ -1,7 +1,6 @@
 Function Templates
 ==================
 
-
 Sometimes we have several almost identical functions, the only difference being that they operate on
 different types. Function templates are a feature of the C++ language that allows to have a single
 implementation that works for multiple types instead of duplicating the code. During compilation the
@@ -15,9 +14,8 @@ function. For example, <!--TODO-->
 
 ```cpp
 template<class Type>
-void foo(int x)
-{
-    /* put code here */
+void foo(int x) {
+	/* put code here */
 }
 ```
 
@@ -33,26 +31,26 @@ valid. If it's not valid, an error is raised. Otherwise, the function behaves in
 ```cpp
 #include <iostream>
 #include <iomanip>
- 
-// Converts integer to different types and prints it
+
+// Read a type from std::cin and return the value
 template<class Type>
-void foo(int x)
-{
-    std::cout << Type(x) << "\n";
+Type read() {
+	auto value = Type{};
+	std::cin >> value;
+	return value;
 }
  
-int main()
-{
-    std::cout << std::fixed << std::setprecision(3); // setup formatting
-    foo<int>(67);    // print 67 as an int
-    foo<double>(67); // print 67 as double
-    foo<char>(67);   // print 67 as a character
+int main() {
+	const auto integer = read<int>();
+	const auto str = read<std::string>();
+	const auto c = read<char>();
+	std::cout << integer << ", " << str << ", " << c << '\n';
 }
 ```
+
 ```
->> 67
->> 67.000
->> C
+<< 123 foobar x
+>> 123, foobar, x
 ```
 
 Deduction
@@ -67,23 +65,21 @@ example below:
 ```cpp
 #include <iostream>
 #include <iomanip>
- 
+
 // Prints the given type
 template<class T>
-void print(T x)
-{
-    std::cout << x << "\n";
+void print(const T& x) {
+	std::cout << x << "\n";
 }
  
-int main()
-{
-    std::cout << std::fixed << std::setprecision(3); // setup formatting
-    print(64);         // prints 64 as an int
-    print(64.2);       // prints 64.2 as a double
-    print(double(64)); // prints 64 as a double
-    print<char>(64);   // override the automatic deduction -- force T to be char
-    print('c');        // print 'c' as a char
-    print("bar");      // prints "bar" as const char*
+int main() {
+	std::cout << std::fixed << std::setprecision(3); // setup formatting
+	print(64);         // prints 64 as an int
+	print(64.2);       // prints 64.2 as a double
+	print(64.0);       // prints 64 as a double
+	print<char>(64);   // override the automatic deduction -- force T to be char
+	print('c');        // print 'c' as a char
+	print("bar");      // prints "bar" as string-literal
 }
 ```
 ```
@@ -95,10 +91,51 @@ int main()
 >> bar
 ```
 
-In general one should never pass template-arguments that can be inferred, since the compiler knows
-better anyways and the function-template may do unexpected things.
+But this is not everything: We can even infer the *parts* of the argument types:
 
-Non-type parameters
--------------------
+```cpp
+template<typename T>
+void print_all(const std::vector<T>& vec) {
+	for(const auto& element: vec) {
+		std::cout << element << '\n';
+	}
+}
 
-<!---TODO-->
+int main() {
+	const auto intvec = std::vector<int>{1,2,3};
+	print_all(intvec);
+	const auto strvec = std::vector<std::string>{"foo", "bar"};
+	print_all(strvec);
+}
+```
+```
+>> 1
+>> 2
+>> 3
+>> foo
+>> bar
+```
+
+Maybe you have already guessed that `std::vector` is some kind of template too,
+which is true and we will look into the details of that soon, but for the meantime
+it is enough to note that code like the above works as long as it stays relatively
+simple.
+
+
+In general one should almost never pass template-arguments that
+can be inferred, since the compiler knows better anyways and the
+function-template may do unexpected things, if you override the inferred
+types.
+
+Training
+--------
+
+* Take the `smallest_element`-function from the last chapter and turn it
+  into a function-template that works on
+	1. Arbitrary containers
+	2. Arbitrary `std::vector`s, but not on other containers
+* Modify the `print_all` example so that it doesn't append a
+  newline to each element, but separates all elements with a comma
+  and a space. Make sure that those characters are not printed after
+  the last element.
+
