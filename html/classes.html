@@ -131,9 +131,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="dt">double</span> distance(<span class="dt">double</span> x1, <span class="dt">double</span> y1, <span class="dt">double</span> z1, <span class="dt">double</span> x2,
                 <span class="dt">double</span> y2, <span class="dt">double</span> z2) {
-	<span class="kw">auto</span> x = squared_distance(x1, x2);
-	<span class="kw">auto</span> y = squared_distance(y1, y2);
-	<span class="kw">auto</span> z = squared_distance(z1, z2);
+	<span class="dt">const</span> <span class="kw">auto</span> x = squared_distance(x1, x2);
+	<span class="dt">const</span> <span class="kw">auto</span> y = squared_distance(y1, y2);
+	<span class="dt">const</span> <span class="kw">auto</span> z = squared_distance(z1, z2);
 	<span class="kw">return</span> std::sqrt(x + y + z);
 }
 
@@ -148,9 +148,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="ot">#include &lt;cmath&gt;</span>
 
 <span class="kw">struct</span> point {
-	<span class="dt">double</span> x;
-	<span class="dt">double</span> y;
-	<span class="dt">double</span> z;
+	<span class="dt">double</span> x = <span class="dv">0</span>;
+	<span class="dt">double</span> y = <span class="dv">0</span>;
+	<span class="dt">double</span> z = <span class="dv">0</span>;
 };
 
 <span class="dt">double</span> squared_distance(<span class="dt">double</span> p1, <span class="dt">double</span> p2) {
@@ -158,9 +158,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 }
 
 <span class="dt">double</span> distance(<span class="dt">const</span> point&amp; p1, <span class="dt">const</span> point&amp; p2) {
-	<span class="kw">auto</span> x = squared_distance(p1.x, p2.x);
-	<span class="kw">auto</span> y = squared_distance(p1.y, p2.y);
-	<span class="kw">auto</span> z = squared_distance(p1.z, p2.z);
+	<span class="dt">const</span> <span class="kw">auto</span> x = squared_distance(p1.x, p2.x);
+	<span class="dt">const</span> <span class="kw">auto</span> y = squared_distance(p1.y, p2.y);
+	<span class="dt">const</span> <span class="kw">auto</span> z = squared_distance(p1.z, p2.z);
 	<span class="kw">return</span> std::sqrt(x + y + z);
 }
 
@@ -171,7 +171,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre><code>&gt;&gt; The points (0,1,2) and (4,1,0) have the distance 4.47214</code></pre>
 <p>Reducing six arguments to two, which in addition share semantics is clearly an improvement. It is obvious that the code got way cleaner.</p>
 <h2 id="construction">Construction</h2>
-<p>Above we created our points by writing <code>point{0,1,2}</code>. This worked because point is an extremely simple structure. In general (we'll discuss the exact circumstances later) we need to implement the initialization ourself though.</p>
+<p>Above we created our points by writing <code>point{0,1,2}</code>. This worked because <code>point</code> is a very simple structure.</p>
+<p>However, in the more general case we might want to not directly initialize the variables in the struct (also called attributes), but do further things with the parameters like verifying that their value is reasonable.</p>
 <p>Considering our current struct: Leaving variables uninitialized is evil and there is no exception for variables in structs and later on classes. So let's make sure, that they are zero, unless explicitly changed:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
@@ -186,19 +187,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="dt">int</span> main() {
 	<span class="co">// no longer possible:</span>
 	<span class="co">// auto p = point{1,2,3};</span>
-	 
+	
 	<span class="co">// this has always been possible, but dangerous </span>
 	<span class="co">// now it&#39;s safe thanks to zero-initialization:</span>
-	point p1;
+	<span class="kw">auto</span> p = point{};
 	
 	<span class="co">// this is exactly the same as above:</span>
-	point p2{};
-	
-	std::cout &lt;&lt; <span class="st">&quot;p1: &quot;</span> &lt;&lt; p1.x &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p1.y &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p1.z &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-	std::cout &lt;&lt; <span class="st">&quot;p2: &quot;</span> &lt;&lt; p2.x &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p2.y &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p2.z &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+	std::cout &lt;&lt; <span class="st">&quot;p: &quot;</span> &lt;&lt; p.x &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p.y &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p.z &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 }</code></pre>
-<pre><code>&gt;&gt; p1: 0/0/0
-&gt;&gt; p2: 0/0/0</code></pre>
+<pre><code>&gt;&gt; p: 0/0/0</code></pre>
 <p>This works but we lose the great advantage of initializing a point with the values we want in a comfortable way. The solution to this is called a constructor. It is a special function that is part of a struct and is called when the object is created.</p>
 <p>Let's create one that behaves like the one we had in the beginning:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
