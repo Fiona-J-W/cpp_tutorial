@@ -20,9 +20,9 @@ double squared_distance(double p1, double p2) {
 
 double distance(double x1, double y1, double z1, double x2,
                 double y2, double z2) {
-	auto x = squared_distance(x1, x2);
-	auto y = squared_distance(y1, y2);
-	auto z = squared_distance(z1, z2);
+	const auto x = squared_distance(x1, x2);
+	const auto y = squared_distance(y1, y2);
+	const auto z = squared_distance(z1, z2);
 	return std::sqrt(x + y + z);
 }
 
@@ -48,9 +48,9 @@ which even got implicit names: `x`, `y`, and `z`. So let's create a new type tha
 #include <cmath>
 
 struct point {
-	double x;
-	double y;
-	double z;
+	double x = 0;
+	double y = 0;
+	double z = 0;
 };
 
 double squared_distance(double p1, double p2) {
@@ -58,9 +58,9 @@ double squared_distance(double p1, double p2) {
 }
 
 double distance(const point& p1, const point& p2) {
-	auto x = squared_distance(p1.x, p2.x);
-	auto y = squared_distance(p1.y, p2.y);
-	auto z = squared_distance(p1.z, p2.z);
+	const auto x = squared_distance(p1.x, p2.x);
+	const auto y = squared_distance(p1.y, p2.y);
+	const auto z = squared_distance(p1.z, p2.z);
 	return std::sqrt(x + y + z);
 }
 
@@ -79,9 +79,13 @@ obvious that the code got way cleaner.
 Construction
 ------------
 
-Above we created our points by writing `point{0,1,2}`. This worked because point is an extremely
-simple structure. In general (we'll discuss the exact circumstances later) we need to implement the
-initialization ourself though.
+Above we created our points by writing `point{0,1,2}`. This worked because `point` is a very
+simple structure.
+
+However, in the more general case we might want to not directly initialize the variables in the struct
+(also called attributes), but do further things with the parameters like verifying that their value is
+reasonable.
+
 
 Considering our current struct: Leaving variables uninitialized is evil and there is no exception for
 variables in structs and later on classes. So let's make sure, that they are zero, unless explicitly
@@ -101,21 +105,17 @@ struct point {
 int main() {
 	// no longer possible:
 	// auto p = point{1,2,3};
-	 
+	
 	// this has always been possible, but dangerous 
 	// now it's safe thanks to zero-initialization:
-	point p1;
+	auto p = point{};
 	
 	// this is exactly the same as above:
-	point p2{};
-	
-	std::cout << "p1: " << p1.x << '/' << p1.y << '/' << p1.z << '\n';
-	std::cout << "p2: " << p2.x << '/' << p2.y << '/' << p2.z << '\n';
+	std::cout << "p: " << p.x << '/' << p.y << '/' << p.z << '\n';
 }
 ```
 ```
->> p1: 0/0/0
->> p2: 0/0/0
+>> p: 0/0/0
 ```
 
 This works but we lose the great advantage of initializing a point with the values we want in a
