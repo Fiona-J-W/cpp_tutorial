@@ -257,3 +257,206 @@ struct example_3 {
 };
 ```
 
+Drops and Random Numbers
+------------------------
+
+Since we have now defined how we would like to represent the games items, we
+need a list of them. For the meantime we don't want to change what items are
+available, so a global constant is perfectly fine here:
+
+```cpp
+// just put this into the global scope:
+const auto items = std::vector<item>{
+	// the language knows that we want to call the
+	// constructor here, so there is no need to
+	// type the name again and again:
+	{"Cheap Sword", 100, item_kind::weapon},
+	{"Sword", 500, item_kind::weapon},
+	{"Sword of Doom", 10000, item_kind::weapon},
+	{"Mail", 500, item_kind::armor},
+	{"Necklace", 5000, item_kind::jewelry},
+	{"Dirt", 0, item_kind::junk},
+	{"toxic Dirt", -100, item_kind::junk}
+};
+```
+
+Now we need a function that returns a random item:
+
+```cpp
+item random_item() {
+	const auto item_index = ????
+	return items[item_index];
+}
+```
+
+Obviously we need some way to get a random number. There are several
+ways to achieve that in C++ and most of them are bad for various reasons.
+Even though it may look a bit like overkill at first, we will use the right
+way from the beginning, because the supposedly simpler (because they are usually
+wrong) ways won't save us from learning the right way at some point, they
+just postpone it.
+
+The very first thing we have to do in order to use the random-facilities is including
+the `<random>`-header. After that we will have a lot of partially hard to
+understand things at our hands, most of which we don't need now (this doesn't
+mean that it isn't usefull or good, it's just for more advanced tasks). What
+we should understand at first is that C++ separates the notions a random-number-generator
+and a random distribution. Now, what is the difference between those two?
+
+A real-life example may be a good way to explain it: Say we want to pick a
+random number between one and three (1, 2 or 3), but we only have a coin to
+produce random bits (zero or one). In order to avoid bias when selecting a
+number we now have to think up an algorithm of how to throw the coin multiple
+times to select any of those three numbers with the same propability.
+
+What we will do is to throw the coin to times and memorize the results. There are now
+four possiblities for the result:
+
+* twice heads -> we pick 1
+* twice tails -> we pick 2
+* first head, then tail -> we pick 3
+* first tail, then head -> If we pick anything in this case,
+  we will favor that, so we won't pick anything but redo the whole thing from the
+  beginning with new random numbers.
+
+In this case, the coint serves as a random-number-generator, while our algorithm
+creates a distribution of random-numbers. Obviously a distribution needs access
+to a random-number-generator and has to be able to use it arbitrarily often.
+
+C++ offers us both several random-number-generators as well as several distributions,
+for now it should be sufficient to know two of them:
+
+* `std::random_device` this random-number-generator produces unpredictable
+  high-quality random numbers, but it may potentially be slow. For our purposes
+  it is by far fast enough though, so we shouldn't worry about that.
+* `std::uniform_int_distribution<Integer>` This distribution produces random
+  integers of the specified type in a range that can be specified by the user,
+  where every possible value will be choosen with the same likelyhood.
+
+So how do we use it? Basically we will create a variable of each type and use
+the distribution as a function that recieves the generator as the only argument.
+It may sound strange, but in C++ we can actually create types that behave like
+functions in some circumstances and this is one example:
+
+```cpp
+#include <random>
+
+int main() {
+	// std::random_device is one of the
+	// few types in c++ that doesn't allow the creation
+	// of instances with 'auto name = type{};', so we
+	// have to do it like this:
+	std::random_device rd;
+	// this will create random numbers between 23 and 42 inclusive.
+	// In other words: 23 and 42 may very well be created too:
+	auto dist = std::uniform_int_distribution<int>{23, 42};
+	std::cout << dist(rd) << '\n';
+}
+```
+
+Calling this multiple times should yield different results, where each is equally likely.
+
+In order to use this for our item-selection we will create a small helper-function that
+creates a random-index for a container of size `n`:
+
+```cpp
+#include <iostream>
+#include <cstdint>
+
+std::size_r random_index(std::size_t container_size) {
+	std::random_device rd;
+	// we need to decrement the container size, since it isn't a valid index itself!
+	auto dist = std::uniform_int_distribution<std::size_t>{0, container_size - 1u};
+	return dist(rd);
+}
+```
+
+After that we can implement our item-selection again:
+
+```cpp
+item random_item() {
+	return items[random_index(items.size())];
+}
+```
+
+Putting everything that we have so far together into a program in which
+we kick in ten doors and loot everything of value that we find behind
+them, we get this:
+
+```cpp
+#include <cstdint>
+#include <iostream>
+#include <random>
+#include <string>
+#include <vector>
+
+enum class item_kind {
+	armor,
+	weapon,
+	jewelry,
+	junk
+};
+
+std::string to_string(const item_kind& kind) {
+	if (kind == item_kind::armor) {
+		return "armor";
+	} else if (kind == item_kind::weapon) {
+		return "weapon";
+	} else if (kind == item_kind::jewelry) {
+		return "jewelry";
+	} else if (kind == item_kind::junk) {
+		return "junk";
+	} else {
+		std::cerr << "This should never happen!\n";
+		std::terminate();
+	}
+}
+
+struct item {
+	item(const std::string& name, int value, item_kind kind);
+	std::string name;
+	int value = 0;
+	item_kind kind = item_kind::junk;
+};
+
+item::item(const std::string& n, int v, item_kind kind):
+	name{n}, value{v}, kind{kind} {}
+
+const auto items = std::vector<item>{
+	{"cheap Sword", 100, item_kind::weapon},
+	{"Sword", 500, item_kind::weapon},
+	{"Sword of Doom", 10000, item_kind::weapon},
+	{"Mail", 500, item_kind::armor},
+	{"Necklace", 5000, item_kind::jewelry},
+	{"Dirt", 0, item_kind::junk},
+	{"toxic Dirt", -100, item_kind::junk}
+};
+
+std::size_t random_index(std::size_t container_size) {
+	std::random_device rd;
+	// we need to decrement the container size, since it isn't a valid index itself!
+	auto dist = std::uniform_int_distribution<std::size_t>{0, container_size - 1u};
+	return dist(rd);
+}
+
+item random_item() {
+	return items[random_index(items.size())];
+}
+
+int main() {
+	auto backpack = std::vector<item>{};
+	for (auto i = 0u; i < 10u; ++i) {
+		std::cout << "Kicking in door " << i << "...\n";
+		const auto item = random_item();
+		std::cout << "We found '" << item.name << "' ";
+		if (item.value > 0) {
+			std::cout << "and loot it!\n";
+			backpack.push_back(item);
+		} else {
+			std::cout << "and discard it because it isn't worth anything.\n";
+		}
+		std::cout << "We now have " << backpack.size() << " item(s) in our backpack.\n";
+	}
+}
+
+```

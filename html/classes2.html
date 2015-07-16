@@ -270,6 +270,146 @@ item::item(<span class="dt">const</span> std::string&amp; n, <span class="dt">in
 	<span class="dt">int</span> i1;
 	<span class="dt">int</span> i2;
 };</code></pre>
+<h2 id="drops-and-random-numbers">Drops and Random Numbers</h2>
+<p>Since we have now defined how we would like to represent the games items, we need a list of them. For the meantime we don't want to change what items are available, so a global constant is perfectly fine here:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// just put this into the global scope:</span>
+<span class="dt">const</span> <span class="kw">auto</span> items = std::vector&lt;item&gt;{
+	<span class="co">// the language knows that we want to call the</span>
+	<span class="co">// constructor here, so there is no need to</span>
+	<span class="co">// type the name again and again:</span>
+	{<span class="st">&quot;Cheap Sword&quot;</span>, <span class="dv">100</span>, item_kind::weapon},
+	{<span class="st">&quot;Sword&quot;</span>, <span class="dv">500</span>, item_kind::weapon},
+	{<span class="st">&quot;Sword of Doom&quot;</span>, <span class="dv">10000</span>, item_kind::weapon},
+	{<span class="st">&quot;Mail&quot;</span>, <span class="dv">500</span>, item_kind::armor},
+	{<span class="st">&quot;Necklace&quot;</span>, <span class="dv">5000</span>, item_kind::jewelry},
+	{<span class="st">&quot;Dirt&quot;</span>, <span class="dv">0</span>, item_kind::junk},
+	{<span class="st">&quot;toxic Dirt&quot;</span>, <span class="dv">-100</span>, item_kind::junk}
+};</code></pre>
+<p>Now we need a function that returns a random item:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">item random_item() {
+	<span class="dt">const</span> <span class="kw">auto</span> item_index = ????
+	<span class="kw">return</span> items[item_index];
+}</code></pre>
+<p>Obviously we need some way to get a random number. There are several ways to achieve that in C++ and most of them are bad for various reasons. Even though it may look a bit like overkill at first, we will use the right way from the beginning, because the supposedly simpler (because they are usually wrong) ways won't save us from learning the right way at some point, they just postpone it.</p>
+<p>The very first thing we have to do in order to use the random-facilities is including the <code>&lt;random&gt;</code>-header. After that we will have a lot of partially hard to understand things at our hands, most of which we don't need now (this doesn't mean that it isn't usefull or good, it's just for more advanced tasks). What we should understand at first is that C++ separates the notions a random-number-generator and a random distribution. Now, what is the difference between those two?</p>
+<p>A real-life example may be a good way to explain it: Say we want to pick a random number between one and three (1, 2 or 3), but we only have a coin to produce random bits (zero or one). In order to avoid bias when selecting a number we now have to think up an algorithm of how to throw the coin multiple times to select any of those three numbers with the same propability.</p>
+<p>What we will do is to throw the coin to times and memorize the results. There are now four possiblities for the result:</p>
+<ul>
+<li>twice heads -&gt; we pick 1</li>
+<li>twice tails -&gt; we pick 2</li>
+<li>first head, then tail -&gt; we pick 3</li>
+<li>first tail, then head -&gt; If we pick anything in this case, we will favor that, so we won't pick anything but redo the whole thing from the beginning with new random numbers.</li>
+</ul>
+<p>In this case, the coint serves as a random-number-generator, while our algorithm creates a distribution of random-numbers. Obviously a distribution needs access to a random-number-generator and has to be able to use it arbitrarily often.</p>
+<p>C++ offers us both several random-number-generators as well as several distributions, for now it should be sufficient to know two of them:</p>
+<ul>
+<li><code>std::random_device</code> this random-number-generator produces unpredictable high-quality random numbers, but it may potentially be slow. For our purposes it is by far fast enough though, so we shouldn't worry about that.</li>
+<li><code>std::uniform_int_distribution&lt;Integer&gt;</code> This distribution produces random integers of the specified type in a range that can be specified by the user, where every possible value will be choosen with the same likelyhood.</li>
+</ul>
+<p>So how do we use it? Basically we will create a variable of each type and use the distribution as a function that recieves the generator as the only argument. It may sound strange, but in C++ we can actually create types that behave like functions in some circumstances and this is one example:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;random&gt;</span>
+
+<span class="dt">int</span> main() {
+	<span class="co">// std::random_device is one of the</span>
+	<span class="co">// few types in c++ that doesn&#39;t allow the creation</span>
+	<span class="co">// of instances with &#39;auto name = type{};&#39;, so we</span>
+	<span class="co">// have to do it like this:</span>
+	std::random_device rd;
+	<span class="co">// this will create random numbers between 23 and 42 inclusive.</span>
+	<span class="co">// In other words: 23 and 42 may very well be created too:</span>
+	<span class="kw">auto</span> dist = std::uniform_int_distribution&lt;<span class="dt">int</span>&gt;{<span class="dv">23</span>, <span class="dv">42</span>};
+	std::cout &lt;&lt; dist(rd) &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
+}</code></pre>
+<p>Calling this multiple times should yield different results, where each is equally likely.</p>
+<p>In order to use this for our item-selection we will create a small helper-function that creates a random-index for a container of size <code>n</code>:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;cstdint&gt;</span>
+
+std::size_r random_index(std::size_t container_size) {
+	std::random_device rd;
+	<span class="co">// we need to decrement the container size, since it isn&#39;t a valid index itself!</span>
+	<span class="kw">auto</span> dist = std::uniform_int_distribution&lt;std::size_t&gt;{<span class="dv">0</span>, container_size - <span class="dv">1u</span>};
+	<span class="kw">return</span> dist(rd);
+}</code></pre>
+<p>After that we can implement our item-selection again:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">item random_item() {
+	<span class="kw">return</span> items[random_index(items.size())];
+}</code></pre>
+<p>Putting everything that we have so far together into a program in which we kick in ten doors and loot everything of value that we find behind them, we get this:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;cstdint&gt;</span>
+<span class="ot">#include &lt;iostream&gt;</span>
+<span class="ot">#include &lt;random&gt;</span>
+<span class="ot">#include &lt;string&gt;</span>
+<span class="ot">#include &lt;vector&gt;</span>
+
+<span class="kw">enum</span> <span class="kw">class</span> item_kind {
+	armor,
+	weapon,
+	jewelry,
+	junk
+};
+
+std::string to_string(<span class="dt">const</span> item_kind&amp; kind) {
+	<span class="kw">if</span> (kind == item_kind::armor) {
+		<span class="kw">return</span> <span class="st">&quot;armor&quot;</span>;
+	} <span class="kw">else</span> <span class="kw">if</span> (kind == item_kind::weapon) {
+		<span class="kw">return</span> <span class="st">&quot;weapon&quot;</span>;
+	} <span class="kw">else</span> <span class="kw">if</span> (kind == item_kind::jewelry) {
+		<span class="kw">return</span> <span class="st">&quot;jewelry&quot;</span>;
+	} <span class="kw">else</span> <span class="kw">if</span> (kind == item_kind::junk) {
+		<span class="kw">return</span> <span class="st">&quot;junk&quot;</span>;
+	} <span class="kw">else</span> {
+		std::cerr &lt;&lt; <span class="st">&quot;This should never happen!</span><span class="ch">\n</span><span class="st">&quot;</span>;
+		std::terminate();
+	}
+}
+
+<span class="kw">struct</span> item {
+	item(<span class="dt">const</span> std::string&amp; name, <span class="dt">int</span> value, item_kind kind);
+	std::string name;
+	<span class="dt">int</span> value = <span class="dv">0</span>;
+	item_kind kind = item_kind::junk;
+};
+
+item::item(<span class="dt">const</span> std::string&amp; n, <span class="dt">int</span> v, item_kind kind):
+	name{n}, value{v}, kind{kind} {}
+
+<span class="dt">const</span> <span class="kw">auto</span> items = std::vector&lt;item&gt;{
+	{<span class="st">&quot;cheap Sword&quot;</span>, <span class="dv">100</span>, item_kind::weapon},
+	{<span class="st">&quot;Sword&quot;</span>, <span class="dv">500</span>, item_kind::weapon},
+	{<span class="st">&quot;Sword of Doom&quot;</span>, <span class="dv">10000</span>, item_kind::weapon},
+	{<span class="st">&quot;Mail&quot;</span>, <span class="dv">500</span>, item_kind::armor},
+	{<span class="st">&quot;Necklace&quot;</span>, <span class="dv">5000</span>, item_kind::jewelry},
+	{<span class="st">&quot;Dirt&quot;</span>, <span class="dv">0</span>, item_kind::junk},
+	{<span class="st">&quot;toxic Dirt&quot;</span>, <span class="dv">-100</span>, item_kind::junk}
+};
+
+std::size_t random_index(std::size_t container_size) {
+	std::random_device rd;
+	<span class="co">// we need to decrement the container size, since it isn&#39;t a valid index itself!</span>
+	<span class="kw">auto</span> dist = std::uniform_int_distribution&lt;std::size_t&gt;{<span class="dv">0</span>, container_size - <span class="dv">1u</span>};
+	<span class="kw">return</span> dist(rd);
+}
+
+item random_item() {
+	<span class="kw">return</span> items[random_index(items.size())];
+}
+
+<span class="dt">int</span> main() {
+	<span class="kw">auto</span> backpack = std::vector&lt;item&gt;{};
+	<span class="kw">for</span> (<span class="kw">auto</span> i = <span class="dv">0u</span>; i &lt; <span class="dv">10u</span>; ++i) {
+		std::cout &lt;&lt; <span class="st">&quot;Kicking in door &quot;</span> &lt;&lt; i &lt;&lt; <span class="st">&quot;...</span><span class="ch">\n</span><span class="st">&quot;</span>;
+		<span class="dt">const</span> <span class="kw">auto</span> item = random_item();
+		std::cout &lt;&lt; <span class="st">&quot;We found &#39;&quot;</span> &lt;&lt; item.name &lt;&lt; <span class="st">&quot;&#39; &quot;</span>;
+		<span class="kw">if</span> (item.value &gt; <span class="dv">0</span>) {
+			std::cout &lt;&lt; <span class="st">&quot;and loot it!</span><span class="ch">\n</span><span class="st">&quot;</span>;
+			backpack.push_back(item);
+		} <span class="kw">else</span> {
+			std::cout &lt;&lt; <span class="st">&quot;and discard it because it isn&#39;t worth anything.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+		}
+		std::cout &lt;&lt; <span class="st">&quot;We now have &quot;</span> &lt;&lt; backpack.size() &lt;&lt; <span class="st">&quot; item(s) in our backpack.</span><span class="ch">\n</span><span class="st">&quot;</span>;
+	}
+}</code></pre>
 <hr/>
 <section class="license">
 	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
