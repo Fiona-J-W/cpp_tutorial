@@ -1,7 +1,11 @@
 
 SOURCES=$(shell ls -1 src/*.md | sort)
 
-all: pdf/book.pdf html
+html: html/intro.html html/getting_started.html html/more_basics.html\
+	html/functions.html html/references.html html/const.html\
+	html/function_templates.html html/classes.html html/classes2.html\
+	html/class_templates.html html/inheritance.html html/containers.html\
+	html/memory.html html/index.html html/CC_BY_SA.png
 
 clean:
 	rm pdf/book.pdf
@@ -19,12 +23,6 @@ html/%.html:
 
 html/CC_BY_SA.png: web/CC_BY_SA.png
 	cp web/CC_BY_SA.png html
-
-html: html/intro.html html/getting_started.html html/more_basics.html\
-	html/functions.html html/references.html html/const.html\
-	html/function_templates.html html/classes.html html/classes2.html\
-	html/class_templates.html html/inheritance.html html/containers.html\
-	html/memory.html html/index.html html/CC_BY_SA.png
 
 html/index.html:              web/index.md
 html/Intro.html:              src/00_intro.md
