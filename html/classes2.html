@@ -157,6 +157,119 @@ std::string to_string(<span class="dt">const</span> item_kind&amp; kind) {
 <li>Do your calculations with units, as you learned in first grade.</li>
 </ul>
 <p>Now, back to our loot: We want to be able to add further information too it, so that we can have different kinds of it.</p>
+<p>Obviously each piece should have at least have name that describes it and a value in goldpieces. Carrying those informations arround manually by passing them around as additional arguments would however be very cumbersome. The good news is that C++ provides us a way to create a new type that is basically just a collection of different values: A <code>struct</code>:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> item {
+	std::string name;
+	<span class="dt">int</span> value; <span class="co">// some pieces might be so terrible that you have to pay people to take them</span>
+	item_kind kind;
+}; <span class="co">// note the &#39;;&#39;, it is important!</span></code></pre>
+<p>This defines a new type <code>item</code> that will safe us from all the trouble by making sure that it contains all the information we might ever need. The syntactic requirements to create such a thing should be relatively obvious from the example: First you declare your intent to define a struct by writing <code>struct</code> followed by the name it should have; after that you declare all the variables it should hold by specifying their types and names inside a pair of braces and finally put a semicolon there. <strong>Do not forget that semicolon!</strong> This is probably the most common error that even advanced programmers make when it comes to defining simple types.</p>
+<p>So how can we use that? Again, by just declaring a variable of that type and using it's members:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main() {
+	<span class="kw">auto</span> find = item{};
+	item.name = <span class="st">&quot;Sword of Doom&quot;</span>;
+	item.value = <span class="dv">100&#39;000&#39;000</span>; <span class="co">// if we have a number with a lot of digits,</span>
+	                          <span class="co">// we can increase readability like this</span>
+	                          <span class="co">// by inserting some apostrophes</span>
+	item.kind = item_kind::weapon;
+	std::cout &lt;&lt; <span class="st">&quot;You just found a &quot;</span> &lt;&lt; item.name &lt;&lt; <span class="st">&quot; which is worth &quot;</span>
+	          &lt;&lt; item.value &lt;&lt; <span class="st">&quot; golden coins!</span><span class="ch">\n</span><span class="st">&quot;</span>;
+}</code></pre>
+<p>Passing it to a function or defining a function that takes an item as argument is completely identical to how we did it up to now too:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// try to sell your item for the specified</span>
+<span class="co">// amount of coins; negative offers mean</span>
+<span class="co">// that you are willing to pay the merchant</span>
+<span class="co">// for taking it</span>
+<span class="dt">bool</span> sell(<span class="dt">const</span> item&amp; find, <span class="dt">int</span> offer) {
+	<span class="co">// A merchant only buys if he get&#39;s an item for</span>
+	<span class="co">// less than it is worth</span>
+	<span class="kw">return</span> find.value &gt; offer;
+}</code></pre>
+<p>However, there is one problem: We haven't defined the default-values of the structs members, so what are those?</p>
+<p>Well, the sad answer is “it depends”: The types of the standard-library will be initialized with an empty/zero state, but the build-in types like integers will not recieve that treatment and reading them results in <strong>undefined behavior</strong>! A first fix for that is to directly assign those variables a value:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> item {
+	std::string name;
+	<span class="dt">int</span> value = <span class="dv">0</span>;
+	item_kind kind = item_kind::junk;
+};</code></pre>
+<p>For some types that really is all we need, but in our case it certainly is not optimal, because what kind should an item have by default (why junk?) and what value (why nothing?). Furthermore an empty name is not very convincing either.</p>
+<p>For those more advanced cases, C++ offers a solution too: So called “constructors”.</p>
+<p>Basically those are functions that create instances of the type in question. Some are created by default and may disappear if we define others. One of the examples for this is the implicitly created default-constructor that takes no arguments which we implicitly used above. It will disappear the moment we define any other constructor but can easily be brought back if we so desire. What we would like here is however for it to stay deleted and instead we want a constructor that takes all the requred arguments. Let's see how that works:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> item {
+	<span class="co">// A constructor is a function that is declared INSIDE</span>
+	<span class="co">// the struct to which it belongs. It has the same name</span>
+	<span class="co">// as the struct and no explicit return-values:</span>
+	item(<span class="dt">const</span> std::string&amp; name, <span class="dt">int</span> value, item_kind kind);
+	std::string name;
+	<span class="dt">int</span> value = <span class="dv">0</span>;
+	item_kind kind = item_kind::junk;
+};
+
+<span class="co">// We could have defined it right inside the class, but let&#39;s put</span>
+<span class="co">// it behind it, so we also know how to do that.</span>
+<span class="co">//</span>
+<span class="co">// Note that to do this, we have to specify that the &#39;function&#39; we</span>
+<span class="co">// want to use is inside the struct item (this is somewhat similar</span>
+<span class="co">// to specifyin the std:: when refering to stdlib-types, though</span>
+<span class="co">// there are also quite a few differences):</span>
+<span class="co">//</span>
+<span class="co">// Also note again the missing return-type!</span>
+item::item(<span class="dt">const</span> std::string&amp; n, <span class="dt">int</span> v, item_kind kind) {
+	<span class="co">// note that we can refere to the structs members without</span>
+	<span class="co">// specifying anything now, but we should make sure that</span>
+	<span class="co">// our arguments are named different from them!</span>
+	<span class="co">// For that purpose it is legal (though very questionable!)</span>
+	<span class="co">// to give other names to the function arguments than in</span>
+	<span class="co">// the declaration.</span>
+	name = n;
+	value = v;
+	<span class="co">// if for some reason we have the same name or we just want</span>
+	<span class="co">// to be explicit that we want to talk about members, we</span>
+	<span class="co">// can just prepend &#39;this-&gt;&#39;. Why the arrow instead of a point?</span>
+	<span class="co">// Well, because &#39;this&#39; is a very old feature with bad behavior.</span>
+	<span class="co">// It is not a good thing that it is that way, but we have to accept it:</span>
+	<span class="kw">this</span>-&gt;kind = kind; <span class="co">// the argument hides the member, so we can just use it.</span>
+}</code></pre>
+<p>This works great will do so most of the time, but for completeness sake, let's see what our constructor really does: It initializes members with the arguments that we passed it. This is a very common thing, so there is some special alternative syntax: for it:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp">item::item(<span class="dt">const</span> std::string&amp; n, <span class="dt">int</span> v, item_kind kind): <span class="co">// note the colon</span>
+	name{n}, <span class="co">// constructs the member name by copying the argument n</span>
+	value{v},
+	kind{kind} <span class="co">// Here we can actually ignore name-clashes to a certain degree</span>
+{} <span class="co">// The constructor still needs a body, but quite often it can be empty</span></code></pre>
+<p>The main-advantage of this method is that it allows us to controllthe actual construction of the member instead of having it default-constructed just so that we can reassign a new value to them. (This may seem irrelevant now, but we will come across types where this will really matter.)</p>
+<p>Another advantage is that most experienced programmers will consider it cleaner and easier to understand at a glance.</p>
+<p>There are however some traps:</p>
+<ul>
+<li>The members will always be initialized in the order in which they are declared inside the struct, not in the order that is used in the initialization-list (which is the name that these constructor-calls outside the body have).</li>
+<li>The expressions to initialize a value may refer both to other struct-members as well as to the constructor arguments. <strong>Never</strong> refer to struct-members that are declared behind the member that you currently initialize, since that is a very bad case of <strong>undefined behavior</strong>.</li>
+<li>The expressions may also be more complex than just copying a value, basically everything one wants to do can be done in them (this doesn't mean everything that can be done in them <em>should</em> be done in them).</li>
+</ul>
+<p>Some further examples:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> example_1 {
+	<span class="co">// this is how you define a constructor inline:</span>
+	example_1(<span class="dt">const</span> std::string&amp; str): str{str} {}
+	std::string str;
+};
+
+<span class="kw">struct</span> example_2 {
+	<span class="co">// we can also pass multiple arguments to the constructor,</span>
+	<span class="co">// this will create a string that holds n occurences of c:</span>
+	example_2(<span class="dt">char</span> c, std::size_t n): str(n, c) {}
+	std::string str;
+};
+
+
+<span class="kw">struct</span> example_3 {
+	<span class="co">// Mixed order: This specific instance will work,</span>
+	<span class="co">// but don&#39;t do that!</span>
+	example_3(<span class="dt">int</span> i1, <span class="dt">int</span> i2): i2{i2}, i1{i1} {}
+
+	<span class="co">// This is undefined behavior because i2 is</span>
+	<span class="co">// read before it is initialized. NEVER do that!!</span>
+	<span class="co">//example_3(int i): i2{i}, i1{i2} {}</span>
+	<span class="dt">int</span> i1;
+	<span class="dt">int</span> i2;
+};</code></pre>
 <hr/>
 <section class="license">
 	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">

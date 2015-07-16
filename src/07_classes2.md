@@ -193,4 +193,67 @@ item::item(const std::string& n, int v, item_kind kind) {
 }
 ```
 
+This works great will do so most of the time, but for completeness sake, let's
+see what our constructor really does: It initializes members with the arguments that
+we passed it. This is a very common thing, so there is some special alternative syntax:
+for it:
+
+```cpp
+item::item(const std::string& n, int v, item_kind kind): // note the colon
+	name{n}, // constructs the member name by copying the argument n
+	value{v},
+	kind{kind} // Here we can actually ignore name-clashes to a certain degree
+{} // The constructor still needs a body, but quite often it can be empty
+```
+
+The main-advantage of this method is that it allows us to controllthe actual
+construction of the member instead of having it default-constructed just so that
+we can reassign a new value to them. (This may seem irrelevant now, but we will
+come across types where this will really matter.)
+
+Another advantage is that most experienced programmers will consider it cleaner and
+easier to understand at a glance.
+
+There are however some traps:
+
+* The members will always be initialized in the order in which they are declared
+  inside the struct, not in the order that is used in the initialization-list
+  (which is the name that these constructor-calls outside the body have).
+* The expressions to initialize a value may refer both to other struct-members
+  as well as to the constructor arguments. **Never** refer to struct-members
+  that are declared behind the member that you currently initialize, since that
+  is a very bad case of **undefined behavior**.
+* The expressions may also be more complex than just copying a value, basically
+  everything one wants to do can be done in them (this doesn't mean everything
+  that can be done in them *should* be done in them).
+
+Some further examples:
+
+```cpp
+struct example_1 {
+	// this is how you define a constructor inline:
+	example_1(const std::string& str): str{str} {}
+	std::string str;
+};
+
+struct example_2 {
+	// we can also pass multiple arguments to the constructor,
+	// this will create a string that holds n occurences of c:
+	example_2(char c, std::size_t n): str(n, c) {}
+	std::string str;
+};
+
+
+struct example_3 {
+	// Mixed order: This specific instance will work,
+	// but don't do that!
+	example_3(int i1, int i2): i2{i2}, i1{i1} {}
+
+	// This is undefined behavior because i2 is
+	// read before it is initialized. NEVER do that!!
+	//example_3(int i): i2{i}, i1{i2} {}
+	int i1;
+	int i2;
+};
+```
 
