@@ -41,7 +41,7 @@ Chapters
 * [References](references.html)
 * [Const](const.html)
 * [Functiontemplates](function_templates.html)
-* [Classes](classes.html)
+* [Classes (old)](classes.html)/[Classes (new)](classes2.html)
 * [Classtemplates](class_templates.html)
 * [Inheritance](inheritance.html)
 * [The standard-library](stdlib.html)
