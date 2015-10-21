@@ -463,4 +463,186 @@ int main() {
 
 ```
 
+Classes
+-------
+
+Now that we are able to loot, it is time to create the characters
+(both the player and NPCs). For the start every character has to have
+a name, a current health-level and a maximum health_level.
+
+A simple implementation might look like this:
+
+```cpp
+struct character {
+	character(const std::string& name, unsigned health = 100u, max_health = 100u):
+		name{name}, health{health}, max_health{max_health} {}
+	std::string name;
+	unsigned health = 100u;
+	unsigned max_health = 100u;
+	// invariant: health <= max_health
+};
+```
+
+This will work, but the problem is, that due to the fact that everyone can
+access everything, it would be easy to either increase `health` over `max_health` or,
+even worse, decrease it below zero which will have it wrap around to a gigantic value.
+
+The solution to this are of course methods that will add all those checks and cut the
+de/increase of (if a character has zero health it is dead, there is no point in negative health):
+
+
+```cpp
+struct character {
+	character(const std::string& name, unsigned health = 100u, max_health = 100u):
+		name{name}, health{health}, max_health{max_health} {}
+	void heal(unsigned strength);
+	void injure(unsigned strength);
+	std::string name;
+	unsigned health = 100u;
+	unsigned max_health = 100u;
+	// invariant: health <= max_health
+};
+
+void character::heal(unsigned strength) {
+	// This is the explicit way to do
+	// the check:
+	if (health + strenth > max_health) {
+		health = max_health;
+	} else {
+		health += strenth;
+	}
+}
+
+void character::injure(unsigned strength) {
+	// and this is the elegant, nice
+	// way to do it:
+	health -= std::min(health, strength);
+	// Exercise: how can heal be implemented better?
+}
+```
+
+However, this still doesn't prevent fiddling with those values from
+the outside, it only offers a better alternative. Since a lot of
+programmers tend to be not diciplined well enough only to use those,
+the language offers us a way to ensure that they won't do it by
+accident or lazyness: Access specifiers.
+
+These are are annotations to areas in our struct that tell whether everyone
+or only it's methods may access those parts of it. The two access-specifiers
+that we care about are “`public`” and “`private`” (there is also one
+called “`protected`”, but it has few uses, especially at this point).
+
+As one may guess `public` means that those things can be accessed by everyone,
+while `private` things are only for the class itself. Let's see an example:
+
+
+```cpp
+struct character {
+public: // everything that follows is public, which is the default in structs
+	character(const std::string& name, unsigned health = 100u, max_health = 100u):
+		name{name}, health{health}, max_health{max_health} {}
+
+	void heal(unsigned strength);   // the implementation of the methods doesn't
+	void injure(unsigned strength); // change at all, so there is no need to repeat them
+
+private: // everything that follows is private and can only be accessed from above methods
+	std::string name;
+	unsigned health = 100u;
+	unsigned max_health = 100u;
+	// invariant: health <= max_health
+};
+```
+
+The problem now is that while we have prevented bad fiddling with the internals from the outside,
+we can no longer read the values, which really wouldn't be a problem. The solution to this is to
+add some more methods that return the values that we consider acceptable for everyone else to see.
+
+The question here is of course, how to name them? If we have a member named `health`, we cannot
+have a method with the same name as well. The best answer to that problem is to prefix all private
+members with `m_` (‘m’ like in “member”) and call the methods as the member was called before.
+Another reason to do that, is that it improves readability of a methods implementation, since
+there can no longer be confusion about where some variable comes from: If it is prefixed, it is
+part of the class, otherwise it is local to the function.
+
+
+```cpp
+struct character {
+public:
+	character(const std::string& name, unsigned health = 100u, max_health = 100u):
+		name{name}, health{health}, max_health{max_health} {}
+
+	void heal(unsigned strength);
+	void injure(unsigned strength);
+
+	// accessor-methods should not change the state, so make them const:
+	unsigned health() const {return m_health;}
+	unsigned max_health() const {return m_max_health;}
+	// To avoid unneeded copies, it is acceptable to return constant references as well:
+	const std::string& name() const {return m_name;}
+private:
+	std::string m_name;
+	unsigned m_health = 100u;
+	unsigned m_max_health = 100u;
+	// invariant: health <= max_health
+};
+```
+
+
+At this point out struct has gotten relatively complex, when compared to the simple collection
+of values that they can also be used as. In fact we have long reached a point where common
+convention among C++-programmers is to use a `class` instead. The good news is that this is
+almost exclusivly convention and the change in our example only involves replacing the `struct`-keyword
+with `class`. The only technical difference between those two are that members are by default
+`public` in a struct and `private` in a class. Once we add `public:` to the first line
+of our class they are basically identical.
+
+Why would we use classes at all then? The answer to that is that it allows
+to state the intent that some datatype is either just a simple collection of values
+(→`struct`) or a little bit more complex (→`class`). The summary really is that if your type
+consists of anything aside a couple of public data-members (and possibly a few very
+simple constructors), make it a `class`.
+
+So let's change that part of our character, and while we are at it, we might also add another method: `attack`
+
+
+```cpp
+class character {
+public:
+	character(const std::string& name, unsigned health = 100u, max_health = 100u):
+		name{name}, health{health}, max_health{max_health} {}
+
+	void heal(unsigned strength);
+	void injure(unsigned strength);
+
+	void attack(character& other);
+
+	unsigned health() const {return m_health;}
+	unsigned max_health() const {return m_max_health;}
+	const std::string& name() const {return m_name;}
+private:
+	std::string m_name;
+	unsigned m_health = 100u;
+	unsigned m_max_health = 100u;
+	// invariant: health <= max_health
+};
+
+void character::heal(unsigned strength) {
+	// solution to the question how heal can be implemented better:
+	m_health = std::min(m_health + strength, m_max_health);
+}
+
+void character::injure(unsigned strength) {
+	m_health -= std::min(m_health, strength);
+}
+
+void attack(character& other) {
+	// We will make the damage-calculation
+	// much more sophisticated over time,
+	// but for now this is enough:
+	other.injure(5);
+	// Note that we could also have accessed other.m_health
+	// directly, because we are in a method of character.
+	// private refers to classes, not instances of classes!
+}
+```
 

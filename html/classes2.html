@@ -412,6 +412,125 @@ item random_item() {
 		std::cout &lt;&lt; <span class="st">&quot;We now have &quot;</span> &lt;&lt; backpack.size() &lt;&lt; <span class="st">&quot; item(s) in our backpack.</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	}
 }</code></pre>
+<h2 id="classes">Classes</h2>
+<p>Now that we are able to loot, it is time to create the characters (both the player and NPCs). For the start every character has to have a name, a current health-level and a maximum health_level.</p>
+<p>A simple implementation might look like this:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> character {
+	character(<span class="dt">const</span> std::string&amp; name, <span class="dt">unsigned</span> health = <span class="dv">100u</span>, max_health = <span class="dv">100u</span>):
+		name{name}, health{health}, max_health{max_health} {}
+	std::string name;
+	<span class="dt">unsigned</span> health = <span class="dv">100u</span>;
+	<span class="dt">unsigned</span> max_health = <span class="dv">100u</span>;
+	<span class="co">// invariant: health &lt;= max_health</span>
+};</code></pre>
+<p>This will work, but the problem is, that due to the fact that everyone can access everything, it would be easy to either increase <code>health</code> over <code>max_health</code> or, even worse, decrease it below zero which will have it wrap around to a gigantic value.</p>
+<p>The solution to this are of course methods that will add all those checks and cut the de/increase of (if a character has zero health it is dead, there is no point in negative health):</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> character {
+	character(<span class="dt">const</span> std::string&amp; name, <span class="dt">unsigned</span> health = <span class="dv">100u</span>, max_health = <span class="dv">100u</span>):
+		name{name}, health{health}, max_health{max_health} {}
+	<span class="dt">void</span> heal(<span class="dt">unsigned</span> strength);
+	<span class="dt">void</span> injure(<span class="dt">unsigned</span> strength);
+	std::string name;
+	<span class="dt">unsigned</span> health = <span class="dv">100u</span>;
+	<span class="dt">unsigned</span> max_health = <span class="dv">100u</span>;
+	<span class="co">// invariant: health &lt;= max_health</span>
+};
+
+<span class="dt">void</span> character::heal(<span class="dt">unsigned</span> strength) {
+	<span class="co">// This is the explicit way to do</span>
+	<span class="co">// the check:</span>
+	<span class="kw">if</span> (health + strenth &gt; max_health) {
+		health = max_health;
+	} <span class="kw">else</span> {
+		health += strenth;
+	}
+}
+
+<span class="dt">void</span> character::injure(<span class="dt">unsigned</span> strength) {
+	<span class="co">// and this is the elegant, nice</span>
+	<span class="co">// way to do it:</span>
+	health -= std::min(health, strength);
+	<span class="co">// Exercise: how can heal be implemented better?</span>
+}</code></pre>
+<p>However, this still doesn't prevent fiddling with those values from the outside, it only offers a better alternative. Since a lot of programmers tend to be not diciplined well enough only to use those, the language offers us a way to ensure that they won't do it by accident or lazyness: Access specifiers.</p>
+<p>These are are annotations to areas in our struct that tell whether everyone or only it's methods may access those parts of it. The two access-specifiers that we care about are “<code>public</code>” and “<code>private</code>” (there is also one called “<code>protected</code>”, but it has few uses, especially at this point).</p>
+<p>As one may guess <code>public</code> means that those things can be accessed by everyone, while <code>private</code> things are only for the class itself. Let's see an example:</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> character {
+<span class="kw">public</span>: <span class="co">// everything that follows is public, which is the default in structs</span>
+	character(<span class="dt">const</span> std::string&amp; name, <span class="dt">unsigned</span> health = <span class="dv">100u</span>, max_health = <span class="dv">100u</span>):
+		name{name}, health{health}, max_health{max_health} {}
+
+	<span class="dt">void</span> heal(<span class="dt">unsigned</span> strength);   <span class="co">// the implementation of the methods doesn&#39;t</span>
+	<span class="dt">void</span> injure(<span class="dt">unsigned</span> strength); <span class="co">// change at all, so there is no need to repeat them</span>
+
+<span class="kw">private</span>: <span class="co">// everything that follows is private and can only be accessed from above methods</span>
+	std::string name;
+	<span class="dt">unsigned</span> health = <span class="dv">100u</span>;
+	<span class="dt">unsigned</span> max_health = <span class="dv">100u</span>;
+	<span class="co">// invariant: health &lt;= max_health</span>
+};</code></pre>
+<p>The problem now is that while we have prevented bad fiddling with the internals from the outside, we can no longer read the values, which really wouldn't be a problem. The solution to this is to add some more methods that return the values that we consider acceptable for everyone else to see.</p>
+<p>The question here is of course, how to name them? If we have a member named <code>health</code>, we cannot have a method with the same name as well. The best answer to that problem is to prefix all private members with <code>m_</code> (‘m’ like in “member”) and call the methods as the member was called before. Another reason to do that, is that it improves readability of a methods implementation, since there can no longer be confusion about where some variable comes from: If it is prefixed, it is part of the class, otherwise it is local to the function.</p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> character {
+<span class="kw">public</span>:
+	character(<span class="dt">const</span> std::string&amp; name, <span class="dt">unsigned</span> health = <span class="dv">100u</span>, max_health = <span class="dv">100u</span>):
+		name{name}, health{health}, max_health{max_health} {}
+
+	<span class="dt">void</span> heal(<span class="dt">unsigned</span> strength);
+	<span class="dt">void</span> injure(<span class="dt">unsigned</span> strength);
+
+	<span class="co">// accessor-methods should not change the state, so make them const:</span>
+	<span class="dt">unsigned</span> health() <span class="dt">const</span> {<span class="kw">return</span> m_health;}
+	<span class="dt">unsigned</span> max_health() <span class="dt">const</span> {<span class="kw">return</span> m_max_health;}
+	<span class="co">// To avoid unneeded copies, it is acceptable to return constant references as well:</span>
+	<span class="dt">const</span> std::string&amp; name() <span class="dt">const</span> {<span class="kw">return</span> m_name;}
+<span class="kw">private</span>:
+	std::string m_name;
+	<span class="dt">unsigned</span> m_health = <span class="dv">100u</span>;
+	<span class="dt">unsigned</span> m_max_health = <span class="dv">100u</span>;
+	<span class="co">// invariant: health &lt;= max_health</span>
+};</code></pre>
+<p>At this point out struct has gotten relatively complex, when compared to the simple collection of values that they can also be used as. In fact we have long reached a point where common convention among C++-programmers is to use a <code>class</code> instead. The good news is that this is almost exclusivly convention and the change in our example only involves replacing the <code>struct</code>-keyword with <code>class</code>. The only technical difference between those two are that members are by default <code>public</code> in a struct and <code>private</code> in a class. Once we add <code>public:</code> to the first line of our class they are basically identical.</p>
+<p>Why would we use classes at all then? The answer to that is that it allows to state the intent that some datatype is either just a simple collection of values (→<code>struct</code>) or a little bit more complex (→<code>class</code>). The summary really is that if your type consists of anything aside a couple of public data-members (and possibly a few very simple constructors), make it a <code>class</code>.</p>
+<p>So let's change that part of our character, and while we are at it, we might also add another method: <code>attack</code></p>
+<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">class</span> character {
+<span class="kw">public</span>:
+	character(<span class="dt">const</span> std::string&amp; name, <span class="dt">unsigned</span> health = <span class="dv">100u</span>, max_health = <span class="dv">100u</span>):
+		name{name}, health{health}, max_health{max_health} {}
+
+	<span class="dt">void</span> heal(<span class="dt">unsigned</span> strength);
+	<span class="dt">void</span> injure(<span class="dt">unsigned</span> strength);
+
+	<span class="dt">void</span> attack(character&amp; other);
+
+	<span class="dt">unsigned</span> health() <span class="dt">const</span> {<span class="kw">return</span> m_health;}
+	<span class="dt">unsigned</span> max_health() <span class="dt">const</span> {<span class="kw">return</span> m_max_health;}
+	<span class="dt">const</span> std::string&amp; name() <span class="dt">const</span> {<span class="kw">return</span> m_name;}
+<span class="kw">private</span>:
+	std::string m_name;
+	<span class="dt">unsigned</span> m_health = <span class="dv">100u</span>;
+	<span class="dt">unsigned</span> m_max_health = <span class="dv">100u</span>;
+	<span class="co">// invariant: health &lt;= max_health</span>
+};
+
+<span class="dt">void</span> character::heal(<span class="dt">unsigned</span> strength) {
+	<span class="co">// solution to the question how heal can be implemented better:</span>
+	m_health = std::min(m_health + strength, m_max_health);
+}
+
+<span class="dt">void</span> character::injure(<span class="dt">unsigned</span> strength) {
+	m_health -= std::min(m_health, strength);
+}
+
+<span class="dt">void</span> attack(character&amp; other) {
+	<span class="co">// We will make the damage-calculation</span>
+	<span class="co">// much more sophisticated over time,</span>
+	<span class="co">// but for now this is enough:</span>
+	other.injure(<span class="dv">5</span>);
+	<span class="co">// Note that we could also have accessed other.m_health</span>
+	<span class="co">// directly, because we are in a method of character.</span>
+	<span class="co">// private refers to classes, not instances of classes!</span>
+}</code></pre>
 <hr/>
 <section class="license">
 	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
