@@ -118,10 +118,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <body>
 <h1 id="structs-and-classes">Structs and Classes</h1>
 <p>Let's assume we want to calculate the distance between two points in space; the formula for this is quite simple: Sum the squares of the distances in every dimension and take the square-root:</p>
-<p>distance = <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msqrt><mrow><msup><mrow><mo stretchy="true">∣</mo><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><msub><mi>x</mi><mn>2</mn></msub><mo stretchy="true">∣</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo stretchy="true">∣</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="true">∣</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo stretchy="true">∣</mo><msub><mi>z</mi><mn>1</mn></msub><mo>−</mo><msub><mi>z</mi><mn>2</mn></msub><mo stretchy="true">∣</mo></mrow><mn>2</mn></msup></mrow></msqrt></mrow></math></p>
+<p>distance = <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mrow><msup><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><msub><mi>x</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>z</mi><mn>1</mn></msub><mo>−</mo><msub><mi>z</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow><mn>2</mn></msup></mrow></msqrt><annotation encoding="application/x-tex">\sqrt{\left|x_1-x_2\right|^2 + \left|y_1-y_2\right|^2 + \left|z_1-z_2\right|^2}</annotation></semantics></math></p>
 <p>Since this is somewhat heavy to write every time, we'll use a function for that:</p>
 <!---TODO: Note about linking the math-library-->
-
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;cmath&gt; </span><span class="co">// needed for sqrt(), abs() and pow()</span>
 
@@ -179,9 +178,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">struct</span> point {
 	<span class="co">// this makes sure that x, y and z get zero-initialized </span>
 	<span class="co">// at the construction of a new point:</span>
-	<span class="dt">double</span> x = <span class="fl">0.</span><span class="dv">0</span>;
-	<span class="dt">double</span> y = <span class="fl">0.</span><span class="dv">0</span>;
-	<span class="dt">double</span> z = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> x = <span class="fl">0.0</span>;
+	<span class="dt">double</span> y = <span class="fl">0.0</span>;
+	<span class="dt">double</span> z = <span class="fl">0.0</span>;
 };
 
 <span class="dt">int</span> main() {
@@ -212,9 +211,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 		z = z_arg;
 	}
 
-	<span class="dt">double</span> x = <span class="fl">0.</span><span class="dv">0</span>;
-	<span class="dt">double</span> y = <span class="fl">0.</span><span class="dv">0</span>;
-	<span class="dt">double</span> z = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> x = <span class="fl">0.0</span>;
+	<span class="dt">double</span> y = <span class="fl">0.0</span>;
+	<span class="dt">double</span> z = <span class="fl">0.0</span>;
 };
 
 <span class="dt">int</span> main() {
@@ -235,9 +234,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	point(<span class="dt">double</span> x, <span class="dt">double</span> y, <span class="dt">double</span> z) : x{x}, y{y}, z{z} {}
 	<span class="co">//                        the actual body is now empty ↑↑</span>
 
-	<span class="dt">double</span> x = <span class="fl">0.</span><span class="dv">0</span>;
-	<span class="dt">double</span> y = <span class="fl">0.</span><span class="dv">0</span>;
-	<span class="dt">double</span> z = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> x = <span class="fl">0.0</span>;
+	<span class="dt">double</span> y = <span class="fl">0.0</span>;
+	<span class="dt">double</span> z = <span class="fl">0.0</span>;
 };
 
 <span class="dt">int</span> main() {
@@ -273,9 +272,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 				+ <span class="st">&quot;, &quot;</span> + std::to_string(z) + <span class="st">&#39;)&#39;</span>;
 	}
 	
-	<span class="dt">double</span> x = <span class="fl">0.</span><span class="dv">0</span>;
-	<span class="dt">double</span> y = <span class="fl">0.</span><span class="dv">0</span>;
-	<span class="dt">double</span> z = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> x = <span class="fl">0.0</span>;
+	<span class="dt">double</span> y = <span class="fl">0.0</span>;
+	<span class="dt">double</span> z = <span class="fl">0.0</span>;
 };
 
 <span class="dt">int</span> main() {
@@ -303,20 +302,19 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">struct</span> polar_point {
 	polar_point(<span class="dt">double</span> h, <span class="dt">double</span> v, <span class="dt">double</span> dist): h_angle{h}, v_angle{v}, distance{dist} {}
 
-	<span class="dt">double</span> h_angle = <span class="fl">0.</span><span class="dv">0</span>;
-	<span class="dt">double</span> v_angle = <span class="fl">0.</span><span class="dv">0</span>;
-	<span class="dt">double</span> distance = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> h_angle = <span class="fl">0.0</span>;
+	<span class="dt">double</span> v_angle = <span class="fl">0.0</span>;
+	<span class="dt">double</span> distance = <span class="fl">0.0</span>;
 };
 
 <span class="dt">int</span> main()
 {
-	polar_point p{<span class="fl">0.</span><span class="dv">0</span>, <span class="fl">0.</span><span class="dv">0</span>, <span class="dv">123</span>};
+	polar_point p{<span class="fl">0.0</span>, <span class="fl">0.0</span>, <span class="dv">123</span>};
 	std::cout &lt;&lt; <span class="st">&quot;distance to origin: &quot;</span> &lt;&lt; p.distance &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 }</code></pre>
 <pre><code>&gt;&gt; distance to origin: 123</code></pre>
 <p>Let's assume that the angles are represented as radians. Also we want the distance to never be negative (in that case we would adjust the angles). This creates problems: A careless user of our point could easily create an invalid state. The solution for this is to restrict the access to the members: Only methods should be allowed to touch them directly. Everyone else should only be allowed to interact with them via methods. This can achieved by making them <em>private</em>:</p>
 <!---TODO: M\_PI is not standard. better solutions?-->
-
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;cmath&gt; </span><span class="co">// for M_PI</span>
 <span class="ot">#include &lt;exception&gt; </span><span class="co">// for termiante() </span>
 <span class="ot">#include &lt;iostream&gt;</span>
@@ -334,9 +332,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	<span class="dt">void</span> set_v_angle(<span class="dt">double</span> angle);
 
 <span class="kw">private</span>:
-	<span class="dt">double</span> h_angle = <span class="fl">0.</span><span class="dv">0</span>;
-	<span class="dt">double</span> v_angle = <span class="fl">0.</span><span class="dv">0</span>;
-	<span class="dt">double</span> distance = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> h_angle = <span class="fl">0.0</span>;
+	<span class="dt">double</span> v_angle = <span class="fl">0.0</span>;
+	<span class="dt">double</span> distance = <span class="fl">0.0</span>;
 };
 
 <span class="dt">void</span> polar_point::set_distance(<span class="dt">double</span> dist) {
@@ -365,9 +363,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="dt">int</span> main()
 {
-	polar_point p{<span class="fl">0.</span><span class="dv">0</span>, <span class="fl">0.</span><span class="dv">0</span>, <span class="dv">123</span>};
-	p.set_h_angle(<span class="fl">3.</span><span class="dv">5</span>);
-	p.set_v_angle(<span class="fl">2.</span><span class="dv">7</span>);
+	polar_point p{<span class="fl">0.0</span>, <span class="fl">0.0</span>, <span class="dv">123</span>};
+	p.set_h_angle(<span class="fl">3.5</span>);
+	p.set_v_angle(<span class="fl">2.7</span>);
 	std::cout &lt;&lt; <span class="st">&quot;distance to origin: &quot;</span> &lt;&lt; p.get_distance()
 	          &lt;&lt; <span class="st">&quot;, angles: &quot;</span> &lt;&lt; p.get_h_angle() &lt;&lt; <span class="st">&quot;, &quot;</span> &lt;&lt; p.get_v_angle() &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 

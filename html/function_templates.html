@@ -159,8 +159,8 @@ Type read() {
 <span class="dt">int</span> main() {
 	std::cout &lt;&lt; std::fixed &lt;&lt; std::setprecision(<span class="dv">3</span>); <span class="co">// setup formatting</span>
 	print(<span class="dv">64</span>);         <span class="co">// prints 64 as an int</span>
-	print(<span class="fl">64.</span><span class="dv">2</span>);       <span class="co">// prints 64.2 as a double</span>
-	print(<span class="fl">64.</span><span class="dv">0</span>);       <span class="co">// prints 64 as a double</span>
+	print(<span class="fl">64.2</span>);       <span class="co">// prints 64.2 as a double</span>
+	print(<span class="fl">64.0</span>);       <span class="co">// prints 64 as a double</span>
 	print&lt;<span class="dt">char</span>&gt;(<span class="dv">64</span>);   <span class="co">// override the automatic deduction -- force T to be char</span>
 	print(<span class="st">&#39;c&#39;</span>);        <span class="co">// print &#39;c&#39; as a char</span>
 	print(<span class="st">&quot;bar&quot;</span>);      <span class="co">// prints &quot;bar&quot; as string-literal</span>

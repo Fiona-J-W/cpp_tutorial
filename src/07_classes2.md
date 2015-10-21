@@ -59,8 +59,8 @@ seconds, liters, … when doing exercises for school and get ask questions like:
 got this question). The reasoning is again that keeping this kind of information can easily expose
 a lot of errors in the used formulas or during calculation.
 
-An dramatic example for what can happen if you do not use types is the
-[Mars Climate Orbiter](https://en.wikipedia.org/wiki/Mars_Climate_Orbiter): It got to close to the
+A dramatic example for what can happen if you do not use types is the
+[Mars Climate Orbiter](https://en.wikipedia.org/wiki/Mars_Climate_Orbiter): It got to0 close to the
 surface because one module incorrectly produced results in imperial measures,
 while another one expected those to be in a sane (=metric) unit-system. The lessons from this
 incident are:
@@ -159,7 +159,7 @@ takes all the requred arguments. Let's see how that works:
 struct item {
 	// A constructor is a function that is declared INSIDE
 	// the struct to which it belongs. It has the same name
-	// as the struct and no explicit return-values:
+	// as the struct and no explicit return-type:
 	item(const std::string& name, int value, item_kind kind);
 	std::string name;
 	int value = 0;
@@ -249,9 +249,11 @@ struct example_3 {
 	// but don't do that!
 	example_3(int i1, int i2): i2{i2}, i1{i1} {}
 
-	// This is undefined behavior because i2 is
+	// This would  be undefined behavior because i2 is
 	// read before it is initialized. NEVER do that!!
+
 	//example_3(int i): i2{i}, i1{i2} {}
+
 	int i1;
 	int i2;
 };
@@ -309,7 +311,7 @@ produce random bits (zero or one). In order to avoid bias when selecting a
 number we now have to think up an algorithm of how to throw the coin multiple
 times to select any of those three numbers with the same propability.
 
-What we will do is to throw the coin to times and memorize the results. There are now
+What we will do is to throw the coin two times and memorize the results. There are now
 four possiblities for the result:
 
 * twice heads -> we pick 1
@@ -319,7 +321,7 @@ four possiblities for the result:
   we will favor that, so we won't pick anything but redo the whole thing from the
   beginning with new random numbers.
 
-In this case, the coint serves as a random-number-generator, while our algorithm
+In this case, the coin serves as a random-number-generator, while our algorithm
 creates a distribution of random-numbers. Obviously a distribution needs access
 to a random-number-generator and has to be able to use it arbitrarily often.
 
@@ -354,7 +356,7 @@ int main() {
 }
 ```
 
-Calling this multiple times should yield different results, where each is equally likely.
+Executing this multiple times should yield different results, where each is equally likely.
 
 In order to use this for our item-selection we will create a small helper-function that
 creates a random-index for a container of size `n`:
@@ -460,3 +462,5 @@ int main() {
 }
 
 ```
+
+

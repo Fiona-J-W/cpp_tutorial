@@ -151,7 +151,7 @@ std::string to_string(<span class="dt">const</span> item_kind&amp; kind) {
 }</code></pre>
 <p>The advantage of this approach over integer-constants is that we have our own type, which, among other things, implies that we can overload functions for it and, that it became harder to accidentially use a different integer that was supposed to mean something else where we wanted to know what kind of item our find is.</p>
 <p>To show a real-live situation where types are used, we don't need to look far: From the first grade on pupils are forced by their teachers and parents to not throw away things like meters, seconds, liters, … when doing exercises for school and get ask questions like: “Three what? <a href="https://en.wikipedia.org/wiki/Bratwurst">Bratwürste</a>?” (Or at least the author of this text got this question). The reasoning is again that keeping this kind of information can easily expose a lot of errors in the used formulas or during calculation.</p>
-<p>An dramatic example for what can happen if you do not use types is the <a href="https://en.wikipedia.org/wiki/Mars_Climate_Orbiter">Mars Climate Orbiter</a>: It got to close to the surface because one module incorrectly produced results in imperial measures, while another one expected those to be in a sane (=metric) unit-system. The lessons from this incident are:</p>
+<p>A dramatic example for what can happen if you do not use types is the <a href="https://en.wikipedia.org/wiki/Mars_Climate_Orbiter">Mars Climate Orbiter</a>: It got to0 close to the surface because one module incorrectly produced results in imperial measures, while another one expected those to be in a sane (=metric) unit-system. The lessons from this incident are:</p>
 <ul>
 <li>Never use the imperial system and allways use the metric system</li>
 <li>Do your calculations with units, as you learned in first grade.</li>
@@ -198,7 +198,7 @@ std::string to_string(<span class="dt">const</span> item_kind&amp; kind) {
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> item {
 	<span class="co">// A constructor is a function that is declared INSIDE</span>
 	<span class="co">// the struct to which it belongs. It has the same name</span>
-	<span class="co">// as the struct and no explicit return-values:</span>
+	<span class="co">// as the struct and no explicit return-type:</span>
 	item(<span class="dt">const</span> std::string&amp; name, <span class="dt">int</span> value, item_kind kind);
 	std::string name;
 	<span class="dt">int</span> value = <span class="dv">0</span>;
@@ -264,9 +264,11 @@ item::item(<span class="dt">const</span> std::string&amp; n, <span class="dt">in
 	<span class="co">// but don&#39;t do that!</span>
 	example_3(<span class="dt">int</span> i1, <span class="dt">int</span> i2): i2{i2}, i1{i1} {}
 
-	<span class="co">// This is undefined behavior because i2 is</span>
+	<span class="co">// This would  be undefined behavior because i2 is</span>
 	<span class="co">// read before it is initialized. NEVER do that!!</span>
+
 	<span class="co">//example_3(int i): i2{i}, i1{i2} {}</span>
+
 	<span class="dt">int</span> i1;
 	<span class="dt">int</span> i2;
 };</code></pre>
@@ -293,14 +295,14 @@ item::item(<span class="dt">const</span> std::string&amp; n, <span class="dt">in
 <p>Obviously we need some way to get a random number. There are several ways to achieve that in C++ and most of them are bad for various reasons. Even though it may look a bit like overkill at first, we will use the right way from the beginning, because the supposedly simpler (because they are usually wrong) ways won't save us from learning the right way at some point, they just postpone it.</p>
 <p>The very first thing we have to do in order to use the random-facilities is including the <code>&lt;random&gt;</code>-header. After that we will have a lot of partially hard to understand things at our hands, most of which we don't need now (this doesn't mean that it isn't usefull or good, it's just for more advanced tasks). What we should understand at first is that C++ separates the notions a random-number-generator and a random distribution. Now, what is the difference between those two?</p>
 <p>A real-life example may be a good way to explain it: Say we want to pick a random number between one and three (1, 2 or 3), but we only have a coin to produce random bits (zero or one). In order to avoid bias when selecting a number we now have to think up an algorithm of how to throw the coin multiple times to select any of those three numbers with the same propability.</p>
-<p>What we will do is to throw the coin to times and memorize the results. There are now four possiblities for the result:</p>
+<p>What we will do is to throw the coin two times and memorize the results. There are now four possiblities for the result:</p>
 <ul>
 <li>twice heads -&gt; we pick 1</li>
 <li>twice tails -&gt; we pick 2</li>
 <li>first head, then tail -&gt; we pick 3</li>
 <li>first tail, then head -&gt; If we pick anything in this case, we will favor that, so we won't pick anything but redo the whole thing from the beginning with new random numbers.</li>
 </ul>
-<p>In this case, the coint serves as a random-number-generator, while our algorithm creates a distribution of random-numbers. Obviously a distribution needs access to a random-number-generator and has to be able to use it arbitrarily often.</p>
+<p>In this case, the coin serves as a random-number-generator, while our algorithm creates a distribution of random-numbers. Obviously a distribution needs access to a random-number-generator and has to be able to use it arbitrarily often.</p>
 <p>C++ offers us both several random-number-generators as well as several distributions, for now it should be sufficient to know two of them:</p>
 <ul>
 <li><code>std::random_device</code> this random-number-generator produces unpredictable high-quality random numbers, but it may potentially be slow. For our purposes it is by far fast enough though, so we shouldn't worry about that.</li>
@@ -320,7 +322,7 @@ item::item(<span class="dt">const</span> std::string&amp; n, <span class="dt">in
 	<span class="kw">auto</span> dist = std::uniform_int_distribution&lt;<span class="dt">int</span>&gt;{<span class="dv">23</span>, <span class="dv">42</span>};
 	std::cout &lt;&lt; dist(rd) &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 }</code></pre>
-<p>Calling this multiple times should yield different results, where each is equally likely.</p>
+<p>Executing this multiple times should yield different results, where each is equally likely.</p>
 <p>In order to use this for our item-selection we will create a small helper-function that creates a random-index for a container of size <code>n</code>:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;cstdint&gt;</span>

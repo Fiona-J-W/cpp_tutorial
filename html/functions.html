@@ -195,7 +195,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">return</span> some_function(<span class="dv">1</span>, <span class="dv">3</span>);</code></pre>
 <p>It is important that the type of the used expression is either identical to the returntype of the function or can be trivially converted to it:</p>
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">double</span> fun_1() {
-	<span class="kw">return</span> <span class="fl">1.</span><span class="dv">0</span>;
+	<span class="kw">return</span> <span class="fl">1.0</span>;
 	<span class="co">// fine: 1.0 is double, as is the returntype of</span>
 	<span class="co">// the function.</span>
 }
@@ -290,7 +290,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="dt">int</span> main() {
 	function(<span class="dv">3</span>);
-	function(<span class="fl">2.</span><span class="dv">718</span>);
+	function(<span class="fl">2.718</span>);
 }</code></pre>
 <pre><code>&gt;&gt; function(int 3);
 &gt;&gt; function(double 2.718);</code></pre>

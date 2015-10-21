@@ -155,8 +155,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
-	<span class="kw">for</span>(<span class="kw">auto</span> m = <span class="fl">0.</span><span class="dv">0</span>; m &lt;= <span class="fl">2.</span><span class="dv">0</span>; m+=<span class="fl">0.</span><span class="dv">5</span>) {
-		std::cout &lt;&lt; m &lt;&lt; <span class="st">&quot;kg create &quot;</span> &lt;&lt; m * <span class="fl">9.</span><span class="dv">81</span>
+	<span class="kw">for</span>(<span class="kw">auto</span> m = <span class="fl">0.0</span>; m &lt;= <span class="fl">2.0</span>; m+=<span class="fl">0.5</span>) {
+		std::cout &lt;&lt; m &lt;&lt; <span class="st">&quot;kg create &quot;</span> &lt;&lt; m * <span class="fl">9.81</span>
 		          &lt;&lt; <span class="st">&quot; newton of force.</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	}
 }</code></pre>
@@ -168,10 +168,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="co">//gravitational_acceleration of earth</span>
-<span class="dt">const</span> <span class="dt">double</span> g_earth = <span class="fl">9.</span><span class="dv">81</span>;
+<span class="dt">const</span> <span class="dt">double</span> g_earth = <span class="fl">9.81</span>;
 
 <span class="dt">int</span> main() {
-	<span class="kw">for</span>(<span class="dt">double</span> m = <span class="fl">0.</span><span class="dv">0</span>; m &lt;= <span class="fl">2.</span><span class="dv">0</span>; m+=<span class="fl">0.</span><span class="dv">5</span>) {
+	<span class="kw">for</span>(<span class="dt">double</span> m = <span class="fl">0.0</span>; m &lt;= <span class="fl">2.0</span>; m+=<span class="fl">0.5</span>) {
 		std::cout &lt;&lt; m &lt;&lt; <span class="st">&quot;kg create &quot;</span>
 		          &lt;&lt; m * g_earth
 		          &lt;&lt; <span class="st">&quot; newton of force.</span><span class="ch">\n</span><span class="st">&quot;</span>;
