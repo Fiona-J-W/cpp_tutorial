@@ -4,8 +4,16 @@
 Please also note that pandoc's markdown syntax is used to format the tutorial's content (see `src` folder)
 and GitHub may display some aspects of it not quite right. Instead of viewing it at Github, have a look at
 the [official website](http://cpp.florianjw.de/). It is ad-free, works without JavaScript, and the only
-kind of tracking it does is keeping the webserver's `access.log`. HTTPS will be supported once
-[Let's Encrypt](https://letsencrypt.org/) issues certificates.
+kind of tracking it does is keeping the webserver's `access.log`.
+
+HTTPS is also supported but only signed by CAcert which will likely make your browser produce a warning
+about an insecure connection because it's authors are utterly incompetent when it comes to understanding
+the security-implications of their decission to consider an unencrypted side much more secure than an
+encrypted one.
+
+Once a usable state will be achieved, I will however look into getting a certificate from [Let's
+Encrypt](https://letsencrypt.org/) which is considered as much more secure for pretty much no good reason
+whatsoever. 
 
 
 Top-Down C++ Tutorial
