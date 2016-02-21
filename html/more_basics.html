@@ -6,28 +6,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title></title>
   <style type="text/css">code{white-space: pre;}</style>
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
   <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
   </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
   <style type="text/css">
   body {
   	max-width: 20cm;
@@ -70,10 +88,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
   	margin-left: 0;
   	margin-right: 0;
   	font-style: italic;
-  }
-  
-  code {
-  	font-size: 125%;
   }
   
   pre.sourceCode {
@@ -128,18 +142,18 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul>
 <p>Since these problems are not recent discoveries, C++ has answers to all of them. Some of those are however imperfect too or have similar problems, which is why we won't cover the topic of integer-types completely for now, but will just take a large enough look at it, to equip ourselves with the subset that is actually usefull.</p>
 <p>First we will take a look at integers of different width: Sometimes using 4 bytes for a number would be a complete waste of spaces; sometimes 4 bytes are not nearly enough to store all numbers that we might come across. To accomodate for those needs C++ also has the integer-types <code>short</code>, <code>long</code> and <code>long long</code>; additionally <code>char</code> may is used as integer as well. Since their size is however non standardized as well, we won't use those directly. Instead the header <code>&lt;cstdint&gt;</code> provides us with aliases that finally give us what we want:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;cstdint&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;cstdint&gt;</span>
 
 <span class="dt">int</span> main() {
 	<span class="kw">auto</span> one_byte_integer   = std::int8_t{};  <span class="co">// value: 0</span>
 	<span class="kw">auto</span> two_byte_integer   = std::int16_t{<span class="dv">23</span>};
 	<span class="kw">auto</span> four_byte_integer  = std::int32_t{<span class="dv">42</span>};
 	<span class="kw">auto</span> eight_byte_integer = std::int64_t{<span class="dv">-5</span>};
-}</code></pre>
+}</code></pre></div>
 <p>Note that we have to state the type at the right side of the initializations, otherwise the default (<code>int</code>) would be used which is not what we want here.</p>
 <p>This solves problem number one. The second problem is that we all of those integer-types can store negative values, which sometimes wouldn't make any sense. If we want to know for sure that this is not the case, we can use the unsigned-family: All the core-language-types can be prefixed with <code>unsigned</code> to annotate that they won't store negative numbers. Instead they may store somewhat bigger positive numbers (the maximum of the signed version times two plus one). Be aware that this brings some problems with it: If you subtract one from zero, the the numbers will wrap around and result in the biggest possible value of that type (unlike for signed integers, this is guaranteed by the standard instead of undefined behavior).</p>
 <p>Let's take a look at code:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main() {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main() {
 	<span class="co">// unsigned without further type means unsigned int:</span>
 	<span class="kw">auto</span> u1 = <span class="dt">unsigned</span>{}; <span class="co">// value: 0</span>
 	
@@ -156,31 +170,31 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	<span class="co">// other unsigned integers:</span>
 	<span class="kw">auto</span> u2 = (<span class="dt">unsigned</span> <span class="dt">short</span>){<span class="dv">23</span>};
 	<span class="kw">auto</span> u3 = (<span class="dt">unsigned</span> <span class="dt">long</span>){<span class="dv">1234567890</span>};
-}</code></pre>
+}</code></pre></div>
 <p>Obviously the parenthesis are ugly and we are back at the problem of the unspecified sizes. The answer is the same that we already got for the signed integers: “Use the <code>&lt;cstdint&gt;</code>-header!”</p>
 <p>The unsigned integers follow the same naming-scheme that signed ones do, except for an added ‘u’ in front of the name:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;cstdint&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;cstdint&gt;</span>
 
 <span class="dt">int</span> main() {
 	<span class="kw">auto</span> one_byte_integer   = std::uint8_t{};  <span class="co">// value: 0</span>
 	<span class="kw">auto</span> two_byte_integer   = std::uint16_t{<span class="dv">23</span>};
 	<span class="kw">auto</span> four_byte_integer  = std::uint32_t{<span class="dv">42</span>};
 	<span class="kw">auto</span> eight_byte_integer = std::uint64_t{<span class="dv">5</span>};
-}</code></pre>
+}</code></pre></div>
 <p>It should be mentioned for completeness, that there is also a <code>signed</code>-keyword which may be used instead of the <code>unsigned</code>-keyword and has the obvious meaning. Since most integer types are however guaranteed to be signed from the start, it doesn't have any effect at all most of the time. The one exception to that rule is <code>char</code>:</p>
 <p>Unlike all other integer-types, <code>char</code> and <code>signed char</code> are not different names for the same type, but different types. In fact it is not guaranteed that <code>char</code> is signed (it will most likely be on your plattform, but there are definitely others for which this is not the case). Basically this is just another reason to use <code>std::int8_t</code> and <code>std::uint8_t</code> if you need integers that are one byte wide and only use <code>char</code> if you want a character.</p>
 <p>The final integer-types that we need for now are those to work with containers: <code>std::size_t</code> and <code>std::ptrdiff_t</code>, where the first one is what we need most often.</p>
 <p><code>std::size_t</code> is an unsigned integer that is guaranteed to be able to index any value in an array and is <em>not</em> necessarily the same as <code>unsigned int</code>. In fact, on most modern system it won't be.</p>
 <p><code>std::ptrdiff_t</code> is basically the signed version of <code>std::size_t</code> it's mostly needed to represent the distance between two values in containers (distances can be negative if the first element comes after the second). Aside from that there aren't a lot of situations where we would reach for it.</p>
 <p>Now, for one of those parts where c++ really shows it's age and it becomes obvious why many consider it to be a complicated language:</p>
-<p>What is the result-type if an operation involves two integers of types <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>I</mi><mn>1</mn></msub></mrow></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>I</mi><mn>2</mn></msub></mrow></math>? The sad answer is that this is ridicoulusly complicated, hard to predict and strongly depends on the plattform. The best thing here really is to make no assumptions and be very explicit for any mixed types and hope the best for expressions where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>=</mo><msub><mi>I</mi><mn>2</mn></msub></mrow></math>.</p>
+<p>What is the result-type if an operation involves two integers of types <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>1</mn></msub><annotation encoding="application/x-tex">I_1</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>2</mn></msub><annotation encoding="application/x-tex">I_2</annotation></semantics></math>? The sad answer is that this is ridicoulusly complicated, hard to predict and strongly depends on the plattform. The best thing here really is to make no assumptions and be very explicit for any mixed types and hope the best for expressions where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>=</mo><msub><mi>I</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">I_1 = I_2</annotation></semantics></math>.</p>
 <p>Two provide two examples of just how retarded the situation is:</p>
 <ol type="1">
 <li>The common type of <code>unsigned int</code> and <code>signed long</code> may well be <code>unsigned int</code> (though admittedly only on plattforms where the size of <code>int</code> and <code>long</code> are the same).</li>
 <li>The common type of <code>std::uint8_t</code> and <code>std::int8_t</code> is <code>std::int32_t</code> on most plattforms (that is because all types that are smaller than <code>int</code> are promoted to <code>int</code> before there values are used and <code>int</code> is often 32 bits wide.</li>
 </ol>
 <p>One very important implication of this mess is that you should never compare signed and unsigned integers:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (<span class="dv">-1</span> &gt; <span class="dv">1u</span>) {std::cout &lt;&lt; <span class="st">&quot;-1 is greater than 1</span><span class="ch">\n</span><span class="st">&quot;</span>;}</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (<span class="dv">-1</span> &gt; <span class="dv">1u</span>) {std::cout &lt;&lt; <span class="st">&quot;-1 is greater than 1</span><span class="ch">\n</span><span class="st">&quot;</span>;}</code></pre></div>
 <p>This print statement will be executed, because it will be promoted to <code>unsigned int</code> where it will represent the largest possible value. Again: <strong>Never</strong> compare signed and unsigned values directly.</p>
 <p>Now that we swallowed this, for the good news: While there are still a handfull of other places where C++ behaves very strange, we won't see anything that is really worse than integer-conversions, so basically it can only get better from here on.</p>
 <p>To sum this section up, let's sum up what integers we actually need, and when we need them:</p>
@@ -228,13 +242,13 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><code>long double</code></li>
 </ul>
 <p>The default one is <code>double</code> and unless you have good reasons to do something else, you should probably use that.</p>
-<p>Now, what is a floating-point number? Basically it is similar to what is also known as scientific notation for numbers: Instead of “<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>123</mn><mo>.</mo><mn>45</mn></mrow></math>” we can also write “<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>.</mo><mn>2345</mn><mo>⋅</mo><msup><mn>10</mn><mn>3</mn></msup></mrow></math>”. The advantages of that approach is that we can easily keep the relative differences between numbers small no matter whether they are very big or very small. While the absolute difference between <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>.</mo><mn>23</mn><mo>⋅</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>23</mn></mrow></msup></mrow></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>3</mn><mo>.</mo><mn>5</mn><mo>⋅</mo><msup><mn>12</mn><mrow><mo>−</mo><mn>23</mn></mrow></msup></mrow></math> is much smaller than the difference between <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>10000000000</mn></mrow></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>10000001234</mn></mrow></math>, we will probably care much more about it, because the second number is actually twice as big as opposed to a difference of less than one part in a million.</p>
-<p>Furthermore it gets much easier to save very large and very small numbers that way: We can easily write down a number with a hundred digits or a number with a hundred zeros between the decimal-point and the first non-zero number: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msup><mn>10</mn><mn>100</mn></msup></mrow></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msup><mn>10</mn><mrow><mo>−</mo><mn>100</mn></mrow></msup></mrow></math>.</p>
+<p>Now, what is a floating-point number? Basically it is similar to what is also known as scientific notation for numbers: Instead of “<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>123.45</mn><annotation encoding="application/x-tex">123.45</annotation></semantics></math>” we can also write “<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.2345</mn><mo>⋅</mo><msup><mn>10</mn><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">1.2345 \cdot 10^3</annotation></semantics></math>”. The advantages of that approach is that we can easily keep the relative differences between numbers small no matter whether they are very big or very small. While the absolute difference between <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.23</mn><mo>⋅</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>23</mn></mrow></msup></mrow><annotation encoding="application/x-tex">1.23\cdot10^{-23}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3.5</mn><mo>⋅</mo><msup><mn>12</mn><mrow><mo>−</mo><mn>23</mn></mrow></msup></mrow><annotation encoding="application/x-tex">3.5\cdot12^{-23}</annotation></semantics></math> is much smaller than the difference between <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>10000000000</mn><annotation encoding="application/x-tex">10000000000</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>10000001234</mn><annotation encoding="application/x-tex">10000001234</annotation></semantics></math>, we will probably care much more about it, because the second number is actually twice as big as opposed to a difference of less than one part in a million.</p>
+<p>Furthermore it gets much easier to save very large and very small numbers that way: We can easily write down a number with a hundred digits or a number with a hundred zeros between the decimal-point and the first non-zero number: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>100</mn></msup><annotation encoding="application/x-tex">10^{100}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mo>−</mo><mn>100</mn></mrow></msup><annotation encoding="application/x-tex">10^{-100}</annotation></semantics></math>.</p>
 <p>Floating point numbers as the ones used in C++ basically do it like that, except that they don't work by saving decimal but binary numbers. We don't have to know about the details here though, since at the end of the day most things just work.</p>
 <p>Except when they don't: The problems that we face here are with the finite precission of computers and the fact that they have to do rounding. Furthermore some numbers cannot be represented exactly, so for instance the check whether <code>0.1 * 10.0 == 1.0</code> may return false in C++.</p>
 <p>It is important to note that this is not a problem of C++, but of basically every programming-language that supports some kind of non-integer-numbers.</p>
 <p>Now, how do we tackle those problems? Well, the usual workaround is to never compare such numbers directly but always to use an „epsilon“ which is a small number that we will accept as error. An example probably shows it best:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
 	<span class="kw">auto</span> size_1 = <span class="dt">double</span>{}:
@@ -248,18 +262,18 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	} <span class="kw">else</span> {
 		std::cout &lt;&lt; <span class="st">&quot;Both sizes are about the same</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	}
-}</code></pre>
+}</code></pre></div>
 <p>As a general rule of thumb: If you can reasonably avoid floating-point, avoid it. This doesn't say that you should never use it (in fact you should sometimes), but that you will probably have an easier time with integers.</p>
 <h2 id="auto"><code>auto</code></h2>
 <p>So far we have created all our variables like this:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">	<span class="kw">auto</span> var = some_value;</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">	<span class="kw">auto</span> var = some_value;</code></pre></div>
 <p>This style is also known as „Almost Allways Auto“ and is recommended by Herb Sutter (a very famous C++-guru and head of the standards-committee).</p>
 <p>Technically it says „Create a variable named var with the value ‘<code>some_value</code>’ and the type of ‘<code>some_value</code>’“. Since another style is also <strong>very</strong> common and in a small number of cases still needed it should be mentioned here too:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">	<span class="dt">double</span> var1 = <span class="dv">0</span>;
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">	<span class="dt">double</span> var1 = <span class="dv">0</span>;
 	<span class="dt">int</span> var2 = <span class="dv">23</span>;
 	std::string foo; <span class="co">// We don&#39;t have to explictly assign a value</span>
 
-	<span class="dt">double</span> var2; <span class="co">// For some type with disatrous consequences. DON&#39;T DO THIS!</span></code></pre>
+	<span class="dt">double</span> var2; <span class="co">// For some type with disatrous consequences. DON&#39;T DO THIS!</span></code></pre></div>
 <p>Aside from loosing the advantage of being able to find the definiton by looking for <code>auto name</code>, we also introduce a class of bugs that way: For some types (most notably all build-in ones, that is all integers, floats, …) the state of the variable is not defined after creating it like that and reading it is undefined behavior.</p>
 <p>The one exception where we will use this style is when we are forced to do so because the type disallows the creation with auto. A notable example for this is <code>std::random_device</code> which we will encounter when learning about randomness and on older plattforms that don't yet suppport C++11 completely the filestreams.</p>
 <p>Whether or not you follow the AAA-style is your own decission in the end, but however you choose, be <em>consistent</em>. For the start it is certainly not a bad approach of using it to see whether it works for you.</p>
@@ -273,7 +287,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <ul>
 <li><p>Since there are no negative points you should pick an unsigned integer. At this point there are several ways to argue for several among them. A good first approach would be to just take <code>unsigned</code> since we don't expect the number to get astronomically large and the default-width should be enough for this case.</p>
 Alternatively the same points could be made in favour of <code>std::uint16_t</code> and <code>std::uint32_t</code>. A good rule of thumb is however to pick the default until it turns out to be problematic.</li>
-<li><p>Since the mean value is general not representable using integers (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>1</mn><mo>+</mo><mn>2</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>0</mn><mo>.</mo><mn>666</mn><mo>…</mo></mrow></math>), we need floating points. In that case we just pick a <code>double</code> and are happy. The situation for the median is different however: Since it is an actual value from the set, it should have the same integer-type as you picked for your points.</p>
+<li><p>Since the mean value is general not representable using integers (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mn>1</mn><mo>+</mo><mn>2</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>0.666</mn><mo>…</mo></mrow><annotation encoding="application/x-tex">\frac{1 + 2}{2} = 0.666\dots</annotation></semantics></math>), we need floating points. In that case we just pick a <code>double</code> and are happy. The situation for the median is different however: Since it is an actual value from the set, it should have the same integer-type as you picked for your points.</p>
 Alternatively you might argue for the median to use <code>double</code> too, since it might be the mean of two values if your set has even size and means should be represented as <code>double</code>s. This is fine too.</li>
 <li><p>Since the numbers between 0 and 15 are never negative we again pick an unsigned integer type. In this case we do however know a clear upper bound and see that it fits easily into a <code>std::uint8_t</code>, which is therefore what we should pick.</p></li>
 </ul>

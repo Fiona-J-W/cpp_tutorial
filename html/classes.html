@@ -6,28 +6,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title></title>
   <style type="text/css">code{white-space: pre;}</style>
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
   <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
   </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
   <style type="text/css">
   body {
   	max-width: 20cm;
@@ -70,10 +88,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
   	margin-left: 0;
   	margin-right: 0;
   	font-style: italic;
-  }
-  
-  code {
-  	font-size: 125%;
   }
   
   pre.sourceCode {
@@ -121,7 +135,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>distance = <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mrow><msup><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><msub><mi>x</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>z</mi><mn>1</mn></msub><mo>−</mo><msub><mi>z</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow><mn>2</mn></msup></mrow></msqrt><annotation encoding="application/x-tex">\sqrt{\left|x_1-x_2\right|^2 + \left|y_1-y_2\right|^2 + \left|z_1-z_2\right|^2}</annotation></semantics></math></p>
 <p>Since this is somewhat heavy to write every time, we'll use a function for that:</p>
 <!---TODO: Note about linking the math-library-->
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;cmath&gt; </span><span class="co">// needed for sqrt(), abs() and pow()</span>
 
 <span class="dt">double</span> squared_distance(<span class="dt">double</span> p1, <span class="dt">double</span> p2) {
@@ -139,11 +153,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="dt">int</span> main() {
 	std::cout &lt;&lt; <span class="st">&quot;The points (0,1,2) and (4,1,0) have the distance &quot;</span>
 	          &lt;&lt; distance(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">0</span>) &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre><code>&gt;&gt; The points (0,1,2) and (4,1,0) have the distance 4.47214</code></pre>
 <p>The solution is working, but if we are honest, it isn't really nice: Passing the points into the function by throwing in six arguments is not only ugly, but also error-prone. Luckily C++ has solutions for this: Structs and classes. The biggest difference between these two is conventional, not technical, so we can look into them together.</p>
 <p>A struct is basically a collection of values. In our example a point is represented by three doubles which even got implicit names: <code>x</code>, <code>y</code>, and <code>z</code>. So let's create a new type that is exactly that:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;cmath&gt;</span>
 
 <span class="kw">struct</span> point {
@@ -166,21 +180,21 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="dt">int</span> main() {
 	std::cout &lt;&lt; <span class="st">&quot;The points (0,1,2) and (4,1,0) have the distance &quot;</span>
 		&lt;&lt; distance(point{<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>}, point{<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">0</span>}) &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre><code>&gt;&gt; The points (0,1,2) and (4,1,0) have the distance 4.47214</code></pre>
 <p>Reducing six arguments to two, which in addition share semantics is clearly an improvement. It is obvious that the code got way cleaner.</p>
 <h2 id="construction">Construction</h2>
 <p>Above we created our points by writing <code>point{0,1,2}</code>. This worked because <code>point</code> is a very simple structure.</p>
 <p>However, in the more general case we might want to not directly initialize the variables in the struct (also called attributes), but do further things with the parameters like verifying that their value is reasonable.</p>
 <p>Considering our current struct: Leaving variables uninitialized is evil and there is no exception for variables in structs and later on classes. So let's make sure, that they are zero, unless explicitly changed:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="kw">struct</span> point {
 	<span class="co">// this makes sure that x, y and z get zero-initialized </span>
 	<span class="co">// at the construction of a new point:</span>
-	<span class="dt">double</span> x = <span class="fl">0.0</span>;
-	<span class="dt">double</span> y = <span class="fl">0.0</span>;
-	<span class="dt">double</span> z = <span class="fl">0.0</span>;
+	<span class="dt">double</span> x = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> y = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> z = <span class="fl">0.</span><span class="dv">0</span>;
 };
 
 <span class="dt">int</span> main() {
@@ -193,11 +207,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	
 	<span class="co">// this is exactly the same as above:</span>
 	std::cout &lt;&lt; <span class="st">&quot;p: &quot;</span> &lt;&lt; p.x &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p.y &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p.z &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre><code>&gt;&gt; p: 0/0/0</code></pre>
 <p>This works but we lose the great advantage of initializing a point with the values we want in a comfortable way. The solution to this is called a constructor. It is a special function that is part of a struct and is called when the object is created.</p>
 <p>Let's create one that behaves like the one we had in the beginning:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="kw">struct</span> point {
 	<span class="co">// a constructor has neither returntype nor is it</span>
@@ -211,9 +225,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 		z = z_arg;
 	}
 
-	<span class="dt">double</span> x = <span class="fl">0.0</span>;
-	<span class="dt">double</span> y = <span class="fl">0.0</span>;
-	<span class="dt">double</span> z = <span class="fl">0.0</span>;
+	<span class="dt">double</span> x = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> y = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> z = <span class="fl">0.</span><span class="dv">0</span>;
 };
 
 <span class="dt">int</span> main() {
@@ -223,29 +237,29 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	
 	std::cout &lt;&lt; <span class="st">&quot;p1: &quot;</span> &lt;&lt; p1.x &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p1.y &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p1.z &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 	std::cout &lt;&lt; <span class="st">&quot;p2: &quot;</span> &lt;&lt; p2.x &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p2.y &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p2.z &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre><code>&gt;&gt; p1: 1/2/3
 &gt;&gt; p2: 4/5/6</code></pre>
 <p>If we look at the code, we see a very common situation: We have several data-members in our struct, one argument for each of them, and we directly assign the value of the argument to the member. This is fine, if the members are just doubles or ints, but it can create quite an overhead, if the default-construction of the member (which must be completed upon entry of the constructor) is expensive, like for <code>std::vector</code>. To solve this problem, C++ provides a way to initialize data-members before the actual constructor-body is entered:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="kw">struct</span> point {
 	<span class="co">// the members x, y and z are intialized with the arguments x, y, and z:</span>
 	point(<span class="dt">double</span> x, <span class="dt">double</span> y, <span class="dt">double</span> z) : x{x}, y{y}, z{z} {}
 	<span class="co">//                        the actual body is now empty ↑↑</span>
 
-	<span class="dt">double</span> x = <span class="fl">0.0</span>;
-	<span class="dt">double</span> y = <span class="fl">0.0</span>;
-	<span class="dt">double</span> z = <span class="fl">0.0</span>;
+	<span class="dt">double</span> x = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> y = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> z = <span class="fl">0.</span><span class="dv">0</span>;
 };
 
 <span class="dt">int</span> main() {
 	point p{<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>};
 	std::cout &lt;&lt; <span class="st">&quot;p: &quot;</span> &lt;&lt; p.x &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p.y &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p.z &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre><code>&gt;&gt; p: 1/2/3</code></pre>
 <p>This way of initializing members is almost always preferable if it is reasonably possible. It should however be noted, that there is one danger using it: The member-variables are initialized in the order of declaration <em>in the class</em>, not in the order of the initialization, that the constructor seems to apply. As a result the following code is wrong:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> dangerous_struct {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> dangerous_struct {
 	
 	<span class="co">// undefined behavior: var1 gets initialized before var2.</span>
 	<span class="co">// -&gt; var2 is read before initialized</span>
@@ -253,13 +267,13 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	
 	<span class="dt">int</span> var1;
 	<span class="dt">int</span> var2;
-};</code></pre>
+};</code></pre></div>
 <p>Note however, that it <em>is</em> allowed to initialize data-member from already initialized other data-members.</p>
 <h2 id="methods">Methods</h2>
 <p>OK, so we are now able to read and write member-variables and initialize them via constructors. If we think about it, a constructor is just a special function that is part of the struct and their is no real reason to disallow other functions being part of structs.</p>
 <p>These functions are called “member-functions” by the C++-standard, but are often referred to as “methods” by programmers. One advantage of using methods over free functions is that methods are tightly associated with a certain object and may therefore state the intent in a clearer way (we will learn more advantages as we will learn more about structs and classes).</p>
 <p>So, how do we create them and how do we use them? Let's say we want to have a convenient way of getting a string that represents our point:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="kw">struct</span> point {
 	point(<span class="dt">double</span> x, <span class="dt">double</span> y, <span class="dt">double</span> z) : x{x}, y{y}, z{z} {}
@@ -272,20 +286,20 @@ code > span.er { color: #ff0000; font-weight: bold; }
 				+ <span class="st">&quot;, &quot;</span> + std::to_string(z) + <span class="st">&#39;)&#39;</span>;
 	}
 	
-	<span class="dt">double</span> x = <span class="fl">0.0</span>;
-	<span class="dt">double</span> y = <span class="fl">0.0</span>;
-	<span class="dt">double</span> z = <span class="fl">0.0</span>;
+	<span class="dt">double</span> x = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> y = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> z = <span class="fl">0.</span><span class="dv">0</span>;
 };
 
 <span class="dt">int</span> main() {
 	point p{<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>};
 	std::cout &lt;&lt; <span class="st">&quot;p: &quot;</span> &lt;&lt; p.to_string() &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre><code>&gt;&gt; p: (1.000000, 2.000000, 3.000000)</code></pre>
 <p>So we just write a function inside the class and call it by picking an instance of the class and append the function-call with a ‘.’ to it:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">object.method(arguments)</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">object.method(arguments)</code></pre></div>
 <p>The overall effect of this is somewhat similar to a free function that takes a reference to the object as first argument and is called like this:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">function(object, arguments)</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">function(object, arguments)</code></pre></div>
 <p>At this point we face a problem: We learned earlier that we should usually pass arguments as const references if reasonably possible. But since the instance of the methods class is passed implicitly we cannot annotate it directly. This is why the <code>to_string</code> method in our point-class has “const” at the end of it's signature: This annotates publicly that the method won't change anything in the class. If we really <em>want</em> to change the class, we just don't add it.</p>
 <p>So, when should we use a method instead of a free function?</p>
 <ul>
@@ -297,25 +311,25 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Note that these are guidelines, not fixed rules, and that we will learn about further reasons to decide one way or the other as we go on.</p>
 <h2 id="classes">Classes</h2>
 <p>Let's say that at this point we decide, that cartesian coordinates (x, y z) are boring and decide to use <a href="https://en.wikipedia.org/wiki/Polar_coordinate_system">polar-coordinates</a> instead. Polar coordinates consist of two angles that point into a direction and a distance:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="kw">struct</span> polar_point {
 	polar_point(<span class="dt">double</span> h, <span class="dt">double</span> v, <span class="dt">double</span> dist): h_angle{h}, v_angle{v}, distance{dist} {}
 
-	<span class="dt">double</span> h_angle = <span class="fl">0.0</span>;
-	<span class="dt">double</span> v_angle = <span class="fl">0.0</span>;
-	<span class="dt">double</span> distance = <span class="fl">0.0</span>;
+	<span class="dt">double</span> h_angle = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> v_angle = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> distance = <span class="fl">0.</span><span class="dv">0</span>;
 };
 
 <span class="dt">int</span> main()
 {
-	polar_point p{<span class="fl">0.0</span>, <span class="fl">0.0</span>, <span class="dv">123</span>};
+	polar_point p{<span class="fl">0.</span><span class="dv">0</span>, <span class="fl">0.</span><span class="dv">0</span>, <span class="dv">123</span>};
 	std::cout &lt;&lt; <span class="st">&quot;distance to origin: &quot;</span> &lt;&lt; p.distance &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre><code>&gt;&gt; distance to origin: 123</code></pre>
 <p>Let's assume that the angles are represented as radians. Also we want the distance to never be negative (in that case we would adjust the angles). This creates problems: A careless user of our point could easily create an invalid state. The solution for this is to restrict the access to the members: Only methods should be allowed to touch them directly. Everyone else should only be allowed to interact with them via methods. This can achieved by making them <em>private</em>:</p>
 <!---TODO: M\_PI is not standard. better solutions?-->
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;cmath&gt; </span><span class="co">// for M_PI</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;cmath&gt; </span><span class="co">// for M_PI</span>
 <span class="ot">#include &lt;exception&gt; </span><span class="co">// for termiante() </span>
 <span class="ot">#include &lt;iostream&gt;</span>
 
@@ -332,9 +346,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	<span class="dt">void</span> set_v_angle(<span class="dt">double</span> angle);
 
 <span class="kw">private</span>:
-	<span class="dt">double</span> h_angle = <span class="fl">0.0</span>;
-	<span class="dt">double</span> v_angle = <span class="fl">0.0</span>;
-	<span class="dt">double</span> distance = <span class="fl">0.0</span>;
+	<span class="dt">double</span> h_angle = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> v_angle = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> distance = <span class="fl">0.</span><span class="dv">0</span>;
 };
 
 <span class="dt">void</span> polar_point::set_distance(<span class="dt">double</span> dist) {
@@ -363,21 +377,21 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="dt">int</span> main()
 {
-	polar_point p{<span class="fl">0.0</span>, <span class="fl">0.0</span>, <span class="dv">123</span>};
-	p.set_h_angle(<span class="fl">3.5</span>);
-	p.set_v_angle(<span class="fl">2.7</span>);
+	polar_point p{<span class="fl">0.</span><span class="dv">0</span>, <span class="fl">0.</span><span class="dv">0</span>, <span class="dv">123</span>};
+	p.set_h_angle(<span class="fl">3.</span><span class="dv">5</span>);
+	p.set_v_angle(<span class="fl">2.</span><span class="dv">7</span>);
 	std::cout &lt;&lt; <span class="st">&quot;distance to origin: &quot;</span> &lt;&lt; p.get_distance()
 	          &lt;&lt; <span class="st">&quot;, angles: &quot;</span> &lt;&lt; p.get_h_angle() &lt;&lt; <span class="st">&quot;, &quot;</span> &lt;&lt; p.get_v_angle() &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 
 	<span class="co">// this would make the program crash safely, before worse things could happen:</span>
 	<span class="co">//p.set_h_angle(42);</span>
-}</code></pre>
+}</code></pre></div>
 <pre><code>&gt;&gt; distance to origin: 123, angles: 3.5, 2.7</code></pre>
 <p>While terminate is still a harsh way of handling errors (later on exceptions will make this cleaner), we can now be sure that nobody will touch our privates and bring them into a bad state.</p>
 <p>To reiterate: Everything in a struct that comes after <code>private:</code> cannot be accessed from outside of the struct. In order to get back to the initial behavior, we can put a <code>public:</code> in the same way into the struct. There are some further details to this, but none that are currently important.</p>
 <p>At this point we can introduce classes. Basically a class is the same as a struct with the single exception that everything in it is by default private instead of public. While this is the only technical difference the important difference lies in the usage-conventions. Basically all existing coding-standards agree that everything that consists of more than a few trivial public members and maybe some simple methods should be a class. Since it is generally considered a good idea to put the public interface first this ends up with the somewhat ironic situation that most classes start with <code>public:</code>.</p>
 <p>Let's look at a simple example:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="kw">class</span> some_class {
 <span class="kw">public</span>:
@@ -392,13 +406,13 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="dt">int</span> main() {
 	some_class foo{<span class="dv">4</span>};
 	std::cout &lt;&lt; foo.get_mem() &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre><code>&gt;&gt; 4</code></pre>
 <p>We see that there really isn't much special about it. Nevertheless we'll use <code>class</code> instead of <code>struct</code> for most of our types from now on (with the exception of types that basically are only a collection of some values without fancy stuff).</p>
 <h2 id="destructors">Destructors</h2>
 <p>A constructor is a function that is called upon the construction of an object to initialize it's state correctly. Many languages have this feature. C++ is however one of the relatively few languages that also have the opposite: A destructor.</p>
 <p>A destructor is a function that will run whenever an object ceases to exist. It's main purpose is to clean up any resources that the object might own in. Consider std::vector<int>: It is a class that manages an arbitrary amount of integers; these have to be stored somewhere in memory and when the vector gets destroyed, the memory has to be returned to the system. The later is done in the destructor:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include&lt;vector&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include&lt;vector&gt;</span>
 
 <span class="dt">int</span> main() {
 	std::vector&lt;<span class="dt">int</span>&gt; vec; <span class="co">// empty vector, uses little memory</span>
@@ -408,9 +422,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	}
 	<span class="co">// at this point we have 40KB of memory in use. However: Once we leave the function,</span>
 	<span class="co">// std::vectors destructor will free this memory implicitly</span>
-}</code></pre>
+}</code></pre></div>
 <p>Now, how is a destructor created? Basically it is just a method of the class that has no returntype and the name “~classname”, for instance:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="kw">class</span> myclass {
 <span class="kw">public</span>:
@@ -423,7 +437,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="dt">int</span> main() {
 	myclass object1{<span class="dv">1</span>};
 	myclass object2{<span class="dv">2</span>};
-}</code></pre>
+}</code></pre></div>
 <pre><code>&gt;&gt; Hello from #1
 &gt;&gt; Hello from #2
 &gt;&gt; Goodbye from #2

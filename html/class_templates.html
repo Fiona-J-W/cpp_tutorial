@@ -6,28 +6,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title></title>
   <style type="text/css">code{white-space: pre;}</style>
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
   <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
   </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
   <style type="text/css">
   body {
   	max-width: 20cm;
@@ -72,10 +90,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
   	font-style: italic;
   }
   
-  code {
-  	font-size: 125%;
-  }
-  
   pre.sourceCode {
   	background-color: #fbfbfb;
   	padding: 0.3cm;
@@ -118,26 +132,26 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <body>
 <h1 id="class-templates">Class-Templates</h1>
 <p>In the last chapter we created a struct for Cartesian points:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="kw">struct</span> point {
 	point(<span class="dt">double</span> x, <span class="dt">double</span> y, <span class="dt">double</span> z) : x{x}, y{y}, z{z} 
 	{}
 
-	<span class="dt">double</span> x = <span class="fl">0.0</span>;
-	<span class="dt">double</span> y = <span class="fl">0.0</span>;
-	<span class="dt">double</span> z = <span class="fl">0.0</span>;
+	<span class="dt">double</span> x = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> y = <span class="fl">0.</span><span class="dv">0</span>;
+	<span class="dt">double</span> z = <span class="fl">0.</span><span class="dv">0</span>;
 };
 
 <span class="dt">int</span> main() {
 	point p{<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>};
 	std::cout &lt;&lt; <span class="st">&quot;p: &quot;</span> &lt;&lt; p.x &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p.y &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p.z &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre><code>&gt;&gt; p: 1/2/3</code></pre>
 <p>This still works great, but their is one problem: What should we do, if we want a point that only consists of integral coordinates? Or with floats instead of doubles? Or with complex numbers?</p>
 <p>The obvious and bad solution would be to create one struct for each and give them different names like “<code>point_f</code>”, “<code>point_i</code>” and so on. This is repetitive, boring, error-prone and therefore hard to maintain. Especially since the only difference in these structs will be type of the values.</p>
 <p>To solve this problem C++ has so called class-templates (they work with structs too). So if we want a point-class for every type T, we can just write this:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="kw">template</span>&lt;<span class="kw">typename</span> T&gt;
 <span class="kw">struct</span> point {
@@ -154,9 +168,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	point&lt;<span class="dt">int</span>&gt; p_int{<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>};
 	std::cout &lt;&lt; <span class="st">&quot;p_int: &quot;</span> &lt;&lt; p_int.x &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p_int.y &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p_int.z &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 	
-	point&lt;<span class="dt">float</span>&gt; p_float{<span class="fl">1.5</span>,<span class="fl">2.3</span>,<span class="fl">3.2</span>};
+	point&lt;<span class="dt">float</span>&gt; p_float{<span class="fl">1.</span><span class="dv">5</span>,<span class="fl">2.</span><span class="dv">3</span>,<span class="fl">3.</span><span class="dv">2</span>};
 	std::cout &lt;&lt; <span class="st">&quot;p_float: &quot;</span> &lt;&lt; p_float.x &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p_float.y &lt;&lt; <span class="st">&#39;/&#39;</span> &lt;&lt; p_float.z &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre><code>&gt;&gt; p_int: 1/2/3
 &gt;&gt; p_float: 1.5/2.3/3.2</code></pre>
 <p>This is not really different from writing normal functions so far, so let's see how we can create methods.</p>
@@ -166,7 +180,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>The implementation must be available to every user (and since not be put into another file). Since we haven't yet grown out of just using one file, this is currently no big deal.</li>
 </ul>
 <p>Let's see an example:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="kw">template</span>&lt;<span class="kw">typename</span> T&gt;
 <span class="kw">struct</span> point {
@@ -197,7 +211,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	p.print();
 	p.reset();
 	p.print();
-}</code></pre>
+}</code></pre></div>
 <pre><code>&gt;&gt; 1/2/3
 &gt;&gt; 0/0/0</code></pre>
 <p>That is basically it. There really shouldn't be any surprises so far. We will learn more about this mechanism in the future, for example how we can create special versions for certain instantiations and why this mechanism is way more powerfull than it currently appears.</p>

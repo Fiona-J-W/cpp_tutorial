@@ -6,28 +6,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title></title>
   <style type="text/css">code{white-space: pre;}</style>
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
   <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
   </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
   <style type="text/css">
   body {
   	max-width: 20cm;
@@ -70,10 +88,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
   	margin-left: 0;
   	margin-right: 0;
   	font-style: italic;
-  }
-  
-  code {
-  	font-size: 125%;
   }
   
   pre.sourceCode {
@@ -120,32 +134,32 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>At this point you should have a working compiler and text-editor, so that we can start out with looking into the fundamental building-blocks of the language.</p>
 <p>This chapter may not appear to be very entertaining or of much direct use, but it is very important as everything we will encounter here is needed to procede to the more interessting topics that will build on top of it.</p>
 <h2 id="hello-world">Hello World</h2>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
 	std::cout &lt;&lt; <span class="st">&quot;Hello World!</span><span class="ch">\n</span><span class="st">&quot;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; Hello World!</code></pre>
 <p>This program prints the text “Hello World!”, followed by a newline to the standard-output. Let's look at it line by line:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span></code></pre></div>
 <p>This line tells the compiler to use a “header” with the filename “iostream” when compiling. A header is basically another C++-file that will be pasted to the place where the include-statement appears.</p>
 <p>The “iostream”-header is part of the standard-library that should be shipped with every compiler and has therefore be available on every system. “iostream” contains lots of stuff that are related to reading and writing from and to other ressources like standard-input, standard-output, files and so on.</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main() {</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main() {</code></pre></div>
 <p>This defines the main-function. Basically everything from the opening brace will now be executed in the order it appears until we reach the matching closing brace.</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">std::cout &lt;&lt; <span class="st">&quot;Hello World!</span><span class="ch">\n</span><span class="st">&quot;</span>;</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">std::cout &lt;&lt; <span class="st">&quot;Hello World!</span><span class="ch">\n</span><span class="st">&quot;</span>;</code></pre></div>
 <p><code>std::cout</code> is a construct from the iostream-header that we included and linked to the standard-output. Via it we can write a lot of different things by “pushing them into it” with the output-operator “&lt;&lt;”. In this case we just push a so called string-literal into it. A string-literal is a text surrounded by two quotes (‘&quot;’); for the case that one wants to include a character that could create ambiguities, there are also some escape-sequences: A “\n” becomes a newline, a “\t” becomes a tab, a “\&quot;” becomes a quote and a “\\” becomes a backslash.</p>
 <p>So the string-literal in our example becomes the text “Hello World!” directly followed by a newline.</p>
 <p>Now for the last line:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">}</code></pre>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">}</code></pre></div>
 <p>This is just the closing brace of the main-function an the point where the program ends.</p>
 <h2 id="basic-arithmetic-and-variables">Basic Arithmetic and Variables</h2>
 <p>Since we now know how to print stuff, we can go on to do some very basic calculations and safe their results.</p>
 <p>Say we want to calculate the sum of two numbers and multiply the result with itself. A very simple approach would be this:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
 	std::cout &lt;&lt; (<span class="dv">3</span> + <span class="dv">5</span>) * (<span class="dv">3</span> + <span class="dv">5</span>) &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; 64</code></pre>
 <p>What we can see here is that numbers are directly supported by the language and that we can use the usual notation to do calculations with them. The most basic operations on numbers supported by C++ directly (without help from libraries) are:</p>
 <table>
@@ -180,14 +194,14 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul>
 <p>Aside from these restrictions the usual rules known from school apply here: Multiplication and division have higher precedence than addition and subtraction and if you want to change this, you have to use parenthesis.</p>
 <p>Back to our example: It surely works but it isn't very flexible and changing one value requires changes in two different places which is always a bad thing, since it can easily create errors. Also: There is no need to calculate the sum a second time after we have already done this. Variables solve this problem:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
 	<span class="kw">auto</span> a = <span class="dv">3</span>;
 	<span class="kw">auto</span> b = <span class="dv">5</span>;
 	<span class="kw">auto</span> sum = a + b;
 	std::cout &lt;&lt; sum * sum &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; 64</code></pre>
 <p>The line <code>auto a = 3;</code> creates a new variable named “a” that holds the value 3. Since “3” is an integer it has the type <code>int</code> in C++. The language infers the type of a variable from the value it is initialized with and checks that all uses of all variables are consistent after that. It is important to understand that the type of a variable will never change after it has been created; if you try to assign a value of a different type your code may sometimes compile, but this is because the compiler found a way to convert the argument to the type of your variable.</p>
 <p>In all places where you can use a literal number it is also possible to use a variable, for that reason you shouldn't be stingy with variables since they can vastly increase readability;</p>
@@ -196,20 +210,20 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Finally it should be mentioned that there are other ways to create in variables in C++ too and that encountering them in other peoples code is basically guaranteed, but that this style is usually recommended in the context of modern C++, because it avoids several gotchas in the language, is easy to read and relatively consistent.</p>
 <h2 id="reading-user-input">Reading User-input</h2>
 <p>In order to write programs that are not entirely static, we can read things too:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
 	<span class="kw">auto</span> num = <span class="dv">0</span>;
 	std::cout &lt;&lt; <span class="st">&quot;Please enter a number:</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	std::cin &gt;&gt; num;
 	std::cout &lt;&lt; <span class="st">&quot;You entered &quot;</span> &lt;&lt; num &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; Please enter a number:
 &lt;&lt; 42
 &gt;&gt; You entered 42</code></pre>
 <p>Reading behaves somewhat similar to writing: We have a character-stream of incoming characters (usually from the keyboard) and push those into variables with a stream-operator.</p>
 <p>To read more than one value, we can also chain these reads:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
 	<span class="kw">auto</span> i1 = <span class="dv">0</span>;
@@ -218,14 +232,14 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	std::cout &lt;&lt; <span class="st">&quot;Please enter three numbers:</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	std::cin &gt;&gt; i1 &gt;&gt; i2 &gt;&gt; i3;
 	std::cout &lt;&lt; <span class="st">&quot;The sum of your numbers is &quot;</span> &lt;&lt; i1+i2+i3 &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; Please enter three numbers:
 &lt;&lt; 23 42 5
 &gt;&gt; The sum of your numbers is 70</code></pre>
 <p>We will see later that we can read a lot of types other than integers, including the not yet covered strings that can store simple text.</p>
 <h2 id="conditional-execution">Conditional Execution</h2>
 <p>Let's write a program that prints the modulus of two numbers:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
 	std::cout &lt;&lt; <span class="st">&quot;Please enter two numbers seperated by whitespace:</span><span class="ch">\n</span><span class="st">&quot;</span>
@@ -234,12 +248,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	std::cin &gt;&gt; num1 &gt;&gt; num2;
 	std::cout &lt;&lt; num1 &lt;&lt; <span class="st">&quot; / &quot;</span> &lt;&lt; num2
 	          &lt;&lt; <span class="st">&quot; = &quot;</span> &lt;&lt; num1 / num2 &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; Please enter two numbers seperated by whitespace:
 &lt;&lt; 8 4
 &gt;&gt; 8 / 4 = 2</code></pre>
 <p>At this point we see a great problem: What if the second number that we enter is 0? As already noted we are not allowed to do this calculation (aside from the fact that it doesn't make any sense). The solution is an <code>if</code>-statement:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
 	std::cout &lt;&lt; <span class="st">&quot;Please enter two numbers seperated by whitespace:</span><span class="ch">\n</span><span class="st">&quot;</span>
@@ -250,11 +264,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 		std::cout &lt;&lt; num1 &lt;&lt; <span class="st">&quot; / &quot;</span> &lt;&lt; num2
 		          &lt;&lt; <span class="st">&quot; = &quot;</span> &lt;&lt; num1 / num2 &lt;&lt; <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	}
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; Please enter two numbers seperated by whitespace:
 &lt;&lt; 8 4
 &gt;&gt; 8 / 4 = 2</code></pre>
-<p>The structure of an <code>if</code>-statement is very simple: <code>if</code>, followed by a boolean expression between parenthesis, followed by a list of statements between braces. A boolean expression is a (small) piece of code that evaluates to a value of the type <code>bool</code> (that is either true or false). Often this is achieved with a comparission like the above: <code>num2 != 0</code> is the C++-way of asking whether <code>num2</code> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>≠</mo><mn>0</mn></mrow></math>. The available comparission-operators are these:</p>
+<p>The structure of an <code>if</code>-statement is very simple: <code>if</code>, followed by a boolean expression between parenthesis, followed by a list of statements between braces. A boolean expression is a (small) piece of code that evaluates to a value of the type <code>bool</code> (that is either true or false). Often this is achieved with a comparission like the above: <code>num2 != 0</code> is the C++-way of asking whether <code>num2</code> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\ne 0</annotation></semantics></math>. The available comparission-operators are these:</p>
 <table>
 <thead>
 <tr class="header">
@@ -265,54 +279,54 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><code>a == b</code></td>
-<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a</mi><mo>=</mo><mi>b</mi></mrow></math></td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a = b</annotation></semantics></math></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>a != b</code></td>
-<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a</mi><mo>≠</mo><mi>b</mi></mrow></math></td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>≠</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a \ne b</annotation></semantics></math></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><code>a &lt;  b</code></td>
-<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a</mi><mo>&lt;</mo><mi>b</mi></mrow></math></td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>&lt;</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a &lt; b</annotation></semantics></math></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>a &lt;= b</code></td>
-<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a</mi><mo>≤</mo><mi>b</mi></mrow></math></td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>≤</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a \le b</annotation></semantics></math></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><code>a &gt;  b</code></td>
-<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a</mi><mo>&gt;</mo><mi>b</mi></mrow></math></td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>&gt;</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a &gt; b</annotation></semantics></math></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>a &gt;= b</code></td>
-<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a</mi><mo>≥</mo><mi>b</mi></mrow></math></td>
+<td style="text-align: left;"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>≥</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a \ge b</annotation></semantics></math></td>
 </tr>
 </tbody>
 </table>
 <p>In addition to those an expression can be prefixed with “<code>!</code>”, which negates it's value: <code>!true == false</code>. To negate bigger expressions just enclose them in parenthesis: <code>!(true == false)</code> will be evaluated to <code>true</code>.</p>
 <p>Another thing that one should know is that integers (and some other types) can be implicitly converted to bool, if they are used as boolean expression; in that case <code>0</code> becomes <code>false</code> and every other value becomes <code>true</code>. There is no final consensus whether one should write <code>if (i != 0)</code> instead of <code>if (i)</code>, but for the beginning it is certainly a good idea to be explicit here.</p>
 <p>Back to the <code>if</code>-statements: What if we want to do two different things for each case? For this, there is the so called <code>else</code>-statement that can follow an <code>if</code>-statement. it is basically the word <code>else</code> followed by statements between braces.</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (num2 != <span class="dv">0</span>) {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (num2 != <span class="dv">0</span>) {
 	std::cout &lt;&lt; num1 / num2 &lt;&lt; std::endl;
 } <span class="kw">else</span> {
 	std::cout &lt;&lt; <span class="st">&quot;Error: division by zero!</span><span class="ch">\n</span><span class="st">&quot;</span>;
-}</code></pre>
+}</code></pre></div>
 <p>This leads us to another problem: What if we have more than two cases? Then we can just use an <code>else if</code>:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (num == <span class="dv">0</span>) {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">if</span> (num == <span class="dv">0</span>) {
 } <span class="kw">else</span> <span class="kw">if</span> (num &lt; <span class="dv">0</span>) {
 	std::cout &lt;&lt; <span class="st">&quot;num is negative</span><span class="ch">\n</span><span class="st">&quot;</span>;
 } <span class="kw">else</span> {
 	std::cout &lt;&lt; <span class="st">&quot;num is positive</span><span class="ch">\n</span><span class="st">&quot;</span>;
-}</code></pre>
+}</code></pre></div>
 <p>(Technically the braces around a single conditional statement are not mandatorry; they are however <strong>strongly</strong> recommended since ommiting them can very easily lead to bugs (misstakes), especially in the case where you nest conditionals.</p>
 <h2 id="undefined-behavior">Undefined Behavior</h2>
 <p>At this point it is time for the safety-instructions. C++ is a language that was designed to be very fast and portable which sometimes conflicts with ease of use. As a result the C++-standard explicitly does not always require a certain behavior for programs that contains a given construct.</p>
 <p>These constructs are almost always very questionable to start with and disallowing them is usually a good thing. Examples include overflowing an <code>int</code> (calculating a value that is outside the representable range of int, for example by executing “<code>2'000'000'000 + 2'000'000'000</code>”), reading uninitialized variables and accessing unowned memory. Possible behavior ranges from apperently doing what the programer expected, over randomly crashing to severe security-holes. Testing what happens and trusting that everything is fine won't work too, because the next version of your compiler might decide to do something completely different. To illustrate this, let's look at a real-world example:</p>
 <p>Postgresql, a very popular database, hat two integers <code>a</code> and <code>b</code> of type <code>int</code> that were both known to be positive. At this point they had to calculate the sum of these two but wanted to detect the case that the sum was outside of the representable range of <code>int</code>. They did it somewhat like this:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">auto</span> sum = a + b;
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">auto</span> sum = a + b;
 <span class="kw">if</span> (sum &lt;= b) {
 	<span class="co">// error-handling</span>
-}</code></pre>
+}</code></pre></div>
 <p>The assumption that the result will be smaller than <code>b</code> if an overflow occurs was funded in the fact that practically every single modern cpu works that way. However: The C++-standard forbidds that kind of code and compilers started to optimize on the assumption that <code>a + b</code> would <em>never</em> overflow.</p>
 <p>As a result of this compilers deduced that adding a positive number to another number would never result in something smaller than the second numbers. Therefore the check whether <code>sum &lt;= b</code> would always be false and could be removed.</p>
 <p>When the first compiler introduced this behavior the postgres-maintainers protested and refused to fix their code. Instead the used some options that GCC provided to disable this optimisation. When other compilers also added this optimisation, they tried to continue doing similar things for them too, but in the end they had to surrender and fix their code.</p>
@@ -321,7 +335,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h2 id="loops">Loops</h2>
 <p>If we want to check a condition once, we can use <code>if</code>. What however if we want to execute something a previously unknown number of times? This is where loops come into play. The simplest form is the so-called <code>while</code>-loop. The syntax is basically the same as it is for the the <code>if</code>-statement.</p>
 <p>The main-difference is that the condition will not be checked once, but again after every execution of the loop-body:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
 	<span class="kw">auto</span> i = <span class="dv">0</span>;
@@ -332,7 +346,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 		++i;
 	}
 	std::cout &lt;&lt; <span class="st">&quot;i is now 3.</span><span class="ch">\n</span><span class="st">&quot;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; i still isn&#39;t equal to 3.
 &gt;&gt; i still isn&#39;t equal to 3.
 &gt;&gt; i still isn&#39;t equal to 3.
@@ -347,7 +361,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li><em>loop-body</em> is similar to the if's conditional body: It is executed as long as the loops condition is met.</li>
 </ul>
 <p>Since this is quite theoretical, let's revisit the example that we used for the <code>while</code>-loop:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
 	<span class="co">// TODO: unsigned</span>
@@ -355,26 +369,26 @@ code > span.er { color: #ff0000; font-weight: bold; }
 		std::cout &lt;&lt; <span class="st">&quot;i still isn&#39;t 3.</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	}
 	std::cout &lt;&lt; <span class="st">&quot;i is now 3.</span><span class="ch">\n</span><span class="st">&quot;</span>;
-}</code></pre>
+}</code></pre></div>
 <p>Here <code>int i = 3</code> is the variable declaration. It creates an integer <code>i</code> and intializes it with 0. The condition of this loop is that <code>i</code> is not equal to 3 which is of course true in the beginning.</p>
 <h2 id="strings">Strings</h2>
 <p>We already took a very short look at string-literals and used them when printing stuff:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
 	std::cout &lt;&lt; <span class="st">&quot;Hello World!</span><span class="ch">\n</span><span class="st">&quot;</span>;
-}</code></pre>
+}</code></pre></div>
 <p>Of course it is also possible to safe a string in a variable. In order to achieve that we have to include the <code>&lt;string&gt;</code>-header and create a variable of the type <code>std::string</code>:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;string&gt;</span>
 
 <span class="dt">int</span> main() {
 	<span class="kw">auto</span> str = std::string{<span class="st">&quot;some string.</span><span class="ch">\n</span><span class="st">&quot;</span>};
 	std::cout &lt;&lt; str;
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; some string.</code></pre>
 <p>As with integers there are several operations that <code>std::string</code> supports: Copying, assigning and comparing all work as one would expect. In addition we can concatenate <code>std::string</code>s and string-literals using the <code>+</code>-operator:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;string&gt;</span>
 
 <span class="dt">int</span> main() {
@@ -388,12 +402,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	<span class="kw">if</span> (str3 == <span class="st">&quot;foobar&quot;</span>) {
 		std::cout &lt;&lt; <span class="st">&quot;Everything is fine!</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	}
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; Everything is fine!</code></pre>
 <p>Conceptually a string is basically just a sequence of characters. In C++ there is a type called <code>char</code> that, as one might expect, represents a character. Technically a <code>char</code> is an integer with a width of one byte. This allows a range from either -128 to -127 or 0 to 255 (your own implementation will almost certainly use -128 to 127, but keep in mind that this is not everywhere the case). The values between 0 and 127 are the so called ASCII-characters that contain the latin alphabet(a-z in both upper and lower case), arabian numbers (0-9), basic punctuation (point, comma, semi-colon, colon, …) and some stuff that basically noone uses any more.</p>
 <p>To represent further characters like the “Ä”, “Ö”, “Ü” and “ß” several chars have to be combined to a sequence (this is called UTF-8 and you shouldn't use anything else). The problem with this approach is, that the number of chars and logical characters in strings differ. There is no reasonable solution to that problem (In case you heard about UTF-32: It isn't either, since there is something called “combining characters”).</p>
 <p>Let's take a short look at how chars can be used:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
 	<span class="kw">auto</span> c1 = <span class="st">&#39;A&#39;</span>; <span class="co">// Note the single-quotes!!</span>
@@ -405,11 +419,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	<span class="kw">auto</span> c4 = <span class="dt">char</span>{<span class="dv">65</span>}; <span class="co">// &#39;A&#39; has the value 65, so this works, but you</span>
 	                    <span class="co">// shouldn&#39;t really do it</span>
 	std::cout &lt;&lt; c4 &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>; <span class="co">// newline is just one char, so this works</span>
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; Comparission works!
 &gt;&gt; A</code></pre>
 <p>The reason we are looking so deep into characters is that you can access them in a <code>std::string</code> with the “[]”-operator:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;string&gt;</span>
 
 <span class="dt">int</span> main() {
@@ -417,16 +431,16 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	std::cout &lt;&lt; str[<span class="dv">0</span>] &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 	str[<span class="dv">1</span>] = <span class="st">&#39;O&#39;</span>;
 	std::cout &lt;&lt; str &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; f
 &gt;&gt; fOobar</code></pre>
-<p>To access the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>n</mi></mrow></math>'th Character we write <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></math> between the square-brackets that we attach to the variable. We will take a look into the reasons for this so-called zero-indexing later, for the meantime it is enough to know that this is how C++ (and most other programming-languages) work and just accept that.</p>
+<p>To access the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>'th Character we write <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n - 1</annotation></semantics></math> between the square-brackets that we attach to the variable. We will take a look into the reasons for this so-called zero-indexing later, for the meantime it is enough to know that this is how C++ (and most other programming-languages) work and just accept that.</p>
 <p>This leaves us with two questions: How do we find out the size of the string and what happens if our indexes refer to nonexisting characters.</p>
 <p>The first question is answered by the so called method <code>size()</code>. A later chapter will deal with the question what methods are, so for the meantime it is enough to know that if you have a variable <code>str</code> of the type <code>std::string</code>, you can find out the number of chars in it with the following code: “<code>str.size()</code>”</p>
 <p>The answer to the second question is more terrifying: If your index is invalid, your program contains undefined behavior and is likely to crash in an uncontrollable way. The one exzeption is the value returned by <code>size()</code>: It is guaranteed to return a char with the value zero (the value, not the character ‘0’), but it must not be written to.</p>
 <p>In order to somewhat reduce the dangers of this, there is another method called <code>at()</code> that mostly behaves like the square-brackets but is guaranteed to trigger C++'s error-handling-mechanisms (Since we haven't looked into those yet, this would currently mean a guaranteed controlled shut-down instead of undefined behavior).</p>
 <p>Let's look at how we can use these things in practice:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;string&gt;</span>
 
 <span class="dt">int</span> main() {
@@ -436,11 +450,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 		std::cout &lt;&lt; str[i] &lt;&lt; str.at(i);
 	}
 	std::cout &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; 3
 &gt;&gt; ffoooo</code></pre>
 <p>The last thing strings for now will be how to read them from standard-input. The obvious way works but has the potential disadvantage, that it reads a word (words are seperated by whitespace in this context). Further words will of course be just ignored in that case:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;string&gt;</span>
 
 <span class="dt">int</span> main() {
@@ -448,12 +462,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	<span class="kw">auto</span> str2 = std::string{};
 	std::cin &gt;&gt; str1 &gt;&gt; str2;
 	std::cout &lt;&lt; str1 &lt;&lt; <span class="st">&quot;, &quot;</span> &lt;&lt; str2 &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&lt;&lt; word1 word2 word3
 &gt;&gt; word1, word2</code></pre>
 <h2 id="vectors">Vectors</h2>
 <p>Strings are sequences of characters, but what if we want a sequence of something else? This is what <code>std::vector</code> is designed for. In order to use it we have to include the <code>&lt;vector&gt;</code>-header first and then declare what it should contain:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;vector&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;vector&gt;</span>
 <span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
@@ -462,9 +476,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 	<span class="co">// a vector of strings:</span>
 	<span class="kw">auto</span> strings = std::vector&lt;std::string&gt;{<span class="st">&quot;Foo&quot;</span>, <span class="st">&quot;Bar&quot;</span>};
-}</code></pre>
+}</code></pre></div>
 <p>Aside from reading, printing and concatenating with <code>+</code> all the things that we just learned about strings can also be done with <code>std::vector</code>:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;vector&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;vector&gt;</span>
 <span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
@@ -474,11 +488,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	<span class="kw">if</span> (vec1 != vec2) {
 		std::cout &lt;&lt; <span class="st">&quot;the vectors contain different elements</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	}
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; 2, 3
 &gt;&gt; the vectors contain different elements</code></pre>
 <p>As we can see above, initializing a vector with elements is as easy as writing the values in braces and assigning these during construction. Alternativly we can pass it an integer (and optionally a value) in parenthesis in order to create a vector of a certain size with all elements being defaulted to the given value or, if none is given, it's default value (empty string for strings, zero for numbers):</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;vector&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;vector&gt;</span>
 <span class="ot">#include &lt;iostream&gt;</span>
 
 <span class="dt">int</span> main() {
@@ -487,10 +501,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 	<span class="co">// a vector of 100 strings with value &quot;foo&quot;:</span>
 	<span class="kw">auto</span> vec2 = std::vector&lt;std::string&gt;(<span class="dv">100</span>, <span class="st">&quot;foo&quot;</span>);
-}</code></pre>
+}</code></pre></div>
 <h2 id="foreach-loops">Foreach-Loops</h2>
 <p>We already know the for-loops and we have already seen how we can use them to iterate over all elements in a <code>std::vector</code> or <code>std::string</code>:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;vector&gt;</span>
 <span class="ot">#include &lt;string&gt;</span>
 
@@ -499,12 +513,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	<span class="kw">for</span> (<span class="kw">auto</span> i = <span class="dv">0u</span>; i &lt; vec.size(); ++i) {
 		std::cout &lt;&lt; vec[i] &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 	}
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; foo
 &gt;&gt; bar</code></pre>
 <p>This works, but it is both verbose and not very general: At some point we will come across data-structures that hold sequences, but don't allow access with square-brackets.</p>
 <p>To solve these (and some other) problems, C++ has a so called range-based-for-loop, that allows us to say what we really want:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;vector&gt;</span>
 <span class="ot">#include &lt;string&gt;</span>
 
@@ -513,12 +527,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	<span class="kw">for</span> (std::string str: vec) { <span class="co">// read: for each str in vec:</span>
 		std::cout &lt;&lt; str &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 	}
-}</code></pre>
+}</code></pre></div>
 <pre class="output"><code>&gt;&gt; foo
 &gt;&gt; bar</code></pre>
 <p>Nobody will deny that this code is much cleaner and easier to follow, but we will encounter problems if we try to assign a new value to <code>str</code>: <code>str</code> is a copy of the <code>std::string</code> in the vector, so changing it won't change the value in the vector. Another problem is that the copy may be expensive if the string is large. Last but not least it is tedious to repeat the type that is already stated (in the definition of vec). The solution to these problems is to just write “<code>auto&amp;</code>” instead of the type. The ampersand (the “&amp;”) makes sure that <code>str</code> is not a copy of the element in the container, but just an alias (another name) for the element itself.</p>
 <p>So our final version looks like this:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;vector&gt;</span>
 <span class="ot">#include &lt;string&gt;</span>
 
@@ -527,7 +541,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 	<span class="kw">for</span> (<span class="kw">auto</span>&amp; str: vec) { <span class="co">// read: for each str in vec:</span>
 		std::cout &lt;&lt; str &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
 	}
-}</code></pre>
+}</code></pre></div>
 <h2 id="summary">Summary</h2>
 <p>In this chapter we took a short look into the very basics of C++. In order to keep the complexity at managable levels we skipped over many details and simplified a few other things.</p>
 <p>The reason is that we will need everything we learned here in basically all of the upcomming chapters, that will hopefully provide more of a red thread and make things clearer.</p>

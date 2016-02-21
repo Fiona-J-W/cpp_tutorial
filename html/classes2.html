@@ -6,28 +6,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title></title>
   <style type="text/css">code{white-space: pre;}</style>
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
   <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
   </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
   <style type="text/css">
   body {
   	max-width: 20cm;
@@ -70,10 +88,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
   	margin-left: 0;
   	margin-right: 0;
   	font-style: italic;
-  }
-  
-  code {
-  	font-size: 125%;
   }
   
   pre.sourceCode {
@@ -121,7 +135,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h2 id="preparing-the-loot-enums-and-structs">Preparing the Loot: Enums and Structs</h2>
 <p>Starting with the creation of a player is boring, if we could instead be creating our freakingly-huge-sword-of-doom, so let's get to the loot first!</p>
 <p>In our dungeon we expect four kinds of loot: Armor, weapons, jewelry and junk. We could now use an integer and some global constants to anotate what each item is, but the nice thing is that C++ already provides this in a more convenient way as a so called enum:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">enum</span> <span class="kw">class</span> item_kind {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">enum</span> <span class="kw">class</span> item_kind {
 	armor,
 	weapon,
 	jewelry,
@@ -148,7 +162,7 @@ std::string to_string(<span class="dt">const</span> item_kind&amp; kind) {
 	<span class="dt">const</span> <span class="kw">auto</span> find_2 = item_kind::junk;
 	std::cout &lt;&lt; <span class="st">&quot;Our first find is &quot;</span> &lt;&lt; to_string(find_1)
 		&lt;&lt; <span class="st">&quot;, our second find is&quot;</span> &lt;&lt; to_string(find_2) &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-}</code></pre>
+}</code></pre></div>
 <p>The advantage of this approach over integer-constants is that we have our own type, which, among other things, implies that we can overload functions for it and, that it became harder to accidentially use a different integer that was supposed to mean something else where we wanted to know what kind of item our find is.</p>
 <p>To show a real-live situation where types are used, we don't need to look far: From the first grade on pupils are forced by their teachers and parents to not throw away things like meters, seconds, liters, … when doing exercises for school and get ask questions like: “Three what? <a href="https://en.wikipedia.org/wiki/Bratwurst">Bratwürste</a>?” (Or at least the author of this text got this question). The reasoning is again that keeping this kind of information can easily expose a lot of errors in the used formulas or during calculation.</p>
 <p>A dramatic example for what can happen if you do not use types is the <a href="https://en.wikipedia.org/wiki/Mars_Climate_Orbiter">Mars Climate Orbiter</a>: It got to0 close to the surface because one module incorrectly produced results in imperial measures, while another one expected those to be in a sane (=metric) unit-system. The lessons from this incident are:</p>
@@ -158,14 +172,14 @@ std::string to_string(<span class="dt">const</span> item_kind&amp; kind) {
 </ul>
 <p>Now, back to our loot: We want to be able to add further information too it, so that we can have different kinds of it.</p>
 <p>Obviously each piece should have at least have name that describes it and a value in goldpieces. Carrying those informations arround manually by passing them around as additional arguments would however be very cumbersome. The good news is that C++ provides us a way to create a new type that is basically just a collection of different values: A <code>struct</code>:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> item {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> item {
 	std::string name;
 	<span class="dt">int</span> value; <span class="co">// some pieces might be so terrible that you have to pay people to take them</span>
 	item_kind kind;
-}; <span class="co">// note the &#39;;&#39;, it is important!</span></code></pre>
+}; <span class="co">// note the &#39;;&#39;, it is important!</span></code></pre></div>
 <p>This defines a new type <code>item</code> that will safe us from all the trouble by making sure that it contains all the information we might ever need. The syntactic requirements to create such a thing should be relatively obvious from the example: First you declare your intent to define a struct by writing <code>struct</code> followed by the name it should have; after that you declare all the variables it should hold by specifying their types and names inside a pair of braces and finally put a semicolon there. <strong>Do not forget that semicolon!</strong> This is probably the most common error that even advanced programmers make when it comes to defining simple types.</p>
 <p>So how can we use that? Again, by just declaring a variable of that type and using it's members:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main() {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> main() {
 	<span class="kw">auto</span> find = item{};
 	item.name = <span class="st">&quot;Sword of Doom&quot;</span>;
 	item.value = <span class="dv">100&#39;000&#39;000</span>; <span class="co">// if we have a number with a lot of digits,</span>
@@ -174,9 +188,9 @@ std::string to_string(<span class="dt">const</span> item_kind&amp; kind) {
 	item.kind = item_kind::weapon;
 	std::cout &lt;&lt; <span class="st">&quot;You just found a &quot;</span> &lt;&lt; item.name &lt;&lt; <span class="st">&quot; which is worth &quot;</span>
 	          &lt;&lt; item.value &lt;&lt; <span class="st">&quot; golden coins!</span><span class="ch">\n</span><span class="st">&quot;</span>;
-}</code></pre>
+}</code></pre></div>
 <p>Passing it to a function or defining a function that takes an item as argument is completely identical to how we did it up to now too:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// try to sell your item for the specified</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// try to sell your item for the specified</span>
 <span class="co">// amount of coins; negative offers mean</span>
 <span class="co">// that you are willing to pay the merchant</span>
 <span class="co">// for taking it</span>
@@ -184,18 +198,18 @@ std::string to_string(<span class="dt">const</span> item_kind&amp; kind) {
 	<span class="co">// A merchant only buys if he get&#39;s an item for</span>
 	<span class="co">// less than it is worth</span>
 	<span class="kw">return</span> find.value &gt; offer;
-}</code></pre>
+}</code></pre></div>
 <p>However, there is one problem: We haven't defined the default-values of the structs members, so what are those?</p>
 <p>Well, the sad answer is “it depends”: The types of the standard-library will be initialized with an empty/zero state, but the build-in types like integers will not recieve that treatment and reading them results in <strong>undefined behavior</strong>! A first fix for that is to directly assign those variables a value:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> item {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> item {
 	std::string name;
 	<span class="dt">int</span> value = <span class="dv">0</span>;
 	item_kind kind = item_kind::junk;
-};</code></pre>
+};</code></pre></div>
 <p>For some types that really is all we need, but in our case it certainly is not optimal, because what kind should an item have by default (why junk?) and what value (why nothing?). Furthermore an empty name is not very convincing either.</p>
 <p>For those more advanced cases, C++ offers a solution too: So called “constructors”.</p>
 <p>Basically those are functions that create instances of the type in question. Some are created by default and may disappear if we define others. One of the examples for this is the implicitly created default-constructor that takes no arguments which we implicitly used above. It will disappear the moment we define any other constructor but can easily be brought back if we so desire. What we would like here is however for it to stay deleted and instead we want a constructor that takes all the requred arguments. Let's see how that works:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> item {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> item {
 	<span class="co">// A constructor is a function that is declared INSIDE</span>
 	<span class="co">// the struct to which it belongs. It has the same name</span>
 	<span class="co">// as the struct and no explicit return-type:</span>
@@ -229,13 +243,13 @@ item::item(<span class="dt">const</span> std::string&amp; n, <span class="dt">in
 	<span class="co">// Well, because &#39;this&#39; is a very old feature with bad behavior.</span>
 	<span class="co">// It is not a good thing that it is that way, but we have to accept it:</span>
 	<span class="kw">this</span>-&gt;kind = kind; <span class="co">// the argument hides the member, so we can just use it.</span>
-}</code></pre>
+}</code></pre></div>
 <p>This works great will do so most of the time, but for completeness sake, let's see what our constructor really does: It initializes members with the arguments that we passed it. This is a very common thing, so there is some special alternative syntax: for it:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">item::item(<span class="dt">const</span> std::string&amp; n, <span class="dt">int</span> v, item_kind kind): <span class="co">// note the colon</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">item::item(<span class="dt">const</span> std::string&amp; n, <span class="dt">int</span> v, item_kind kind): <span class="co">// note the colon</span>
 	name{n}, <span class="co">// constructs the member name by copying the argument n</span>
 	value{v},
 	kind{kind} <span class="co">// Here we can actually ignore name-clashes to a certain degree</span>
-{} <span class="co">// The constructor still needs a body, but quite often it can be empty</span></code></pre>
+{} <span class="co">// The constructor still needs a body, but quite often it can be empty</span></code></pre></div>
 <p>The main-advantage of this method is that it allows us to controllthe actual construction of the member instead of having it default-constructed just so that we can reassign a new value to them. (This may seem irrelevant now, but we will come across types where this will really matter.)</p>
 <p>Another advantage is that most experienced programmers will consider it cleaner and easier to understand at a glance.</p>
 <p>There are however some traps:</p>
@@ -245,7 +259,7 @@ item::item(<span class="dt">const</span> std::string&amp; n, <span class="dt">in
 <li>The expressions may also be more complex than just copying a value, basically everything one wants to do can be done in them (this doesn't mean everything that can be done in them <em>should</em> be done in them).</li>
 </ul>
 <p>Some further examples:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> example_1 {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> example_1 {
 	<span class="co">// this is how you define a constructor inline:</span>
 	example_1(<span class="dt">const</span> std::string&amp; str): str{str} {}
 	std::string str;
@@ -271,10 +285,10 @@ item::item(<span class="dt">const</span> std::string&amp; n, <span class="dt">in
 
 	<span class="dt">int</span> i1;
 	<span class="dt">int</span> i2;
-};</code></pre>
+};</code></pre></div>
 <h2 id="drops-and-random-numbers">Drops and Random Numbers</h2>
 <p>Since we have now defined how we would like to represent the games items, we need a list of them. For the meantime we don't want to change what items are available, so a global constant is perfectly fine here:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// just put this into the global scope:</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="co">// just put this into the global scope:</span>
 <span class="dt">const</span> <span class="kw">auto</span> items = std::vector&lt;item&gt;{
 	<span class="co">// the language knows that we want to call the</span>
 	<span class="co">// constructor here, so there is no need to</span>
@@ -286,12 +300,12 @@ item::item(<span class="dt">const</span> std::string&amp; n, <span class="dt">in
 	{<span class="st">&quot;Necklace&quot;</span>, <span class="dv">5000</span>, item_kind::jewelry},
 	{<span class="st">&quot;Dirt&quot;</span>, <span class="dv">0</span>, item_kind::junk},
 	{<span class="st">&quot;toxic Dirt&quot;</span>, <span class="dv">-100</span>, item_kind::junk}
-};</code></pre>
+};</code></pre></div>
 <p>Now we need a function that returns a random item:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">item random_item() {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">item random_item() {
 	<span class="dt">const</span> <span class="kw">auto</span> item_index = ????
 	<span class="kw">return</span> items[item_index];
-}</code></pre>
+}</code></pre></div>
 <p>Obviously we need some way to get a random number. There are several ways to achieve that in C++ and most of them are bad for various reasons. Even though it may look a bit like overkill at first, we will use the right way from the beginning, because the supposedly simpler (because they are usually wrong) ways won't save us from learning the right way at some point, they just postpone it.</p>
 <p>The very first thing we have to do in order to use the random-facilities is including the <code>&lt;random&gt;</code>-header. After that we will have a lot of partially hard to understand things at our hands, most of which we don't need now (this doesn't mean that it isn't usefull or good, it's just for more advanced tasks). What we should understand at first is that C++ separates the notions a random-number-generator and a random distribution. Now, what is the difference between those two?</p>
 <p>A real-life example may be a good way to explain it: Say we want to pick a random number between one and three (1, 2 or 3), but we only have a coin to produce random bits (zero or one). In order to avoid bias when selecting a number we now have to think up an algorithm of how to throw the coin multiple times to select any of those three numbers with the same propability.</p>
@@ -309,7 +323,7 @@ item::item(<span class="dt">const</span> std::string&amp; n, <span class="dt">in
 <li><code>std::uniform_int_distribution&lt;Integer&gt;</code> This distribution produces random integers of the specified type in a range that can be specified by the user, where every possible value will be choosen with the same likelyhood.</li>
 </ul>
 <p>So how do we use it? Basically we will create a variable of each type and use the distribution as a function that recieves the generator as the only argument. It may sound strange, but in C++ we can actually create types that behave like functions in some circumstances and this is one example:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;random&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;random&gt;</span>
 
 <span class="dt">int</span> main() {
 	<span class="co">// std::random_device is one of the</span>
@@ -321,10 +335,10 @@ item::item(<span class="dt">const</span> std::string&amp; n, <span class="dt">in
 	<span class="co">// In other words: 23 and 42 may very well be created too:</span>
 	<span class="kw">auto</span> dist = std::uniform_int_distribution&lt;<span class="dt">int</span>&gt;{<span class="dv">23</span>, <span class="dv">42</span>};
 	std::cout &lt;&lt; dist(rd) &lt;&lt; <span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>;
-}</code></pre>
+}</code></pre></div>
 <p>Executing this multiple times should yield different results, where each is equally likely.</p>
 <p>In order to use this for our item-selection we will create a small helper-function that creates a random-index for a container of size <code>n</code>:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;cstdint&gt;</span>
 
 std::size_r random_index(std::size_t container_size) {
@@ -332,13 +346,13 @@ std::size_r random_index(std::size_t container_size) {
 	<span class="co">// we need to decrement the container size, since it isn&#39;t a valid index itself!</span>
 	<span class="kw">auto</span> dist = std::uniform_int_distribution&lt;std::size_t&gt;{<span class="dv">0</span>, container_size - <span class="dv">1u</span>};
 	<span class="kw">return</span> dist(rd);
-}</code></pre>
+}</code></pre></div>
 <p>After that we can implement our item-selection again:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp">item random_item() {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp">item random_item() {
 	<span class="kw">return</span> items[random_index(items.size())];
-}</code></pre>
+}</code></pre></div>
 <p>Putting everything that we have so far together into a program in which we kick in ten doors and loot everything of value that we find behind them, we get this:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;cstdint&gt;</span>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="ot">#include &lt;cstdint&gt;</span>
 <span class="ot">#include &lt;iostream&gt;</span>
 <span class="ot">#include &lt;random&gt;</span>
 <span class="ot">#include &lt;string&gt;</span>
@@ -411,21 +425,21 @@ item random_item() {
 		}
 		std::cout &lt;&lt; <span class="st">&quot;We now have &quot;</span> &lt;&lt; backpack.size() &lt;&lt; <span class="st">&quot; item(s) in our backpack.</span><span class="ch">\n</span><span class="st">&quot;</span>;
 	}
-}</code></pre>
+}</code></pre></div>
 <h2 id="classes">Classes</h2>
 <p>Now that we are able to loot, it is time to create the characters (both the player and NPCs). For the start every character has to have a name, a current health-level and a maximum health_level.</p>
 <p>A simple implementation might look like this:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> character {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> character {
 	character(<span class="dt">const</span> std::string&amp; name, <span class="dt">unsigned</span> health = <span class="dv">100u</span>, max_health = <span class="dv">100u</span>):
 		name{name}, health{health}, max_health{max_health} {}
 	std::string name;
 	<span class="dt">unsigned</span> health = <span class="dv">100u</span>;
 	<span class="dt">unsigned</span> max_health = <span class="dv">100u</span>;
 	<span class="co">// invariant: health &lt;= max_health</span>
-};</code></pre>
+};</code></pre></div>
 <p>This will work, but the problem is, that due to the fact that everyone can access everything, it would be easy to either increase <code>health</code> over <code>max_health</code> or, even worse, decrease it below zero which will have it wrap around to a gigantic value.</p>
 <p>The solution to this are of course methods that will add all those checks and cut the de/increase of (if a character has zero health it is dead, there is no point in negative health):</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> character {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> character {
 	character(<span class="dt">const</span> std::string&amp; name, <span class="dt">unsigned</span> health = <span class="dv">100u</span>, max_health = <span class="dv">100u</span>):
 		name{name}, health{health}, max_health{max_health} {}
 	<span class="dt">void</span> heal(<span class="dt">unsigned</span> strength);
@@ -451,11 +465,11 @@ item random_item() {
 	<span class="co">// way to do it:</span>
 	health -= std::min(health, strength);
 	<span class="co">// Exercise: how can heal be implemented better?</span>
-}</code></pre>
+}</code></pre></div>
 <p>However, this still doesn't prevent fiddling with those values from the outside, it only offers a better alternative. Since a lot of programmers tend to be not diciplined well enough only to use those, the language offers us a way to ensure that they won't do it by accident or lazyness: Access specifiers.</p>
 <p>These are are annotations to areas in our struct that tell whether everyone or only it's methods may access those parts of it. The two access-specifiers that we care about are “<code>public</code>” and “<code>private</code>” (there is also one called “<code>protected</code>”, but it has few uses, especially at this point).</p>
 <p>As one may guess <code>public</code> means that those things can be accessed by everyone, while <code>private</code> things are only for the class itself. Let's see an example:</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> character {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> character {
 <span class="kw">public</span>: <span class="co">// everything that follows is public, which is the default in structs</span>
 	character(<span class="dt">const</span> std::string&amp; name, <span class="dt">unsigned</span> health = <span class="dv">100u</span>, max_health = <span class="dv">100u</span>):
 		name{name}, health{health}, max_health{max_health} {}
@@ -468,10 +482,10 @@ item random_item() {
 	<span class="dt">unsigned</span> health = <span class="dv">100u</span>;
 	<span class="dt">unsigned</span> max_health = <span class="dv">100u</span>;
 	<span class="co">// invariant: health &lt;= max_health</span>
-};</code></pre>
+};</code></pre></div>
 <p>The problem now is that while we have prevented bad fiddling with the internals from the outside, we can no longer read the values, which really wouldn't be a problem. The solution to this is to add some more methods that return the values that we consider acceptable for everyone else to see.</p>
 <p>The question here is of course, how to name them? If we have a member named <code>health</code>, we cannot have a method with the same name as well. The best answer to that problem is to prefix all private members with <code>m_</code> (‘m’ like in “member”) and call the methods as the member was called before. Another reason to do that, is that it improves readability of a methods implementation, since there can no longer be confusion about where some variable comes from: If it is prefixed, it is part of the class, otherwise it is local to the function.</p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> character {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">struct</span> character {
 <span class="kw">public</span>:
 	character(<span class="dt">const</span> std::string&amp; name, <span class="dt">unsigned</span> health = <span class="dv">100u</span>, max_health = <span class="dv">100u</span>):
 		name{name}, health{health}, max_health{max_health} {}
@@ -489,11 +503,11 @@ item random_item() {
 	<span class="dt">unsigned</span> m_health = <span class="dv">100u</span>;
 	<span class="dt">unsigned</span> m_max_health = <span class="dv">100u</span>;
 	<span class="co">// invariant: health &lt;= max_health</span>
-};</code></pre>
+};</code></pre></div>
 <p>At this point out struct has gotten relatively complex, when compared to the simple collection of values that they can also be used as. In fact we have long reached a point where common convention among C++-programmers is to use a <code>class</code> instead. The good news is that this is almost exclusivly convention and the change in our example only involves replacing the <code>struct</code>-keyword with <code>class</code>. The only technical difference between those two are that members are by default <code>public</code> in a struct and <code>private</code> in a class. Once we add <code>public:</code> to the first line of our class they are basically identical.</p>
 <p>Why would we use classes at all then? The answer to that is that it allows to state the intent that some datatype is either just a simple collection of values (→<code>struct</code>) or a little bit more complex (→<code>class</code>). The summary really is that if your type consists of anything aside a couple of public data-members (and possibly a few very simple constructors), make it a <code>class</code>.</p>
 <p>So let's change that part of our character, and while we are at it, we might also add another method: <code>attack</code></p>
-<pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">class</span> character {
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="kw">class</span> character {
 <span class="kw">public</span>:
 	character(<span class="dt">const</span> std::string&amp; name, <span class="dt">unsigned</span> health = <span class="dv">100u</span>, max_health = <span class="dv">100u</span>):
 		name{name}, health{health}, max_health{max_health} {}
@@ -530,7 +544,7 @@ item random_item() {
 	<span class="co">// Note that we could also have accessed other.m_health</span>
 	<span class="co">// directly, because we are in a method of character.</span>
 	<span class="co">// private refers to classes, not instances of classes!</span>
-}</code></pre>
+}</code></pre></div>
 <hr/>
 <section class="license">
 	<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
