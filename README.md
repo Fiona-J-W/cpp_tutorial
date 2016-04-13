@@ -2,18 +2,19 @@
 **WARNING: This tutorial is still under development. It must not be used for actual learning at this point.**
 
 Please also note that pandoc's markdown syntax is used to format the tutorial's content (see `src` folder)
-and GitHub may display some aspects of it not quite right. Instead of viewing it at Github, have a look at
+and GitHub may display some aspects of it not quite right. Instead of viewing it at GitHub, have a look at
 the [official website](http://cpp.florianjw.de/). It is ad-free, works without JavaScript, and the only
 kind of tracking it does is keeping the webserver's `access.log`.
 
-HTTPS is also supported but only signed by CAcert which will likely make your browser produce a warning
-about an insecure connection because it's authors are utterly incompetent when it comes to understanding
-the security-implications of their decission to consider an unencrypted side much more secure than an
-encrypted one.
+HTTPS is currently only supported via a certificate signed by [CAcert](http://cacert.org/).
+There is a good chance your web browser will produce a warning, informing you that the connection is insecure.
+This is because currently pretty much all browser manufacturers are utterly incompetent when it comes to understanding
+the security implications of their decision to seemingly consider an unencrypted website more secure than
+an encrypted one.
 
-Once a usable state will be achieved, I will however look into getting a certificate from [Let's
-Encrypt](https://letsencrypt.org/) which is considered as much more secure for pretty much no good reason
-whatsoever. 
+However, once [Let's Encrypt](https://letsencrypt.org/) becomes usable, I will look into getting a certificate from them.
+Internet browser manufacturers consider their certificates much more secure than those of CAcert for pretty much no good
+reason whatsoever.
 
 
 Top-Down C++ Tutorial
@@ -35,7 +36,7 @@ write programs in, unless absolutely necessary. Basically every known web-tutori
 Some of them are said to be of very high quality, but they are of no use for all those who don't have the
 money to buy them.
 
-On another note, books also have the problem that they are rarely open-content. This makes it impossible to
+On another note, books also have the problem that they are rarely open content. This makes it impossible to
 update them to new versions of the language, if the author decides not to do so.
 
 And last but not least: Ink on dead trees rarely gets updated at all.
@@ -49,7 +50,7 @@ tutorial. When I heard of this, I decided to participate and suggested a structu
 strongly to use a top-down approach to avoid the problems that every other online-tutorial known to me
 has.
 
-Sadly this project lost most of it's momentum after a relatively short while. At some point I decided
+Sadly this project lost most of its momentum after a relatively short while. At some point I decided
 that it might be the best to take what I had already written, convert it to markdown and move it to
 github in the hope to solve the following problems:
 
