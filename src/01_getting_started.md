@@ -5,7 +5,7 @@ At this point you should have a working compiler and text-editor, so that we can
 into the fundamental building-blocks of the language.
 
 This chapter may not appear to be very entertaining or of much direct use, but it is very important as
-everything we will encounter here is needed to procede to the more interessting topics that will build
+everything we will encounter here is needed to proceede to the more interessting topics that will build
 on top of it.
 
 Hello World
@@ -35,7 +35,7 @@ appears.
 
 The “iostream”-header is part of the standard-library that should be shipped with every compiler and
 has therefore be available on every system. “iostream” contains lots of stuff that are related to
-reading and writing from and to other ressources like standard-input, standard-output, files and so on.
+reading and writing from and to other resources like standard-input, standard-output, files and so on.
 
 ```cpp
 int main() {
@@ -67,7 +67,7 @@ This is just the closing brace of the main-function an the point where the progr
 Basic Arithmetic and Variables
 ------------------------------
 
-Since we now know how to print stuff, we can go on to do some very basic calculations and safe their
+Since we now know how to print stuff, we can go on to do some very basic calculations and save their
 results.
 
 Say we want to calculate the sum of two numbers and multiply the result with itself. A very simple
@@ -109,7 +109,7 @@ further notes:
 
 Aside from these restrictions the usual rules known from school apply here: Multiplication and division
 have higher precedence than addition and subtraction and if you want to change this, you have to use
-parenthesis.
+parentheses.
 
 Back to our example: It surely works but it isn't very flexible and changing one value requires changes
 in two different places which is always a bad thing, since it can easily create errors. Also: There is
@@ -145,7 +145,7 @@ type for integers and can on most modern systems hold numbers between -214748364
 and 2147483647, which should be enough for most applications.
 
 The third statement (`auto sum = a + b;`) demonstrates that variables can also have longer names than
-just one letter (which they should have almost always) and that we can initialize them from compund
+just one letter (which they should have almost always) and that we can initialize them from compound
 expressions like `a + b`.
 
 Finally it should be mentioned that there are other ways to create in variables in C++ too and that
@@ -249,10 +249,10 @@ int main() {
 ```
 
 The structure of an `if`-statement is very simple: `if`, followed by a boolean expression between
-parenthesis, followed by a list of statements between braces. A boolean expression is a (small) piece
+parentheses, followed by a list of statements between braces. A boolean expression is a (small) piece
 of code that evaluates to a value of the type `bool` (that is either true or false). Often this is
-achieved with a comparission like the above: `num2 != 0` is the C++-way of asking whether
-`num2` $\ne 0$. The available comparission-operators are these:
+achieved with a comparison like the above: `num2 != 0` is the C++-way of asking whether
+`num2` $\ne 0$. The available comparison-operators are these:
 
 C++      Meaning
 -------- -----------------------
@@ -265,7 +265,7 @@ C++      Meaning
 -------- -------
 
 In addition to those an expression can be prefixed with “`!`”, which negates it's value: `!true == false`.
-To negate bigger expressions just enclose them in parenthesis: `!(true == false)` will be evaluated to
+To negate bigger expressions just enclose them in parentheses: `!(true == false)` will be evaluated to
 `true`.
 
 Another thing that one should know is that integers (and some other types) can be implicitly converted
@@ -298,7 +298,7 @@ if (num == 0) {
 ```
 
 (Technically the braces around a single conditional statement are not mandatorry; they are however **strongly**
-recommended since ommiting them can very easily lead to bugs (misstakes), especially in the case where you
+recommended since ommiting them can very easily lead to bugs (mistakes), especially in the case where you
 nest conditionals.
 
 Undefined Behavior
@@ -311,7 +311,7 @@ does not always require a certain behavior for programs that contains a given co
 These constructs are almost always very questionable to start with and disallowing them is usually a
 good thing. Examples include overflowing an `int` (calculating a value that is outside the representable
 range of int, for example by executing “`2'000'000'000 + 2'000'000'000`”), reading uninitialized variables
-and accessing unowned memory. Possible behavior ranges from apperently doing what the programer expected,
+and accessing unowned memory. Possible behavior ranges from apperently doing what the programmer expected,
 over randomly crashing to severe security-holes. Testing what happens and trusting that everything is fine
 won't work too, because the next version of your compiler might decide to do something completely
 different. To illustrate this, let's look at a real-world example:
@@ -328,7 +328,7 @@ if (sum <= b) {
 ```
 
 The assumption that the result will be smaller than `b` if an overflow occurs was funded in the fact
-that practically every single modern cpu works that way. However: The C++-standard forbidds that kind
+that practically every single modern cpu works that way. However: The C++-standard forbids that kind
 of code and compilers started to optimize on the assumption that `a + b` would *never* overflow.
 
 As a result of this compilers deduced that adding a positive number to another number would never result
@@ -376,9 +376,9 @@ int main() {
 >> i is now 3.
 ```
 
-The way we used `i` here is quite commont: A counter that counts the number of times
+The way we used `i` here is quite common: A counter that counts the number of times
 that the loop-body was executed and is compared then to the required number of executions.
-We call this kind of variables loop-counters and they are conventially often named `i`, `j`
+We call this kind of variables loop-counters and they are conventionally often named `i`, `j`
 and `k` (this is one of the rare cases where single-letter-names are acceptable).
 
 Since the concept of a loop-counter is needed so often, there is also some special syntax to
@@ -471,7 +471,7 @@ might expect, represents a character. Technically a `char` is an integer with a 
 range from either -128 to -127 or 0 to 255 (your own implementation will almost certainly use -128 to 127, but keep
 in mind that this is not everywhere the case). The values between 0 and 127 are the so called ASCII-characters that
 contain the latin alphabet(a-z in both upper and lower case), arabian numbers (0-9), basic punctuation (point, comma,
-semi-colon, colon, …) and some stuff that basically noone uses any more.
+semi-colon, colon, …) and some stuff that basically no one uses any more.
 
 To represent further characters like the “Ä”, “Ö”, “Ü” and “ß” several chars have to be combined to a sequence (this
 is called UTF-8 and you shouldn't use anything else). The problem with this approach is, that the number of chars
@@ -531,7 +531,7 @@ what methods are, so for the meantime it is enough to know that if you have a va
 type `std::string`, you can find out the number of chars in it with the following code: “`str.size()`”
 
 The answer to the second question is more terrifying: If your index is invalid, your program contains
-undefined behavior and is likely to crash in an uncontrollable way. The one exzeption is the value returned
+undefined behavior and is likely to crash in an uncontrollable way. The one exception is the value returned
 by `size()`: It is guaranteed to return a char with the value zero (the value, not the character ‘0’), but it
 must not be written to.
 
@@ -621,8 +621,8 @@ int main() {
 ```
 
 As we can see above, initializing a vector with elements is as easy as writing
-the values in braces and assigning these during construction. Alternativly we can
-pass it an integer (and optionally a value) in parenthesis in order to create a vector
+the values in braces and assigning these during construction. Alternatively we can
+pass it an integer (and optionally a value) in parentheses in order to create a vector
 of a certain size with all elements being defaulted to the given value or, if none is given,
 it's default value (empty string for strings, zero for numbers):
 
@@ -721,7 +721,7 @@ Summary
 In this chapter we took a short look into the very basics of C++. In order to keep the
 complexity at managable levels we skipped over many details and simplified a few other things.
 
-The reason is that we will need everything we learned here in basically all of the upcomming
+The reason is that we will need everything we learned here in basically all of the upcoming
 chapters, that will hopefully provide more of a red thread and make things clearer.
 
 The topics that you should remember from now on, are:
@@ -738,9 +738,9 @@ writing code yourself.
 Training
 --------
 
-* Write a programm that asks the user for their name and prints “`Hello <username>`” after that.
-	* Hint: Safe the name in a `std::string`
-* Write a programm that will print all integral numbers between 1 and 100.
+* Write a program that asks the user for their name and prints “`Hello <username>`” after that.
+	* Hint: Save the name in a `std::string`
+* Write a program that will print all integral numbers between 1 and 100.
 	* Hint: Use a normal `for`-loop
 * Modify the above programm, so that it will print “Fizz” if the number can be cleanly divided
   by 3, “Buzz” if it can be cleanly divided by 5 and “Fizzbuzz” if it can be cleanly divided by 15.
